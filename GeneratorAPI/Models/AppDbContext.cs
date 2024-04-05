@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GeneratorAPI.Configurations;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeneratorAPI.Models
 {
@@ -15,25 +16,22 @@ namespace GeneratorAPI.Models
         public DbSet<QuestionData> QuestionDatas { get; set; }
         public DbSet<QuestionDataWithProbability> QuestionDataWithProbabilities{ get;set;}
 
+        public DbSet<ImageData> imageDatas { get; set; }
+
 
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=DESKTOP-TQLBOGP;Database=applicationdb;Trusted_Connection=True;TrustServerCertificate=True; ");
-            optionsBuilder.LogTo(Console.WriteLine);
+            //optionsBuilder.LogTo(Console.WriteLine);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<QuestionData>().Property(x => x.id).ValueGeneratedOnAdd();
-            modelBuilder.Entity<QuestionData>().Property(x => x.type).HasColumnName("Type");
-            modelBuilder.Entity<QuestionData>().Property(x => x.text).HasColumnName("Text");
-            modelBuilder.Entity<QuestionData>().Property(x => x.flag).HasColumnName("Flag");
-
-
-            
-            
+            modelBuilder.ApplyConfiguration(new QuestionDataConfiguration());
+            modelBuilder.ApplyConfiguration(new QuestionDataWithProbabilityConfiguration());
+            modelBuilder.ApplyConfiguration(new ImageDataConfiguration());
         }
 
 
