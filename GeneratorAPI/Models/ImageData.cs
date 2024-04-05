@@ -3,12 +3,17 @@
     public class ImageData
     {
         public string Href { get; set; }
-        public int[] Answers { get; set; }
+        public string DbName { get; set; }
+        public string Answers { get; set; }
 
-        public ImageData(string Href, int[] Answers)
+        public int Id { get; set; }
+
+        public ImageData(string Href, string DbName,string Answers)
         {
             this.Href = Href;
             this.Answers = Answers;
+            this.DbName = DbName;
         }
+
     }
 }
