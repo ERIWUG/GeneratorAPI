@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GeneratorAPI.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Net.WebSockets;
 
 namespace GeneratorAPI.Controllers
 {
@@ -7,23 +10,22 @@ namespace GeneratorAPI.Controllers
     [ApiController]
     public class QuestionController : ControllerBase
     {
+        private readonly QuestionDataRepository _questionDataRepository;
 
-        //public List<int> GetIndexes()
-        //{
-
-
-        //    List<int> Indexes = null;
-        //    foreach (var x in Answers.Split(','))
-        //    {
-        //        Indexes.Add(int.Parse(x));
-        //    }
-
-        //    return Indexes;
-        //}
+        public QuestionController(QuestionDataRepository questionDataRepository)
+        {
+            _questionDataRepository = questionDataRepository;
+        }
 
 
 
+        [HttpGet("/api/Question/get-Questions")]
+        public async Task<IActionResult> GetQuestions()
+        {
+            var mass = await _questionDataRepository.GetAll();
 
+            return Ok(mass);
+        }
 
 
     }
