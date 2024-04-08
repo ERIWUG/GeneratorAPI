@@ -1,19 +1,19 @@
-﻿using GeneratorAPI.Models;
+﻿using GeneratorAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
 
 namespace GeneratorAPI.Configurations
 {
-    public class QuestionDataConfiguration : IEntityTypeConfiguration<QuestionData>
+    public class QuestionDataConfiguration : IEntityTypeConfiguration<QuestionDataEntity>
     {
-        public void Configure(EntityTypeBuilder<QuestionData> builder)
+        public void Configure(EntityTypeBuilder<QuestionDataEntity> builder)
         {
-            
-            builder.Property(x => x.id).ValueGeneratedOnAdd();
-            builder.Property(x => x.type).HasColumnName("Type");
-            builder.Property(x => x.text).HasColumnName("Text");
-            builder.Property(x => x.flag).HasColumnName("Flag");
+
+            builder.HasKey(x => x.id);
+            builder
+                .HasMany(x => x.images)
+                .WithMany(c => c.Answers);
         }
     }
 }
