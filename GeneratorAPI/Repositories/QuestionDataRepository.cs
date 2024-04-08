@@ -2,6 +2,7 @@
 using GeneratorAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace GeneratorAPI.Repositories
 {
@@ -36,8 +37,17 @@ namespace GeneratorAPI.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task Add(QuestionDataEntity questionData)
+        public async Task Add(Guid guid, string text, int type, bool flag, decimal probability, bool hasImage=false)
         {
+            var questionData = new QuestionDataEntity
+            {
+                id = guid,
+                text = text,
+                type = type,
+                flag = flag,
+                probability = probability,
+                hasImage = hasImage
+            };
             await _dbContext.AddAsync(questionData);
             await _dbContext.SaveChangesAsync();
         }
