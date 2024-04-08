@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using GeneratorAPI.Models;
+using GeneratorAPI.Models.Entities;
 
 namespace GeneratorAPI
 {
@@ -17,7 +18,7 @@ namespace GeneratorAPI
         /// <param name="ogr">Maximum amount of answer in one question</param>
         /// <param name="amount">Amount of generated question</param>
         /// <returns></returns>
-        public static Question[] GenerateParam(QuestionDataWithProbability[] mas,int ogr,int amount)
+        public static Question[] GenerateParam(QuestionDataEntity[] mas,int ogr,int amount)
         {
             List<int> QuestionIndex = new List<int>();
             List<int> AnswerIndex = new List<int>();
@@ -58,7 +59,7 @@ namespace GeneratorAPI
                 while (AmountQuestionWithOgr-- > 0)
                 {
                     IndexAnswer = m.Next(0, NowAnswerIndex.Count);
-                    paramValue = mas[NowAnswerIndex[IndexAnswer]].probability;
+                    paramValue = Convert.ToDouble(mas[NowAnswerIndex[IndexAnswer]].probability);
                     paramValue += Math.Round((m.NextDouble() + 0.1) * paramValue * 0.5,1,MidpointRounding.ToEven);
                     paramValue = Math.Round(paramValue, 1);
                     HashString += $"{IndexAnswer};{paramValue}-";
