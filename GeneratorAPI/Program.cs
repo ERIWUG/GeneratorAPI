@@ -17,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var MyBuild = WebApplication.CreateBuilder();
+//string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;Trusted_Connection=True;TrustServerCertificate=True; ";
 string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;Trusted_Connection=True;TrustServerCertificate=True; ";
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 
