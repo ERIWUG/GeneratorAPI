@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using GeneratorAPI.Models;
+using GeneratorAPI.Models.Entities;
 
 namespace GeneratorAPI
 {
@@ -15,11 +17,11 @@ namespace GeneratorAPI
         /// <param name="mas">Array of Data</param>
         /// <param name="amount">Amount of Question</param>
         /// <Author>Belyi Egor</Author>
-        public static Question[] GenerateIsIt(QuestionData[] mas, int amount)
+        public static Question[] GenerateIsIt(QuestionDataEntity[] mas, int amount)
         {
             const String APPE = "Являются ли ";
-            String ANSW1 = "Являются.";
-            String ANSW2 = "Не являются";
+            String ANSW1 = "1)Являются.";
+            String ANSW2 = "2)Не являются";
             String[] ANSW = { ANSW1, ANSW2 };
             Question[] Quest = new Question[amount];
             String ENDP = "";
