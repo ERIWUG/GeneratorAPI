@@ -30,7 +30,7 @@ namespace GeneratorAPI
                 int i = -1;
                 while (i++ < mas.Length - 1)
                 {
-                    if (mas[i].type == 1)
+                    if (mas[i].Type == 1)
                     {
                         QuestionIndex.Add(i);
                     }
@@ -50,8 +50,8 @@ namespace GeneratorAPI
                 Random m = new Random();
                 
                 IndexAnswer = m.Next(0, NowAnswerIndex.Count);
-                HashString += $"{IndexAnswer};{mas[NowAnswerIndex[IndexAnswer]].probability}-";
-                AnswersInQuestion.Add($"{mas[NowAnswerIndex[IndexAnswer]].text} - {mas[NowAnswerIndex[IndexAnswer]].probability}");
+                HashString += $"{IndexAnswer};{mas[NowAnswerIndex[IndexAnswer]].Probability}-";
+                AnswersInQuestion.Add($"{mas[NowAnswerIndex[IndexAnswer]].Text} - {mas[NowAnswerIndex[IndexAnswer]].Probability}");
                 NowAnswerIndex.RemoveAt(IndexAnswer);
                 int AmountQuestionWithOgr = m.Next(2, ogr);
 
@@ -59,12 +59,12 @@ namespace GeneratorAPI
                 while (AmountQuestionWithOgr-- > 0)
                 {
                     IndexAnswer = m.Next(0, NowAnswerIndex.Count);
-                    paramValue = Convert.ToDouble(mas[NowAnswerIndex[IndexAnswer]].probability);
+                    paramValue = Convert.ToDouble(mas[NowAnswerIndex[IndexAnswer]].Probability);
                     paramValue += Math.Round((m.NextDouble() + 0.1) * paramValue * 0.5,1,MidpointRounding.ToEven);
                     paramValue = Math.Round(paramValue, 1);
                     HashString += $"{IndexAnswer};{paramValue}-";
 
-                    AnswersInQuestion.Add($"{mas[NowAnswerIndex[IndexAnswer]].text} - {paramValue}");
+                    AnswersInQuestion.Add($"{mas[NowAnswerIndex[IndexAnswer]].Text} - {paramValue}");
 
                     NowAnswerIndex.RemoveAt(IndexAnswer);
                 }
@@ -83,7 +83,7 @@ namespace GeneratorAPI
                 HashString = "DBNAME-GP-";
                 QuestionText = "";
                 int DeletedIndex = RandomPar.Next(QuestionIndex.Count);
-                QuestionText = mas[QuestionIndex[DeletedIndex]].text;
+                QuestionText = mas[QuestionIndex[DeletedIndex]].Text;
                 QuestionIndex.RemoveAt(DeletedIndex);
                 HashString += $"{DeletedIndex}-";
                 q[GeneretedQuestionIndex] = GenerateAnswers(HashString,QuestionText);

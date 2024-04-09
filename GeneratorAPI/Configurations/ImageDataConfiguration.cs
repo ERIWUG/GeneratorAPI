@@ -10,8 +10,8 @@ namespace GeneratorAPI.Configurations
         {
             builder.HasKey(x => x.Id);
             builder
-                .HasMany(x => x.Answers)
-                .WithMany(c => c.images);
+                .HasMany(x => x.Answers)//?????
+                .WithMany(c => c.Images);
         }
     }
 }

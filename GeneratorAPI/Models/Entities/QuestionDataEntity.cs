@@ -6,14 +6,15 @@ namespace GeneratorAPI.Models.Entities
     [Serializable]
     public class QuestionDataEntity
     {
-        public string text { get; set; } = string.Empty;
-        public int type { get; set; } = 0;
-        public bool flag { get; set; } = false;
-        public Guid id { get; set; }
-        public decimal probability { get; set; } = decimal.Zero;
-        public bool hasImage { get; set; } = false;
+        public string Text { get; set; } = string.Empty;
+        public int Type { get; set; } = 0;
+        public bool Flag { get; set; } = false;
+        public Guid Id { get; set; }
+        public decimal Probability { get; set; } = decimal.Zero;
+        public bool HasImage { get; set; } = false;
+        public int Theme { get; set; } = 0;
 
-        public List<ImageDataEntity> images { get; set; } = [];
+        public List<ImageDataEntity> Images { get; set; } = [];
 
     }
 }

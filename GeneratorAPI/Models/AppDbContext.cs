@@ -20,7 +20,7 @@ namespace GeneratorAPI.Models
 
         public DbSet<QuestionDataEntity> QuestionDatas { get; set; }
 
-        public DbSet<ImageDataEntity> imageDatas { get; set; }
+        public DbSet<ImageDataEntity> ImageDatas { get; set; }
 
 
 

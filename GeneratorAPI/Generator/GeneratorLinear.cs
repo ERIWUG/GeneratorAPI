@@ -37,17 +37,17 @@ namespace GeneratorAPI
                 while (i++ < mas.Length - 1)
                 {
 
-                    if (mas[i].type == 1 && mas[i].flag == flag)
+                    if (mas[i].Type == 1 && mas[i].Flag == flag)
                     {
                         intQuest.Add(i);
                     }
                     else
                     {
-                        if (mas[i].flag && mas[i].type == 2)
+                        if (mas[i].Flag && mas[i].Type == 2)
                         {
                             intTrueAns.Add(i);
                         }
-                        if (!mas[i].flag && mas[i].type == 2)
+                        if (!mas[i].Flag && mas[i].Type == 2)
                         {
                             intFalseAns.Add(i);
                         }
@@ -62,20 +62,20 @@ namespace GeneratorAPI
             {
                 ans.Clear();
                 int i = a[rand.Next(a.Count)];
-                ans.Add($"1){mas[i].text}");
+                ans.Add($"1){mas[i].Text}");
                 MyHash += $"{i}-";
                 while (k-- > 0)
                 {
                     if (b.Count == 0) break;
                     int IA = rand.Next(b.Count);
                     var AA = mas[b[IA]];
-                    if (AA.probability != 1)
+                    if (AA.Probability != 1)
                     {
-                        int c = (int)Math.Round(1 / AA.probability);
+                        int c = (int)Math.Round(1 / AA.Probability);
                         int rnd = rand.Next(c);
                         if (rnd == 1)
                         {
-                            ans.Add(AA.text);
+                            ans.Add(AA.Text);
                             MyHash += $"{b[IA]}-";
                             b.RemoveAt(IA);
                         }
@@ -83,7 +83,7 @@ namespace GeneratorAPI
                     }
                     else
                     {
-                        ans.Add(AA.text);
+                        ans.Add(AA.Text);
                     MyHash += $"{b[IA]}-";
                         b.RemoveAt(IA);
                     }
@@ -104,9 +104,9 @@ namespace GeneratorAPI
                 int IQ = rand.Next(intQuest.Count);
                 var AQ = mas[intQuest[IQ]];
                 MyHash += $"{IQ}-{k+1}-";
-                AQQQQ = AQ.text;
+                AQQQQ = AQ.Text;
                 //Console.WriteLine($"{AQ.text}");
-                if (!AQ.flag)
+                if (!AQ.Flag)
                 {
                     GenerateQuest(mF, mT, k);
                 }

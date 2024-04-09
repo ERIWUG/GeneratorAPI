@@ -124,8 +124,8 @@ namespace GeneratorAPI
             if (genType == "G2")
             {
                 int wordNum = int.Parse(words[2]);
-                string word = mas[wordNum].text; //надо будет заменить на чтение из БД
-                question = "Являются ли " + word.ToLower() + " " + mas[0].text;
+                string word = mas[wordNum].Text; //надо будет заменить на чтение из БД
+                question = "Являются ли " + word.ToLower() + " " + mas[0].Text;
                 answers = new string[2];
                 answers[0] = "Являются.";
                 answers[1] = "Не являются";
@@ -134,7 +134,7 @@ namespace GeneratorAPI
             else
             {
                 questionIndex = int.Parse(words[2]);
-                question = mas[questionIndex].text; //надо будет заменить на чтение из БД
+                question = mas[questionIndex].Text; //надо будет заменить на чтение из БД
                 int amountOfAnswers = words.Length - 5;
                 int step = 4;
 
@@ -148,7 +148,7 @@ namespace GeneratorAPI
                         ans[i] = int.Parse(BlockOfAnswNumbers[i]);
                     string OneOfAnsw = "";
                     for (int i = 0; i < ans.Length; i++)
-                        OneOfAnsw += "\n-" + (mas[ans[i]].text);
+                        OneOfAnsw += "\n-" + (mas[ans[i]].Text);
                     question += $"{OneOfAnsw}";
 
                 }
@@ -170,13 +170,13 @@ namespace GeneratorAPI
                             ans[j] = int.Parse(ansNumbers[j]);
                         string variant = "";
                         for (int j = 0; j < ans.Length; j++)
-                            variant += (mas[ans[j]].text+", ");
+                            variant += (mas[ans[j]].Text+", ");
                         answers[i] = (i + 1) + ") "+variant;
                     }
                     else
                     {
                         answersIndex = int.Parse(words[i + step]);
-                        answers[i] = (i+1)+") "+mas[answersIndex].text;//надо будет заменить на чтение из БД
+                        answers[i] = (i+1)+") "+mas[answersIndex].Text;//надо будет заменить на чтение из БД
                     }
                 }
                   rightAnswer = int.Parse(words[step + amountOfAnswers]);

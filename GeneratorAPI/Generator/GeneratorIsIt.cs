@@ -28,15 +28,15 @@ namespace GeneratorAPI
             List<int> IntQuest = new List<int>();
             for (int i = 0; i < mas.Length - 1; i++)
             {
-                if (mas[i].type == 2)
+                if (mas[i].Type == 2)
                 {
                     IntQuest.Add(i);
                 }
                 else
                 {
-                    if (mas[i].type == 0)
+                    if (mas[i].Type == 0)
                     {
-                        ENDP = mas[i].text;
+                        ENDP = mas[i].Text;
                     }
                 }
             }
@@ -49,8 +49,8 @@ namespace GeneratorAPI
                 int IA = m.Next(IntQuest.Count);
                 int AA = IntQuest[IA];
                 IntQuest.RemoveAt(IA);
-                MyHash = $"DBDATA-G2-{AA}-{(mas[AA].flag ? 0 : 1)}";
-                Quest[l] = new Question($"{APPE} {mas[AA].text.ToLower()} {ENDP}?", ANSW, (mas[AA].flag ? 0 : 1), MyHash);
+                MyHash = $"DBDATA-G2-{AA}-{(mas[AA].Flag ? 0 : 1)}";
+                Quest[l] = new Question($"{APPE} {mas[AA].Text.ToLower()} {ENDP}?", ANSW, (mas[AA].Flag ? 0 : 1), MyHash);
 
 
             }

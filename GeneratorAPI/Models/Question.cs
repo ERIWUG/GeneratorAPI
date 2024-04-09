@@ -12,25 +12,25 @@ namespace GeneratorAPI.Models
     [Serializable]
     public class Question
     {
-        public string questionText;
-        public string[] answers;
-        public int correctAnswer;
+        public string QuestionText;
+        public string[] Answers;
+        public int CorrectAnswer;
         public string QuestionHash;
 
         public Question(string questionText, string[] answers, int correctAnswer, string questionHash)
         {
-            this.questionText = questionText;
-            this.answers = answers;
-            this.correctAnswer = correctAnswer;
+            this.QuestionText = questionText;
+            this.Answers = answers;
+            this.CorrectAnswer = correctAnswer;
             QuestionHash = questionHash;
         }
 
         public void print()
         {
-            Console.WriteLine(questionText);
-            for (int i = 0; i < answers.Length; i++)
-                Console.WriteLine(answers[i]);
-            Console.WriteLine("Номер правильного ответа: " + correctAnswer + "\n" + QuestionHash);
+            Console.WriteLine(QuestionText);
+            for (int i = 0; i < Answers.Length; i++)
+                Console.WriteLine(Answers[i]);
+            Console.WriteLine("Номер правильного ответа: " + CorrectAnswer + "\n" + QuestionHash);
         }
     };
 }

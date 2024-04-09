@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorAPI", "GeneratorAPI\GeneratorAPI.csproj", "{E6D46797-E222-43F0-A443-B89C71FFA3C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorAPI", "GeneratorAPI\GeneratorAPI.csproj", "{E6D46797-E222-43F0-A443-B89C71FFA3C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorASP", "GeneratorASP\GeneratorASP.csproj", "{2F244AB6-306F-4CDE-ABCE-5D0BE9CEF20D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{E6D46797-E222-43F0-A443-B89C71FFA3C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6D46797-E222-43F0-A443-B89C71FFA3C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6D46797-E222-43F0-A443-B89C71FFA3C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F244AB6-306F-4CDE-ABCE-5D0BE9CEF20D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F244AB6-306F-4CDE-ABCE-5D0BE9CEF20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F244AB6-306F-4CDE-ABCE-5D0BE9CEF20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F244AB6-306F-4CDE-ABCE-5D0BE9CEF20D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

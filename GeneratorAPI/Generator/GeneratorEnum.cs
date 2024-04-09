@@ -43,17 +43,17 @@ namespace GeneratorAPI
                 while (i++ < mas.Length - 1)
                 {
 
-                    if (mas[i].type == 1)
+                    if (mas[i].Type == 1)
                     {
                         intQuest.Add(i);
                     }
                     else
                     {
-                        if (mas[i].flag && mas[i].type == 2)
+                        if (mas[i].Flag && mas[i].Type == 2)
                         {
                             intTrueAns.Add(i);
                         }
-                        if (!mas[i].flag && mas[i].type == 2)
+                        if (!mas[i].Flag && mas[i].Type == 2)
                         {
                             intFalseAns.Add(i);
                         }
@@ -66,7 +66,7 @@ namespace GeneratorAPI
                 int kk = k;
                 ans.Clear();
                 int i = a[rand.Next(a.Count)];
-                ans.Add(mas[i].text);
+                ans.Add(mas[i].Text);
                 myHash += $"{i}-";
                 List<int> appearedAnswers = new List<int>();
                 int ca = 0;
@@ -75,15 +75,15 @@ namespace GeneratorAPI
                     if (b.Count == 0) break;
                     int IA = rand.Next(b.Count);
                     var AA = mas[b[IA]];
-                    if (AA.probability != 1)
+                    if (AA.Probability != 1)
                     {
-                        int c = (int)Math.Round(1 / AA.probability);
+                        int c = (int)Math.Round(1 / AA.Probability);
                         int rnd = rand.Next(c);
                         if (rnd == 1)
                         {
                             ca++;
                             appearedAnswers.Add(b[IA]);
-                            ans.Add(AA.text);
+                            ans.Add(AA.Text);
                             myHash += $"{b[IA]}-";
                             b.RemoveAt(IA);
                         }
@@ -93,7 +93,7 @@ namespace GeneratorAPI
                     {
                         ca++;
                         appearedAnswers.Add(b[IA]);
-                        ans.Add(AA.text);
+                        ans.Add(AA.Text);
                         myHash += $"{b[IA]}-";
                         b.RemoveAt(IA);
                     }
@@ -125,13 +125,13 @@ namespace GeneratorAPI
                         if (a.Count == 0) break;
                         int IA = rand.Next(a.Count);
                         var AA = mas[a[IA]];
-                        if (AA.probability != 1)
+                        if (AA.Probability != 1)
                         {
-                            int c = (int)Math.Round(1 / AA.probability);
+                            int c = (int)Math.Round(1 / AA.Probability);
                             int rnd = rand.Next(c);
                             if (rnd == 1)
                             {
-                                ans2.Add(AA.text);
+                                ans2.Add(AA.Text);
                                 myHash += $"{a[IA]}-";
                                 ca++;
                                 appearedAnswers.Add(a[IA]);
@@ -141,7 +141,7 @@ namespace GeneratorAPI
                         }
                         else
                         {
-                            ans2.Add(AA.text);
+                            ans2.Add(AA.Text);
                             myHash += $"{a[IA]}-";
                             ca++;
                             appearedAnswers.Add(a[IA]);
@@ -166,14 +166,14 @@ namespace GeneratorAPI
                         if (b.Count == 0) break;
                         int IA = rand.Next(b.Count);
                         var AA = mas[b[IA]];
-                        if (AA.probability != 1)
+                        if (AA.Probability != 1)
                         {
-                            int c = (int)Math.Round(1 / AA.probability);
+                            int c = (int)Math.Round(1 / AA.Probability);
                             int rnd = rand.Next(c);
                             if (rnd == 1)
                             {
                                 ca++;
-                                ans2.Add(AA.text);
+                                ans2.Add(AA.Text);
                                 myHash += $"{b[IA]}-";
                                 b.RemoveAt(IA);
                             }
@@ -182,7 +182,7 @@ namespace GeneratorAPI
                         else
                         {
                             ca++;
-                            ans2.Add(AA.text);
+                            ans2.Add(AA.Text);
                             myHash += $"{b[IA]}-";
                             b.RemoveAt(IA);
                         }
@@ -210,9 +210,9 @@ namespace GeneratorAPI
                 int k = rand.Next(3, ogr);
                 int IndexOfQuestion = rand.Next(intQuest.Count);
                 var AQ = mas[intQuest[IndexOfQuestion]];
-                AQQQQ = AQ.text;
+                AQQQQ = AQ.Text;
                 myHash += $"{IndexOfQuestion}-{k + 1}-";
-                if (!AQ.flag)
+                if (!AQ.Flag)
                 {
                     GenerateQuest(mF, mT, k + 2);
                 }

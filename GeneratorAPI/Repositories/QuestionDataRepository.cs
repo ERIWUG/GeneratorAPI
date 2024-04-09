@@ -1,8 +1,7 @@
 ﻿using GeneratorAPI.Models;
 using GeneratorAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace GeneratorAPI.Repositories
 {
@@ -22,31 +21,32 @@ namespace GeneratorAPI.Repositories
 
         public async Task<List<QuestionDataEntity>> GetWithImages()
         {
-            return await _dbContext.QuestionDatas.AsNoTracking().Include(q=>q.images).ToListAsync();
+            return await _dbContext.QuestionDatas.AsNoTracking().Include(q=>q.Images).ToListAsync();
         }
 
         public async Task<QuestionDataEntity?> GetById(Guid id)
         {
-            return await _dbContext.QuestionDatas.AsNoTracking().FirstOrDefaultAsync(q=>q.id==id);
+            return await _dbContext.QuestionDatas.AsNoTracking().FirstOrDefaultAsync(q=>q.Id==id);
         }
 
         public async Task<List<QuestionDataEntity>> GetByFilter(int type)
         {
             var query = _dbContext.QuestionDatas.AsNoTracking();
-            query = query.Where(q => q.type == type);
+            query = query.Where(q => q.Type == type);
             return await query.ToListAsync();
         }
 
-        public async Task Add(Guid guid, string text, int type, bool flag, decimal probability, bool hasImage=false)
+        public async Task Add(string text, int type, bool flag, int theme, decimal probability=decimal.Zero, bool hasImage=false)
         {
             var questionData = new QuestionDataEntity
             {
-                id = guid,
-                text = text,
-                type = type,
-                flag = flag,
-                probability = probability,
-                hasImage = hasImage
+                Id = Guid.NewGuid(),
+                Text = text,
+                Type = type,
+                Flag = flag,
+                Probability = probability,
+                HasImage = hasImage,
+                Theme = theme,
             };
             await _dbContext.AddAsync(questionData);
             await _dbContext.SaveChangesAsync();

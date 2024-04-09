@@ -1,4 +1,5 @@
 ﻿using GeneratorAPI.Models;
+using GeneratorAPI.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,9 +23,15 @@ namespace GeneratorAPI.Controllers
         [HttpGet("/api/Question/get-Questions")]
         public async Task<IActionResult> GetQuestions()
         {
-            var mass = await _questionDataRepository.GetAll();
+            var mass = await _questionDataRepository.Get();
 
             return Ok(mass);
+        }
+
+        [HttpPost("/api/Question/Add-Question")]
+        public async Task AddQuestion(string text, int type, bool flag,int theme, decimal probability=decimal.Zero,bool hasImage = false)
+        {
+            await _questionDataRepository.Add(text,type,flag,theme,probability,hasImage);
         }
 
 

@@ -48,14 +48,14 @@ namespace GeneratorAPI
                 while (i++ < mas.Length - 1)
                 {
 
-                    if (mas[i].type == 1)
+                    if (mas[i].Type == 1)
                     {
                         intQuest.Add(i);
                     }
-                    if (mas[i].type == 2)
+                    if (mas[i].Type == 2)
                     {
                         intAnswer.Add(i);
-                        if (mas[i].flag)
+                        if (mas[i].Flag)
                         {
                             intTrueAns.Add(i);
                         }
@@ -104,12 +104,12 @@ namespace GeneratorAPI
                     {
                         if (i + 1 < list.Count)
                         {
-                            TempHash += $"{mas.Select((obj, i) => new { obj, i }).First(p => p.obj.text == list[i]).i},";
+                            TempHash += $"{mas.Select((obj, i) => new { obj, i }).First(p => p.obj.Text == list[i]).i},";
 
                         }
                         else
                         {
-                            TempHash += $"{mas.Select((obj, i) => new { obj, i }).First(p => p.obj.text == list[i]).i}";
+                            TempHash += $"{mas.Select((obj, i) => new { obj, i }).First(p => p.obj.Text == list[i]).i}";
 
                         }
                     }
@@ -130,27 +130,27 @@ namespace GeneratorAPI
 
                     int IA = rand.Next(full.Count);
                     var AA = mas[full[IA]];
-                    if (AA.probability != 1)
+                    if (AA.Probability != 1)
                     {
-                        int c = (int)Math.Round(1 / AA.probability);
+                        int c = (int)Math.Round(1 / AA.Probability);
                         int rnd = rand.Next(c);
                         if (rnd == 1)
                         {
                             full.RemoveAt(IA);
                             //Console.WriteLine($"----{AA.text},  {AA.flag}\n");
-                            AllAnsw.Add(AA.text);
+                            AllAnsw.Add(AA.Text);
                             if (sign)
                             {
-                                if (AA.flag)
+                                if (AA.Flag)
                                 {
-                                    CorrectAnswers.Add(AA.text);
+                                    CorrectAnswers.Add(AA.Text);
                                 }
                             }
                             else
                             {
-                                if (!AA.flag)
+                                if (!AA.Flag)
                                 {
-                                    CorrectAnswers.Add(AA.text);
+                                    CorrectAnswers.Add(AA.Text);
                                 }
                             }
                         }
@@ -159,20 +159,20 @@ namespace GeneratorAPI
                     else
                     {
                         full.RemoveAt(IA);
-                        Console.WriteLine($"----{AA.text},  {AA.flag}\n");
-                        AllAnsw.Add(AA.text);
+                        Console.WriteLine($"----{AA.Text},  {AA.Flag}\n");
+                        AllAnsw.Add(AA.Text);
                         if (sign)
                         {
-                            if (AA.flag)
+                            if (AA.Flag)
                             {
-                                CorrectAnswers.Add(AA.text);
+                                CorrectAnswers.Add(AA.Text);
                             }
                         }
                         else
                         {
-                            if (!AA.flag)
+                            if (!AA.Flag)
                             {
-                                CorrectAnswers.Add(AA.text);
+                                CorrectAnswers.Add(AA.Text);
                             }
                         }
                     }
@@ -259,10 +259,10 @@ namespace GeneratorAPI
                 AllAnsw.Clear();
                 CorrectAnswers.Clear();
                 MyHash += $"{IQ}-";
-                QuestionText = AQ.text + "\n";
+                QuestionText = AQ.Text + "\n";
 
                 //Console.WriteLine($"{AQ.text}\n");
-                if (!AQ.flag)
+                if (!AQ.Flag)
                 {
                     GenerateAnswers(Answers, false, AmountOfAnswersWithQuestion);
                 }
