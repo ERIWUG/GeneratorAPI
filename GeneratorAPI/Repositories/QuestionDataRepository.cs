@@ -29,12 +29,21 @@ namespace GeneratorAPI.Repositories
             return await _dbContext.QuestionDatas.AsNoTracking().FirstOrDefaultAsync(q=>q.Id==id);
         }
 
-        public async Task<List<QuestionDataEntity>> GetByFilter(int type)
+        public async Task<List<QuestionDataEntity>> GetByType(int type)
         {
             var query = _dbContext.QuestionDatas.AsNoTracking();
             query = query.Where(q => q.Type == type);
             return await query.ToListAsync();
         }
+
+        public async Task<List<QuestionDataEntity>> GetByTheme(int type)
+        {
+            var query = _dbContext.QuestionDatas.AsNoTracking();
+            query = query.Where(q => q.Theme == type);
+            return await query.ToListAsync();
+        }
+
+
 
         public async Task Add(string text, int type, bool flag, int theme, decimal probability=decimal.Zero, bool hasImage=false)
         {
