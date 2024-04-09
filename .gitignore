@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /GeneratorAPI/Migrations/20240408091645_Initial.cs
 /GeneratorAPI/Migrations
+/GeneratorASP/GeneratorASP.csproj
+/GeneratorASP
