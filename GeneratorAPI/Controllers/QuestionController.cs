@@ -1,4 +1,5 @@
 ﻿using GeneratorAPI.Models;
+using GeneratorAPI.Models.Entities;
 using GeneratorAPI.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,17 @@ namespace GeneratorAPI.Controllers
             await _questionDataRepository.Add(text,type,flag,theme,probability,hasImage);
         }
 
+        [HttpGet("/api/Question/get-ticket-for-theme/{id}")]
+        public async Task<IActionResult> GetTicket(int id)
+        {
+            var c = await _questionDataRepository.GetByTheme(id);
+            if(c!=null)
+                return (Ok(Generator.GenerateTicket(c.ToArray(), 10)));
+            else
+            {
+                return NoContent();
+            }
+        }
 
     }
 }
