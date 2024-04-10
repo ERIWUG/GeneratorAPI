@@ -12,11 +12,11 @@ namespace GeneratorAPI.Controllers
     [ApiController]
     public class QuestionController : ControllerBase
     {
-        private readonly QuestionRepository _questionDataRepository;
+        private readonly QuestionRepository _questionRepository;
 
-        public QuestionController(QuestionRepository questionDataRepository)
+        public QuestionController(QuestionRepository questionRepository)
         {
-            _questionDataRepository = questionDataRepository;
+            _questionRepository = questionRepository;
         }
 
 
@@ -24,14 +24,17 @@ namespace GeneratorAPI.Controllers
         [HttpGet("/api/Question/get-Questions")]
         public async Task<IActionResult> GetQuestions()
         {
-            var mass = await _questionDataRepository.Get();
+            var mass = await _questionRepository.Get();
 
             return Ok(mass);
         }
 
-       
 
-        
 
+        [HttpPost("/api/Question/AddQuestion")]
+        public async Task AddQuestion(string text)
+        {
+            await _questionRepository.Add(text);
+        } 
     }
 }
