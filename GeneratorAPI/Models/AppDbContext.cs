@@ -1,40 +1,38 @@
-﻿using GeneratorAPI.Configurations;
+﻿
+using GeneratorAPI.Configurations;
 using GeneratorAPI.Models.Entities;
+using GeneratorAPI.Models.TempTable;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace GeneratorAPI.Models
 {
     public class AppDbContext : DbContext
     {
-       
+
 
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
        : base(options)
         {
-           
+
         }
 
-        
-
-
-        public DbSet<QuestionDataEntity> QuestionDatas { get; set; }
-
-        public DbSet<ImageDataEntity> ImageDatas { get; set; }
 
 
 
+        public DbSet<QuestionEntity> Questions { get; set; }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    //optionsBuilder.UseSqlServer("Server=DESKTOP-TQLBOGP;Database=applicationdb;Trusted_Connection=True;TrustServerCertificate=True; ");
-        //    //optionsBuilder.LogTo(Console.WriteLine);
-        //}
+        public DbSet<ImageEntity> Images { get; set; }
+
+        public DbSet<AnswerEntity> Answers{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new QuestionDataConfiguration());
-            modelBuilder.ApplyConfiguration(new ImageDataConfiguration());
+            modelBuilder.ApplyConfiguration(new AnswerConfiguration());
+            modelBuilder.ApplyConfiguration(new ImageConfiguration());
+            modelBuilder.ApplyConfiguration(new QuestionConfiguration());
+
         }
 
 
