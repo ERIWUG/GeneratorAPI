@@ -42,6 +42,17 @@ namespace GeneratorAPI.Repositories
             return await _dbContext.Questions.AsNoTracking().Skip((page-1)*pageSize).Take(pageSize).ToListAsync();
         }
 
+        public async Task Add(string text)
+        {
+            var questiondata = new QuestionEntity
+            {
+                Text = text,
+
+            };
+            await _dbContext.AddAsync(questiondata);
+            await _dbContext.SaveChangesAsync();
+        }
+
 
     }
 }
