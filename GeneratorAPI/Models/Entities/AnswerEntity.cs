@@ -9,6 +9,8 @@ namespace GeneratorAPI.Models.Entities
 
         public decimal Par {  get; set; } = decimal.Zero;
 
+        public int Theme { get; set; } = 0;
+
         public List<QuestionEntity> Questions { get; set; } = [];
         public List<ImageEntity> Images { get; set; } = [];
 

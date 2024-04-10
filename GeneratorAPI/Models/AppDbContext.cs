@@ -18,14 +18,24 @@ namespace GeneratorAPI.Models
 
         }
 
-
+        public AppDbContext()
+        {
+            
+        }
 
 
         public DbSet<QuestionEntity> Questions { get; set; }
 
         public DbSet<ImageEntity> Images { get; set; }
 
-        public DbSet<AnswerEntity> Answers{ get; set; }
+        public DbSet<AnswerEntity> Answers{ get; set;}
+
+        public DbSet<ImToAns> TempImtAns { get; set; }
+
+        public DbSet<QuesToAns> TempQuestAns { get; set; }
+
+        public DbSet<QuesToIm> TempQuestIm { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

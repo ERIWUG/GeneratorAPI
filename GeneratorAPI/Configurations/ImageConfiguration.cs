@@ -9,6 +9,9 @@ namespace GeneratorAPI.Configurations
     {
         public void Configure(EntityTypeBuilder<ImageEntity> builder)
         {
+            builder.HasKey(c => c.Id);
+            builder.Property(c => c.Id).ValueGeneratedOnAdd();
+
             builder
                 .HasMany(c => c.Answers)
                 .WithMany(c => c.Images)
