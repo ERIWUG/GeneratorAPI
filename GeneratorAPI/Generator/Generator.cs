@@ -30,7 +30,7 @@ namespace GeneratorAPI
         private static List<int>? IncorrectAnswerIndexes = null;
 
 
-        public static void UpdateDictionary()
+        private static void UpdateDictionary()
         {
             AppDbContext db = new AppDbContext();
             AmountQuestionInAnswer = new Dictionary<int, int>();
@@ -45,7 +45,7 @@ namespace GeneratorAPI
         }
         
 
-        public static void ParseData(QuesToAns[] mas)
+        private static void ParseData(QuesToAns[] mas)
         {
             if(AmountQuestionInAnswer is null)
             {
