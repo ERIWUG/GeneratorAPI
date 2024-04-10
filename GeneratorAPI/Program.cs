@@ -22,6 +22,9 @@ var MyBuild = WebApplication.CreateBuilder();
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 builder.Services.AddTransient<QuestionRepository>();
+builder.Services.AddTransient<AnswerRepository>();
+
+
 
 var app = builder.Build();
 
