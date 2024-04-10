@@ -14,11 +14,11 @@ namespace GeneratorAPI.Repositories
             _dbContext = context;
         }
 
-        /* public async Task<List<AnswerEntity>> Get()
+         public async Task<List<AnswerEntity>> Get()
          {
-             return await _dbContext.Questions.AsNoTracking().ToListAsync();    
+             return await _dbContext.Answers.AsNoTracking().ToListAsync();    
          }
-
+        /*
          public async Task<List<QuestionEntity>> GetWithImages()
          {
              return await _dbContext.Questions.AsNoTracking().Include(q=>q.Images).ToListAsync();
