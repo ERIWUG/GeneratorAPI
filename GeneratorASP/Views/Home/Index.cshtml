@@ -1,0 +1,23 @@
+﻿@using GeneratorAPI.Models.Entities;
+@model QuestionEntity[]
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<form>
+    <label>Вопрос:</label>
+    <select>
+        @foreach (var p in Model)
+        {
+            <option>@p.Text</option>
+        }
+    </select>
+
+
+</form>
+
+
+
+
