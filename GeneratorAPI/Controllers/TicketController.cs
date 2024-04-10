@@ -8,15 +8,16 @@ namespace GeneratorAPI.Controllers
     [ApiController]
     public class TicketController : ControllerBase
     {
-        private AppDbContext db = new AppDbContext();
+        
 
         [HttpGet("/api/Ticket/GetLinear/{amount}")]
 
-        public async Task<IActionResult> GetLinear(int id)
+        public async Task<IActionResult> GetLinear(int id,AppDbContext db)
         {
-            
-            
-            return Ok(Generator.GenerateLinear(db.TempQuestAns.Where(c=>c.QuestionID==id).ToArray(),5));
+            var c = db.TempQuestAns.Where(c => c.QuestionID == id).ToArray();
+
+
+            return Ok(Generator.GenerateLinear(c, 5));
             
         }
 

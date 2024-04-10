@@ -4,12 +4,17 @@ using GeneratorAPI.Models.Entities;
 using GeneratorAPI.Models.TempTable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Client;
+using Newtonsoft.Json;
 
 namespace GeneratorAPI.Models
 {
     public class AppDbContext : DbContext
     {
-
+        
+        
 
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
@@ -20,7 +25,17 @@ namespace GeneratorAPI.Models
 
         public AppDbContext()
         {
+            Database.EnsureCreated();
+
+           
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
             
+           
+            string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
+            optionsBuilder.UseSqlServer(connection);
         }
 
 
