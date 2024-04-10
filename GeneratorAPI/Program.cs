@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 var MyBuild = WebApplication.CreateBuilder();
 string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;Trusted_Connection=True;TrustServerCertificate=True; ";
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
-builder.Services.AddTransient<QuestionDataRepository>();
+builder.Services.AddTransient<QuestionRepository>();
 
 var app = builder.Build();
 
@@ -29,7 +29,7 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-app.MapGet("/api/questions", async (AppDbContext db) => await db.QuestionDatas.ToListAsync());
+
 
 
 // Configure the HTTP request pipeline.

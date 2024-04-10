@@ -19,7 +19,7 @@ namespace GeneratorAPI
         /// <param name="ogr"></param>
         /// <param name="amount"></param>
         /// <Author>Alex Veremeychik</Author>>
-        public static Question[] GenerateGroup(QuestionDataEntity[] mas, int ogr, int amount)
+        public static Question[] GenerateGroup(QuestionEntity[] mas, int ogr, int amount)
         {
             Question[] questions = new Question[amount];
             Random rand = new Random();
@@ -42,7 +42,7 @@ namespace GeneratorAPI
             string QuestionText = null;
             string MyHash = "DBNAME-GX-";
 
-            void ParseData(QuestionDataEntity[] mas)
+            void ParseData(QuestionEntity[] mas)
             {
                 int i = -1;
                 while (i++ < mas.Length - 1)

@@ -18,7 +18,7 @@ namespace GeneratorAPI
         /// <param name="ogr">integer that used in random (less number)</param>
         /// <param name="amount">integer represent amount of generated questions</param>>
         /// <param name="flag">bool is Negative?</param>>
-        public static Question[] GenerateLinear(QuestionDataEntity[] mas, int ogr, int amount, bool flag)
+        public static Question[] GenerateLinear(QuestionEntity[] mas, int ogr, int amount, bool flag)
         {
             Question[] questions = new Question[amount];
             Random rand = new Random();
@@ -31,7 +31,7 @@ namespace GeneratorAPI
             string AQQQQ = null;
             string MyHash = "DBNAME-G1-";
 
-            void ParseData(QuestionDataEntity[] mas)
+            void ParseData(QuestionEntity[] mas)
             {
                 int i = -1;
                 while (i++ < mas.Length - 1)

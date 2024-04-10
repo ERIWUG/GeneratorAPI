@@ -63,7 +63,7 @@ namespace GeneratorAPI
         /// <param name="mas"></param>
         /// <param name="questAmount">число вопросов в билете</param>
         /// <Author>Nichiporuk Viktor</Author>
-        public static Question[] GenerateTicket(QuestionDataEntity[] mas, int questAmount)
+        public static Question[] GenerateTicket(QuestionEntity[] mas, int questAmount)
         {
             Question[] questions1 = new Question[questAmount];
             Random rand = new Random();
@@ -112,7 +112,7 @@ namespace GeneratorAPI
         /// </summary>
         /// <param name="hash">hash</param>
         /// <Author>Nichiporuk Viktor</Author>
-        public static Question degeneration(QuestionDataEntity[] mas,String hash)
+        public static Question degeneration(QuestionEntity[] mas,String hash)
         {
             //локальный массив для отладки метода
             string[] words = hash.Split('-');

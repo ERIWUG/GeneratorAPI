@@ -21,7 +21,7 @@ namespace GeneratorAPI
         /// <param name="ogr">integer that used in random (less number)</param>
         /// <param name="amount">integer represent amount of generated questions</param>
         /// <Author>Nichiporuk Viktor</Author>
-        public static Question[] GenerateEnum(QuestionDataEntity[] mas, int ogr, int amount)
+        public static Question[] GenerateEnum(QuestionEntity[] mas, int ogr, int amount)
         {
             Random rand = new Random();
             List<int> intTrueAns = new List<int>();
@@ -37,7 +37,7 @@ namespace GeneratorAPI
             String ANSW2 = "Ничего из перечисленного";
             string myHash;
 
-            void ParseData(QuestionDataEntity[] mas)
+            void ParseData(QuestionEntity[] mas)
             {
                 int i = -1;
                 while (i++ < mas.Length - 1)

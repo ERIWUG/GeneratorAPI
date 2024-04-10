@@ -18,7 +18,7 @@ namespace GeneratorAPI
         /// <param name="ogr">Maximum amount of answer in one question</param>
         /// <param name="amount">Amount of generated question</param>
         /// <returns></returns>
-        public static Question[] GenerateParam(QuestionDataEntity[] mas,int ogr,int amount)
+        public static Question[] GenerateParam(QuestionEntity[] mas,int ogr,int amount)
         {
             List<int> QuestionIndex = new List<int>();
             List<int> AnswerIndex = new List<int>();

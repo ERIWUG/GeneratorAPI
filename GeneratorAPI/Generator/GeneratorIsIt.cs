@@ -17,7 +17,7 @@ namespace GeneratorAPI
         /// <param name="mas">Array of Data</param>
         /// <param name="amount">Amount of Question</param>
         /// <Author>Belyi Egor</Author>
-        public static Question[] GenerateIsIt(QuestionDataEntity[] mas, int amount)
+        public static Question[] GenerateIsIt(QuestionEntity[] mas, int amount)
         {
             const String APPE = "Являются ли ";
             String ANSW1 = "1)Являются.";
