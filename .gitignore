@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /GeneratorAPI/Migrations
 /GeneratorASP/GeneratorASP.csproj
 /GeneratorASP
+/GeneratorAPI/appsettings.json
