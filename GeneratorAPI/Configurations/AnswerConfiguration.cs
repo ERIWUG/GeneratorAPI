@@ -31,6 +31,9 @@ namespace GeneratorAPI.Configurations
                     j.HasKey(t => new { t.AnswerID, t.QuestionID });
                 }
                 );
+
+
+
         }
     }
 }

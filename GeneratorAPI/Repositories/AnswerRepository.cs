@@ -24,10 +24,7 @@ namespace GeneratorAPI.Repositories
              return await _dbContext.Questions.AsNoTracking().Include(q=>q.Images).ToListAsync();
          }
 
-         public async Task<QuestionEntity?> GetById(int id)
-         {
-             return await _dbContext.Questions.AsNoTracking().FirstOrDefaultAsync(q=>q.Id==id);
-         }
+        
 
 
 
@@ -54,5 +51,10 @@ namespace GeneratorAPI.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+
+        public async Task<AnswerEntity?> GetById(int id)
+        {
+            return await _dbContext.Answers.Include(u => u.ThemeEntity).AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+        }
     }
 }
