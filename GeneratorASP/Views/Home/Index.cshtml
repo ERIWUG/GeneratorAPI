@@ -1,21 +1,65 @@
-﻿@using GeneratorAPI.Models.Entities;
-@model QuestionEntity[]
+﻿@using GeneratorAPI.Models;
+@model AppDbContext
+
+
 
 @{
+    var ThemeCount = Model.Themes.Count();
     ViewData["Title"] = "Home Page";
 }
+<head>
+    <link rel="stylesheet" href="~/css/Index.css" />
+    <script src="~/js/Index.js" asp-append-version="true"></script>
 
+</head>
 
-<form>
+<form method="post" action="/Home/Index">
     <label>Вопрос:</label>
     <select>
-        @foreach (var p in Model)
+        @foreach (var p in Model.Questions)
         {
             <option>@p.Text</option>
         }
     </select>
 
 
+    <label>Тема:</label>
+    <select id="theme-select" onchange="MyFunc(@ThemeCount)">
+        @foreach (var p in Model.Themes)
+        {
+            <option value="@p.Id">@p.Name</option>
+            
+        }
+    </select>
+
+
+    @for(int i = 1; i <= ThemeCount; i++)
+    {
+        <div class="div-checkbox" id="div-checkbox-@i" style="display:none" >
+            @{
+                int j = 0;
+            }
+           
+            @foreach(var c in Model.Answers.Where(c=>c.Theme==i))
+            {
+                j++;
+                <label>
+
+                <input type="checkbox" name="div-checkbox-@i-@j" value="@c.Id" />
+                    @c.Text
+                   
+                </label>
+                
+            }
+            
+
+        </div>
+    }
+    <input type="submit" value="Подтвердить">
+    
+</form>
+<form method="get" action="/Home/Index">
+    <input type="submit" value="Сброс">
 </form>
 
 

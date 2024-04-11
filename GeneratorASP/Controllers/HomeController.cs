@@ -1,5 +1,7 @@
 using GeneratorAPI.Models;
+using GeneratorAPI.Models.Entities;
 using GeneratorASP.Models;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,7 +10,7 @@ namespace GeneratorASP.Controllers
     public class HomeController : Controller
         
     {
-        private readonly AppDbContext db = new AppDbContext();
+        public readonly AppDbContext db = new AppDbContext();
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -19,8 +21,7 @@ namespace GeneratorASP.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var c = db.Questions.ToArray();
-            return View(c);
+            return View(db);
         }
         
 
