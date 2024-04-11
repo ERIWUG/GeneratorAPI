@@ -32,7 +32,13 @@ namespace GeneratorAPI
                 Answers.Add(IncorrectAnswerIndexes[DeletingIndex]);
                 IncorrectAnswerIndexes.RemoveAt(DeletingIndex);
             }
-            return new Ticket(mas[0].QuestionID,Answers,0," ");
+            List<List<int>> listOfLists = new List<List<int>>();
+            foreach (int OneAnswer in Answers)
+            {
+                List<int> newList = new List<int>(OneAnswer);
+                listOfLists.Add(newList);
+            }
+            return new Ticket(mas[0].QuestionID, listOfLists,0," ");
         }
     }
 }

@@ -40,7 +40,13 @@ namespace GeneratorAPI
                     Answers.Add(CorrectAnswerIndexes[DeletingIndex]);
                     CorrectAnswerIndexes.RemoveAt(DeletingIndex);
                 }
-                ticket = new Ticket(mas[0].QuestionID, Answers, NowAmountAnswers, " ");
+                List<List<int>> listOfLists = new List<List<int>>();
+                foreach (int OneAnswer in Answers)
+                {
+                    List<int> newList = new List<int>(OneAnswer);
+                    listOfLists.Add(newList);
+                }
+                ticket = new Ticket(mas[0].QuestionID, listOfLists, NowAmountAnswers, " ");
             }
             else //if "none of the above"
             {
@@ -51,11 +57,17 @@ namespace GeneratorAPI
                     Answers.Add(IncorrectAnswerIndexes[DeletingIndex]);
                     IncorrectAnswerIndexes.RemoveAt(DeletingIndex);
                 }
-                ticket = new Ticket(mas[0].QuestionID, Answers, NowAmountAnswers + 1, " ");
+                List<List<int>> listOfLists = new List<List<int>>();
+                foreach (int OneAnswer in Answers)
+                {
+                    List<int> newList = new List<int>(OneAnswer);
+                    listOfLists.Add(newList);
+                }
+                ticket = new Ticket(mas[0].QuestionID, listOfLists, NowAmountAnswers + 1, " ");
             }
 
-            ticket.AnswersID.Add(-1);//все перечисленое
-            ticket.AnswersID.Add(-2);//ничего из перечисленного
+            //ticket.AnswersID.Add(-1);//все перечисленое
+            //ticket.AnswersID.Add(-2);//ничего из перечисленного
             return ticket;
         }
     }
