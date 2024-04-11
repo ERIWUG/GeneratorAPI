@@ -13,11 +13,11 @@ namespace GeneratorAPI.Models
     public class Ticket
     {
         public int QuestionID;
-        public List<int> AnswersID;
+        public List<List<int>> AnswersID;
         public int CorrectAnswer;
         public string QuestionHash;
 
-        public Ticket(int questionID, List<int> answers, int correctAnswer, string questionHash)
+        public Ticket(int questionID, List<List<int>> answers, int correctAnswer, string questionHash)
         {
             this.QuestionID = questionID;
             this.AnswersID = answers;

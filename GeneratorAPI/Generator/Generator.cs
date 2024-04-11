@@ -28,6 +28,7 @@ namespace GeneratorAPI
         private static Dictionary<int, int>? AmountQuestionInAnswer = null;
         private static List<int>? CorrectAnswerIndexes = null;
         private static List<int>? IncorrectAnswerIndexes = null;
+        private static List<int>? AllAnswersToQuestion=null;   
 
 
         private static void UpdateDictionary()
@@ -58,11 +59,13 @@ namespace GeneratorAPI
             }
             CorrectAnswerIndexes.Clear();
             IncorrectAnswerIndexes.Clear();
+            AllAnswersToQuestion.Clear();
             int Amount = AmountQuestionInAnswer[mas[0].ThemeAnswer];
             for(int i = 1; i < Amount+1; i++)
             {
                 IncorrectAnswerIndexes.Add(i);
             }
+            AllAnswersToQuestion.AddRange(IncorrectAnswerIndexes);
 
             foreach(var ind in mas)
             {
