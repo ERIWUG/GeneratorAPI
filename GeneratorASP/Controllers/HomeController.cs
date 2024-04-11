@@ -23,7 +23,11 @@ namespace GeneratorASP.Controllers
         {
             return View(db);
         }
-        
+
+        [HttpPost]
+        public IActionResult MyIndex() {
+            return View();
+        }
 
 
         public IActionResult Privacy()

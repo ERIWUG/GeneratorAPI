@@ -13,15 +13,15 @@
 
 </head>
 
-<form method="post" action="/Home/Index">
+<form method="post" action="/Home/MyIndex" >
     <label>Вопрос:</label>
-    <select>
+    <select id="question-select" onchange="MyFunc1()">
         @foreach (var p in Model.Questions)
         {
-            <option>@p.Text</option>
+            <option value ="@p.Id">@p.Text</option>
         }
     </select>
-
+    <input id="question-select-value" type="hidden" name ="questionID" value="1" />
 
     <label>Тема:</label>
     <select id="theme-select" onchange="MyFunc(@ThemeCount)">
@@ -31,11 +31,14 @@
             
         }
     </select>
+   
 
 
     @for(int i = 1; i <= ThemeCount; i++)
     {
-        <div class="div-checkbox" id="div-checkbox-@i" style="display:none" >
+        String n;
+        n = i == 1 ? "display:flex" : "display:none";
+        <div class="div-checkbox" id="div-checkbox-@i" style=@n >
             @{
                 int j = 0;
             }
@@ -45,7 +48,7 @@
                 j++;
                 <label>
 
-                <input type="checkbox" name="div-checkbox-@i-@j" value="@c.Id" />
+                <input type="checkbox" name="div-checkbox-values" value="@c.Id" />
                     @c.Text
                    
                 </label>
