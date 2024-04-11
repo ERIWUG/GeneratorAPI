@@ -5,19 +5,21 @@
 
 @{
     int QuestInidex = 1;
+    
+    
     var ThemeCount = Model.Themes.Count();
     var AnswerCount = Model.Answers.Count();
     ViewData["Title"] = "Home Page";
 }
-<head>
+
     <link rel="stylesheet" href="~/css/Index.css" />
     <script src="~/js/Index.js" asp-append-version="true"></script>
 
-</head>
+
 
 <form method="post" action="/Home/MyIndex" >
     <label>Вопрос:</label>
-    <select id="question-select" onchange="MyFunc1(Model.TempQuestAns.Where(c => c.QuestionID == QuestInidex).Select(c=>c.AnswerID).ToArray(),AnswerCount)" onload="MyFunc1(Model.TempQuestAns.Where(c => c.QuestionID == QuestInidex).Select(c=>c.AnswerID).ToArray(),AnswerCount)">
+    <select id="question-select" onchange="MyFunc1(@Model.TempQuestAns.Where(c => c.QuestionID == QuestInidex).Select(c=>c.AnswerID).ToArray(),@AnswerCount)" >
         @foreach (var p in Model.Questions)
         {
             <option value ="@p.Id">@p.Text</option>

@@ -7,7 +7,7 @@
 }
 
 function MyFunc1(a,b){
-     
+    console.log(a);
     document.getElementById("question-select-value").value = document.getElementById("question-select").value;
 
 
