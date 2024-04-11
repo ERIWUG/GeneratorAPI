@@ -32,9 +32,10 @@ namespace GeneratorAPI.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
-           
-            string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
+
+
+            // string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
+            string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Vitya;password=1234;TrustServerCertificate=True;";
             optionsBuilder.UseSqlServer(connection);
         }
 
@@ -59,7 +60,7 @@ namespace GeneratorAPI.Models
             modelBuilder.ApplyConfiguration(new AnswerConfiguration());
             modelBuilder.ApplyConfiguration(new ImageConfiguration());
             modelBuilder.ApplyConfiguration(new QuestionConfiguration());
-
+      //      modelBuilder.ApplyConfiguration(new ThemeConfiguration());
         }
 
 
