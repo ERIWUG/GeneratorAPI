@@ -4,7 +4,9 @@
 
 
 @{
+    int QuestInidex = 1;
     var ThemeCount = Model.Themes.Count();
+    var AnswerCount = Model.Answers.Count();
     ViewData["Title"] = "Home Page";
 }
 <head>
@@ -15,13 +17,13 @@
 
 <form method="post" action="/Home/MyIndex" >
     <label>Вопрос:</label>
-    <select id="question-select" onchange="MyFunc1()">
+    <select id="question-select" onchange="MyFunc1(Model.TempQuestAns.Where(c => c.QuestionID == QuestInidex).Select(c=>c.AnswerID).ToArray(),AnswerCount)" onload="MyFunc1(Model.TempQuestAns.Where(c => c.QuestionID == QuestInidex).Select(c=>c.AnswerID).ToArray(),AnswerCount)">
         @foreach (var p in Model.Questions)
         {
             <option value ="@p.Id">@p.Text</option>
         }
     </select>
-    <input id="question-select-value" type="hidden" name ="questionID" value="1" />
+    <input id="question-select-value" type="hidden" name ="questionID" value="@QuestInidex" />
 
     <label>Тема:</label>
     <select id="theme-select" onchange="MyFunc(@ThemeCount)">
@@ -36,14 +38,14 @@
 
     @for(int i = 1; i <= ThemeCount; i++)
     {
+        
         String n;
         n = i == 1 ? "display:flex" : "display:none";
         <div class="div-checkbox" id="div-checkbox-@i" style=@n >
             @foreach(var c in Model.Answers.Where(c=>c.ThemeEntity.Id==i))
             {
                 <label>
-
-                <input type="checkbox" name="div-checkbox-values" value="@c.Id" />
+                <input type="checkbox" id="div-checkbox-value-@c.Id" name="div-checkbox-values" value="@c.Id" />
                     @c.Text
                    
                 </label>
@@ -54,10 +56,8 @@
         </div>
     }
     <input type="submit" value="Подтвердить">
+    <input asp-action="Index" asp-controller="Home" formmethod="get"   type="submit" value="Сброс">
     
-</form>
-<form method="get" action="/Home/Index">
-    <input type="submit" value="Сброс">
 </form>
 
 
