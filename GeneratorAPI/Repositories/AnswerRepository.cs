@@ -46,7 +46,7 @@ namespace GeneratorAPI.Repositories
             var answerData = new AnswerEntity
             {
                 Text = text,
-                Theme = theme,
+                ThemeEntity = _dbContext.Themes.Where(c => c.Id == theme).ElementAt(0),
                 Par = par,
 
             };

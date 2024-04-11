@@ -39,13 +39,8 @@
         String n;
         n = i == 1 ? "display:flex" : "display:none";
         <div class="div-checkbox" id="div-checkbox-@i" style=@n >
-            @{
-                int j = 0;
-            }
-           
-            @foreach(var c in Model.Answers.Where(c=>c.Theme==i))
+            @foreach(var c in Model.Answers.Where(c=>c.ThemeEntity.Id==i))
             {
-                j++;
                 <label>
 
                 <input type="checkbox" name="div-checkbox-values" value="@c.Id" />
