@@ -1,5 +1,6 @@
 ﻿namespace GeneratorAPI.Models.Entities
 {
+    [Serializable]
     public class ThemeEntity
     {
         public int Id { get; set; }

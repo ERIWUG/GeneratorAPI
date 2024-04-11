@@ -2,6 +2,7 @@
 
 namespace GeneratorAPI.Models.Entities
 {
+    [Serializable]
     public class AnswerEntity
     {
         public int Id { get; set; }
