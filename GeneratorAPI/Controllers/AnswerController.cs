@@ -13,6 +13,8 @@ namespace GeneratorAPI.Controllers
         {
             _answerRepository = answerRepository;
         }
+
+
         [HttpGet("/api/Answer/Get-All")]
         public async Task<IActionResult> Get()
         {

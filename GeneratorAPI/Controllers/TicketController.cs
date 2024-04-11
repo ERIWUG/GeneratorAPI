@@ -8,6 +8,7 @@ namespace GeneratorAPI.Controllers
     [ApiController]
     public class TicketController : ControllerBase
     {
+        private readonly AppDbContext _appDbContext = new AppDbContext();
         
 
         [HttpGet("/api/Ticket/GetLinear/{amount}")]
@@ -20,6 +21,7 @@ namespace GeneratorAPI.Controllers
             return Ok(Generator.GenerateLinear(c, 5));
             
         }
+
 
 
     }
