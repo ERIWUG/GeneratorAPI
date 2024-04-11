@@ -23,6 +23,7 @@ string connection = builder.Configuration.GetConnectionString("DefaultConnection
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 builder.Services.AddTransient<QuestionRepository>();
 builder.Services.AddTransient<AnswerRepository>();
+builder.Services.AddTransient<ThemeRepository>();
 
 
 
@@ -31,9 +32,6 @@ var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
-
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

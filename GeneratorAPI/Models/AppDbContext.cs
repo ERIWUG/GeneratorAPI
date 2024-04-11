@@ -51,6 +51,8 @@ namespace GeneratorAPI.Models
 
         public DbSet<QuesToIm> TempQuestIm { get; set; }
 
+        public DbSet<ThemeEntity> Themes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
