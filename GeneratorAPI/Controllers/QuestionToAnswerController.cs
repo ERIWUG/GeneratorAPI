@@ -15,10 +15,17 @@ namespace GeneratorAPI.Controllers
         }
 
         [HttpGet("/api/QuesToAnswer/getAnswerIdFromQuestionId")]
-        public IActionResult GetAnswerIdFromQuestionId(int Id) {
-            var c = _quesToAnsRepository.GetAnswerFromQuestionId(Id);
-            if (c is null) return NoContent();
-            else return Ok(c);
+        public async Task<IActionResult> GetAnswerIdFromQuestionId(int Id)
+        {
+            var c = _quesToAnsRepository.GetAnswerFromQuestionId(Id).Result;
+            if (c is null)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return Ok(c);
+            }
         }
     }
 }
