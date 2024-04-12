@@ -1,6 +1,7 @@
 ﻿using GeneratorAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol;
 
 namespace GeneratorAPI.Controllers
 {
@@ -22,9 +23,17 @@ namespace GeneratorAPI.Controllers
             
         }
 
-        
+        [HttpGet("/api/Ticket/GetEnum/{amount}")]
 
 
+        public async Task<IActionResult> GetEnum(int id, AppDbContext db)
+        {
+            var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
+
+
+            return Ok(Generator.GenerateEnum(c, 5));
+
+        }
 
     }
 }

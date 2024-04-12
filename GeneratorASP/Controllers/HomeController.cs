@@ -14,13 +14,15 @@ namespace GeneratorASP.Controllers
     {
         public readonly AppDbContext db = new AppDbContext();
         private readonly QuestionRepository _questionRepository;
+        private readonly AnswerRepository _answerRepository;
         private readonly QuesToAnsRepository _quesToAnsRepository;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, QuestionRepository questionRepository, QuesToAnsRepository quesToAnsRepository)
+        public HomeController(ILogger<HomeController> logger, QuestionRepository questionRepository, QuesToAnsRepository quesToAnsRepository, AnswerRepository answerRepository)
         {
             _questionRepository = questionRepository;
             _quesToAnsRepository= quesToAnsRepository;
+            _answerRepository = answerRepository;
             _logger = logger;
         }
 
@@ -34,19 +36,21 @@ namespace GeneratorASP.Controllers
         public async Task<IActionResult> MyIndex()
         {
             int questionId = Int32.Parse(Request.Form["questionID"]);
+           List<AnswerEntity>allAnswers= await _answerRepository.Get();
+            List<int>allAnswersId= new List<int>();
+            foreach (AnswerEntity answer in allAnswers) { 
+                allAnswersId.Add(answer.Id);
+            }
              List<string> answersIdsStr=new List<string>();
               answersIdsStr = Request.Form["div-checkbox-values"].ToList();
             List<int> answersIds = new List<int>();
-        foreach(string IdStr in answersIdsStr)
+        foreach(string IdStr in answersIdsStr) 
                 answersIds.Add(Int32.Parse(IdStr));
-            AnswerEntity ans = db.Answers.Include(u => u.ThemeEntity)  // подгружаем данные по компаниям
-                    .ToList()[0];
-           // AnswerEntity ans= db.Answers.Find(1);
-
-           Console.WriteLine(ans.ThemeEntity.Id);
-           // await _questionRepository.AddAnswersForQuestion(questionId, answersIds); //в этом не хвносится тема
-
-           await _quesToAnsRepository.AddAnswersForQuestion(questionId, answersIds);//
+            /*  AnswerEntity ans = db.Answers.Include(u => u.ThemeEntity)  // подгружаем данные по компаниям
+                      .ToList()[0];*/
+            List<int> answersToDel = allAnswersId.Except(answersIds).ToList();
+            await _quesToAnsRepository.DelAnswersForQuestion(questionId, answersToDel);
+            await _quesToAnsRepository.AddAnswersForQuestion(questionId, answersIds);//
             return View();
         }
 

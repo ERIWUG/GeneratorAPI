@@ -20,7 +20,6 @@ namespace GeneratorAPI.Repositories
              return await _dbContext.Answers.AsNoTracking().ToListAsync();    
          }
 
-
         public async Task<int[]> GetIdByTheme(int id)
         {
            int[] c = _dbContext.Answers.Include(u => u.ThemeEntity).Where(c => c.ThemeEntity.Id == id).Select(c => c.Id).ToArray();
