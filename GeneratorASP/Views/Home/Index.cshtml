@@ -1,95 +1,9 @@
-﻿@using GeneratorAPI.Models;
-@model AppDbContext
-
+﻿
 
 
 @{
-    int QuestInidex = 1;
-    int[] mas = { 1, 2, 3, 4, 5, 6 };
-    var ThemeCount = Model.Themes.Count();
-    int[] ThemeIDs = Model.Themes.Select(c => c.Id).ToArray();
-    var AnswerCount = Model.Answers.Count();
+  
     ViewData["Title"] = "Home Page";
 }
 
-    <link rel="stylesheet" href="~/css/Index.css" />
-    <script src="~/js/Index.js" asp-append-version="true"></script>
-
-
-
-<form method="post" action="/Home/MyIndex" >
-    <lebel>
-        Тема Вопроса:
-    </lebel>
-
-    <select id="theme-select-question" onchange="GetQuestionByTheme(@Json.Serialize(ThemeIDs))">
-        @foreach (var p in Model.Themes)
-        {
-            <option value="@p.Id">@p.Name</option>
-
-        }
-    </select>
-    <label>Вопрос:</label>
-    @foreach(var i in ThemeIDs)
-    {
-        String n;
-        n = i == 1 ? "display:flex" : "display:none";
-        <div class="div-select-questions" id="div-select-questions-@i" style=@n>
-            <select id="question-select" onchange="GetCheckBoxCorrectAnswer(@AnswerCount)">
-                @foreach (var p in Model.Questions.Where(c=>c.ThemeEntity.Id==i))
-                {
-                    <option value="@p.Id">@p.Text</option>
-                }
-            </select>
-        <input id="question-select-value" type="hidden" name="questionID" value="@QuestInidex" />
-
-
-        </div>
-    }
-    
-
-
-
-    
-   
-
-    <label>Тема Ответа:</label>
-    <select id="theme-select-answer" onchange="GetCheckBoxByTheme(@Json.Serialize(ThemeIDs))">
-        @foreach (var p in Model.Themes)
-        {
-            <option value="@p.Id">@p.Name</option>
-            
-        }
-    </select>
-   
-
-
-    @foreach(var i in ThemeIDs)
-    {
-        
-        String n;
-        n = i == 1 ? "display:flex" : "display:none";
-        <div class="div-checkbox" id="div-checkbox-@i" style=@n >
-            @foreach(var c in Model.Answers.Where(c=>c.ThemeEntity.Id==i))
-            {
-                <label>
-                <input type="checkbox" id="div-checkbox-value-@c.Id" name="div-checkbox-values" value="@c.Id" />
-                    @c.Text
-                   
-                </label>
-                
-            }
-            
-
-        </div>
-    }
-    <input type="submit" value="Подтвердить">
-    <input asp-action="Index" asp-controller="Home" formmethod="get"   type="submit" value="Сброс">
-    
-</form>
-<script>
-    GetCheckBoxCorrectAnswer(@AnswerCount)
-</script>
-
-
-
+   <p><a asp-action="QTAindex" asp-controller="Home">redirect to QTA</a></p>

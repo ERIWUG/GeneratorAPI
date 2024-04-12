@@ -15,9 +15,9 @@ namespace GeneratorAPI.Repositories
             _dbContext = context;
         }
 
-         public async Task<List<AnswerEntity>> Get()
+         public  List<AnswerEntity> Get()
          {
-             return await _dbContext.Answers.AsNoTracking().ToListAsync();    
+             return  _dbContext.Answers.AsNoTracking().ToList();    
          }
 
         public async Task<int[]> GetIdByTheme(int id)

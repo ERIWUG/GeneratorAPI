@@ -29,14 +29,14 @@ namespace GeneratorASP.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(db);
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> MyIndex()
+        public RedirectResult MyIndex()
         {
             int questionId = Int32.Parse(Request.Form["questionID"]);
-           List<AnswerEntity>allAnswers= await _answerRepository.Get();
+           List<AnswerEntity>allAnswers= _answerRepository.Get();
             List<int>allAnswersId= new List<int>();
             foreach (AnswerEntity answer in allAnswers) { 
                 allAnswersId.Add(answer.Id);
@@ -49,11 +49,14 @@ namespace GeneratorASP.Controllers
             /*  AnswerEntity ans = db.Answers.Include(u => u.ThemeEntity)  // подгружаем данные по компаниям
                       .ToList()[0];*/
             List<int> answersToDel = allAnswersId.Except(answersIds).ToList();
-            await _quesToAnsRepository.DelAnswersForQuestion(questionId, answersToDel);
-            await _quesToAnsRepository.AddAnswersForQuestion(questionId, answersIds);//
-            return View();
+             _quesToAnsRepository.DelAnswersForQuestion(questionId, answersToDel);
+             _quesToAnsRepository.AddAnswersForQuestion(questionId, answersIds);//
+            return Redirect("/Home/QTAindex");
         }
-
+        public IActionResult QTAindex()
+        {
+            return View(db);
+        }
 
         public IActionResult Privacy()
         {
