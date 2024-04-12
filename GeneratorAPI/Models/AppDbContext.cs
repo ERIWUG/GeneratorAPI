@@ -46,11 +46,11 @@ namespace GeneratorAPI.Models
 
         public DbSet<AnswerEntity> Answers{ get; set;}
 
-        public DbSet<ImToAns> TempImtAns { get; set; }
+        public DbSet<ImToAns> ImagesToAnswers { get; set; }
 
-        public DbSet<QuesToAns> TempQuestAns { get; set; }
+        public DbSet<QuesToAns> QuestionsToAnswers { get; set; }
 
-        public DbSet<QuesToIm> TempQuestIm { get; set; }
+        public DbSet<QuesToIm> QuestionsToImages { get; set; }
 
         public DbSet<ThemeEntity> Themes { get; set; }
 

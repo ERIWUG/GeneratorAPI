@@ -18,6 +18,7 @@ namespace GeneratorAPI.Models.Entities
 
         public List<QuesToIm> QuestionToImage { get; set; } = [];
         public List<QuesToAns> QuestionToAnswer { get; set; } = [];
+        public ThemeEntity? ThemeEntity { get; set; }
 
     }
 }
