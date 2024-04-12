@@ -1,6 +1,7 @@
 ﻿using GeneratorAPI.Models;
 using GeneratorAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 
 namespace GeneratorAPI.Repositories
@@ -18,6 +19,13 @@ namespace GeneratorAPI.Repositories
          {
              return await _dbContext.Answers.AsNoTracking().ToListAsync();    
          }
+
+
+        public async Task<int[]> GetIdByTheme(int id)
+        {
+           int[] c = _dbContext.Answers.Include(u => u.ThemeEntity).Where(c => c.ThemeEntity.Id == id).Select(c => c.Id).ToArray();
+            return c;
+        }
         /*
          public async Task<List<QuestionEntity>> GetWithImages()
          {

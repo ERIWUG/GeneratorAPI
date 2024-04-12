@@ -30,5 +30,12 @@ namespace GeneratorAPI.Repositories
            
             await _dbContext.SaveChangesAsync();
         }
+
+
+
+        public async Task<int[] > GetAnswerFromQuestionId(int id)
+        {
+            return _dbContext.TempQuestAns.Where(c=>c.QuestionID==id).Select(c=>c.AnswerID).ToArray();
+        } 
     }
 }
