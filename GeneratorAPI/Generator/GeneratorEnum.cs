@@ -43,7 +43,8 @@ namespace GeneratorAPI
                 List<List<int>> listOfLists = new List<List<int>>();
                 foreach (int OneAnswer in Answers)
                 {
-                    List<int> newList = new List<int>(OneAnswer);
+                    List<int> newList = new List<int>();
+                    newList.Add(OneAnswer);
                     listOfLists.Add(newList);
                 }
                 ticket = new Ticket(mas[0].QuestionID, listOfLists, NowAmountAnswers, " ");
@@ -60,7 +61,8 @@ namespace GeneratorAPI
                 List<List<int>> listOfLists = new List<List<int>>();
                 foreach (int OneAnswer in Answers)
                 {
-                    List<int> newList = new List<int>(OneAnswer);
+                    List<int> newList = new List<int>();
+                    newList.Add(OneAnswer);
                     listOfLists.Add(newList);
                 }
                 ticket = new Ticket(mas[0].QuestionID, listOfLists, NowAmountAnswers + 1, " ");

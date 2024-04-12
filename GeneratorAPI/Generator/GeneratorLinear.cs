@@ -35,7 +35,8 @@ namespace GeneratorAPI
             List<List<int>> listOfLists = new List<List<int>>();
             foreach (int OneAnswer in Answers)
             {
-                List<int> newList = new List<int>(OneAnswer);
+                List<int> newList = new List<int>();
+                newList.Add(OneAnswer);
                 listOfLists.Add(newList);
             }
             return new Ticket(mas[0].QuestionID, listOfLists,0," ");
