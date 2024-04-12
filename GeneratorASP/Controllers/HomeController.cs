@@ -39,12 +39,9 @@ namespace GeneratorASP.Controllers
             List<int> answersIds = new List<int>();
         foreach(string IdStr in answersIdsStr)
                 answersIds.Add(Int32.Parse(IdStr));
-            AnswerEntity ans = db.Answers.Include(u => u.ThemeEntity)  // подгружаем данные по компаниям
-                    .ToList()[0];
-           // AnswerEntity ans= db.Answers.Find(1);
-
-           Console.WriteLine(ans.ThemeEntity.Id);
-           // await _questionRepository.AddAnswersForQuestion(questionId, answersIds); //в этом не хвносится тема
+          /*  AnswerEntity ans = db.Answers.Include(u => u.ThemeEntity)  // подгружаем данные по компаниям
+                    .ToList()[0];*/
+          
 
            await _quesToAnsRepository.AddAnswersForQuestion(questionId, answersIds);//
             return View();

@@ -25,6 +25,7 @@ namespace GeneratorAPI.Repositories
                     AnswerID = answerId,
                     ThemeAnswer =answer.ThemeEntity.Id
                 };
+
                 await _dbContext.AddAsync(quesToAns);
             }
            
