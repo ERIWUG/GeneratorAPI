@@ -7,6 +7,7 @@
     int QuestInidex = 1;
     int[] mas = { 1, 2, 3, 4, 5, 6 };
     var ThemeCount = Model.Themes.Count();
+    int[] ThemeIDs = Model.Themes.Select(c => c.Id).ToArray();
     var AnswerCount = Model.Answers.Count();
     ViewData["Title"] = "Home Page";
 }
@@ -17,17 +18,43 @@
 
 
 <form method="post" action="/Home/MyIndex" >
-    <label>Вопрос:</label>
-    <select id="question-select" onchange="Func(@AnswerCount)" onl>
-        @foreach (var p in Model.Questions)
+    <lebel>
+        Тема Вопроса:
+    </lebel>
+
+    <select id="theme-select-question" onchange="GetQuestionByTheme(@Json.Serialize(ThemeIDs))">
+        @foreach (var p in Model.Themes)
         {
-            <option value ="@p.Id">@p.Text</option>
+            <option value="@p.Id">@p.Name</option>
+
         }
     </select>
-    <input id="question-select-value" type="hidden" name ="questionID" value="@QuestInidex" />
 
-    <label>Тема:</label>
-    <select id="theme-select" onchange="MyFunc(@ThemeCount)">
+    @foreach(var i in ThemeIDs)
+    {
+        String n;
+        n = i == 1 ? "display:flex" : "display:none";
+        <div class="div-select-questions" id="div-select-questions-@i" style=@n>
+            <select id="question-select" onchange="GetCheckBoxCorrectAnswer(@AnswerCount)">
+                @foreach (var p in Model.Questions.Where(c=>c.ThemeEntity.Id==i))
+                {
+                    <option value="@p.Id">@p.Text</option>
+                }
+            </select>
+        <input id="question-select-value" type="hidden" name="questionID" value="@QuestInidex" />
+
+
+        </div>
+    }
+    
+
+
+
+    <label>Вопрос:</label>
+   
+
+    <label>Тема Ответа:</label>
+    <select id="theme-select-answer" onchange="GetCheckBoxByTheme(@Json.Serialize(ThemeIDs))">
         @foreach (var p in Model.Themes)
         {
             <option value="@p.Id">@p.Name</option>
@@ -37,7 +64,7 @@
    
 
 
-    @for(int i = 1; i <= ThemeCount; i++)
+    @foreach(var i in ThemeIDs)
     {
         
         String n;
@@ -61,7 +88,7 @@
     
 </form>
 <script>
-    Func(@AnswerCount);
+   
 </script>
 
 
