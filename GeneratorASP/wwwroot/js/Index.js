@@ -1,12 +1,13 @@
-﻿function MyFunc(a) {
-    for (let i = 1; i <= a; i++) {
+﻿function GetCheckBoxByTheme(a) {
+    alert(document.getElementById("theme-select-answer").value);
+    a.forEach((i) => {
         document.getElementById("div-checkbox-" + i).style.display = "none";
-    }
-    var x = document.getElementById("theme-select").value;
+    })
+    var x = document.getElementById("theme-select-answer").value;
     document.getElementById("div-checkbox-" + x).style.display = "flex";
 }
 
-function Func(b) {
+function GetCheckBoxCorrectAnswer(b) {
     document.getElementById("question-select-value").value = document.getElementById("question-select").value;
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
@@ -24,6 +25,16 @@ function Func(b) {
     xhr.send();
 
 }
+
+function GetQuestionByTheme(a) {
+   alert(a)
+    a.forEach((i)=>{
+        document.getElementById("div-select-questions-"+ i).style.display = "none";
+    })
+    var x = document.getElementById("theme-select-question").value;
+    document.getElementById("div-select-questions-" + x).style.display = "flex";
+}
+
 function contains(arr, elem) {
     return arr.indexOf(elem) != -1;
 }

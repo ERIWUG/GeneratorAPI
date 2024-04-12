@@ -56,6 +56,7 @@ namespace GeneratorAPI
             {
                 CorrectAnswerIndexes = new List<int>();
                 IncorrectAnswerIndexes = new List<int>();   
+                AllAnswersToQuestion= new List<int>();
             }
             CorrectAnswerIndexes.Clear();
             IncorrectAnswerIndexes.Clear();

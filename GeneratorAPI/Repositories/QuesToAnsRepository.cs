@@ -57,6 +57,12 @@ namespace GeneratorAPI.Repositories
         {
             var c= _dbContext.QuestionsToAnswers.Where(c => c.QuestionID == id).Select(c => c.AnswerID).ToArray();
             return c;
-        } 
+        }
+
+        public async Task<QuesToAns[]> GetById(int id)
+        {
+            var c =  _dbContext.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
+            return c;
+        }
     }
 }
