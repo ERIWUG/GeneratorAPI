@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /GeneratorASP/GeneratorASP.csproj
 /GeneratorASP
 /GeneratorAPI/appsettings.json
+/GeneratorAPI/Models/AppDbContext.cs
