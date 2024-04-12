@@ -35,7 +35,7 @@ namespace GeneratorAPI.Repositories
 
         public async Task<int[]> GetAnswerFromQuestionId(int id)
         {
-            var c= _dbContext.TempQuestAns.Where(c => c.QuestionID == id).Select(c => c.AnswerID).ToArray();
+            var c= _dbContext.QuestionsToAnswers.Where(c => c.QuestionID == id).Select(c => c.AnswerID).ToArray();
             return c;
         } 
     }

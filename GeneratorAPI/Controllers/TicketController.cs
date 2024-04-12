@@ -15,7 +15,7 @@ namespace GeneratorAPI.Controllers
 
         public async Task<IActionResult> GetLinear(int id,AppDbContext db)
         {
-            var c = db.TempQuestAns.Where(c => c.QuestionID == id).ToArray();
+            var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
 
 
             return Ok(Generator.GenerateLinear(c, 5));
