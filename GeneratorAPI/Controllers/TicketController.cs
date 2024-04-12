@@ -11,9 +11,9 @@ namespace GeneratorAPI.Controllers
         private readonly AppDbContext _appDbContext = new AppDbContext();
         
 
-        [HttpGet("/api/Ticket/GetLinear/{amount}")]
+        [HttpGet("/api/Ticket/GetLinear")]
 
-        public async Task<IActionResult> GetLinear(int id,AppDbContext db)
+        public async Task<IActionResult> GetLinear(int id,AppDbContext db,int amount)
         {
             var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
 
