@@ -33,7 +33,7 @@ namespace GeneratorASP.Controllers
         }
 
         [HttpPost]
-        public RedirectResult MyIndex()
+        public async Task <RedirectResult> MyIndex()
         {
             int questionId = Int32.Parse(Request.Form["questionID"]);
            List<AnswerEntity>allAnswers= _answerRepository.Get();
@@ -46,13 +46,13 @@ namespace GeneratorASP.Controllers
             List<int> answersIds = new List<int>();
         foreach(string IdStr in answersIdsStr) 
                 answersIds.Add(Int32.Parse(IdStr));
-            /*  AnswerEntity ans = db.Answers.Include(u => u.ThemeEntity)  // подгружаем данные по компаниям
-                      .ToList()[0];*/
             List<int> answersToDel = allAnswersId.Except(answersIds).ToList();
-             _quesToAnsRepository.DelAnswersForQuestion(questionId, answersToDel);
-             _quesToAnsRepository.AddAnswersForQuestion(questionId, answersIds);//
+              await _quesToAnsRepository.DelAnswersForQuestion(questionId, answersToDel);
+             await _quesToAnsRepository.AddAnswersForQuestion(questionId, answersIds);
             return Redirect("/Home/QTAindex");
+    
         }
+
         public IActionResult QTAindex()
         {
             return View(db);
