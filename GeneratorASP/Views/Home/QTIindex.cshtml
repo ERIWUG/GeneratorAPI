@@ -59,15 +59,14 @@
     <div class="rightSide">
         <label>Images:
         </label>
-
+        <div class="imageGroup">
         @foreach (var p in Model.Images)
         {
-            <div class="imageGroup">
-                <img src=@p.Href/>
+            <div class="imageDiv">
+                <img src=@p.Href width="400px" height="400px"/>
             </div>
         }
-
-
+        </div>
 
 
     </div>

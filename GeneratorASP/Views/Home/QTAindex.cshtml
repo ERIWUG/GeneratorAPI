@@ -17,9 +17,9 @@
 
 
 <form method="post" action="/Home/MyIndex">
-    <lebel>
+    <label>
         Тема Вопроса:
-    </lebel>
+    </label>
 
     <select id="theme-select-question" onchange="GetQuestionByTheme(@Json.Serialize(ThemeIDs))">
         @foreach (var p in Model.Themes)

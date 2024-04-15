@@ -58,6 +58,14 @@ namespace GeneratorASP.Controllers
             return View(db);
         }
 
+        public IActionResult QTIindex()
+        {
+            return View(db);
+        }
+
+
+
+
         public IActionResult Privacy()
         {
             return View();
