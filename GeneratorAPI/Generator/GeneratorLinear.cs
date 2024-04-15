@@ -13,12 +13,12 @@ namespace GeneratorAPI
     public static partial class Generator
     {
         /// <summary>
-        /// Method for generating Ticket with one correct and some incorrect answers
+        /// Method for generating TicketEntity with one correct and some incorrect answers
         /// </summary>
         /// <param name="mas">Data for generating</param>
-        /// <param name="ogr">Max amount of answers in one ticket</param>
-        /// <returns>One Ticket with one correct and some Incorrect Question</returns>
-        public static Ticket GenerateLinear(QuesToAns[] mas, int ogr)
+        /// <param name="ogr">Max amount of answers in one TicketEntity</param>
+        /// <returns>One TicketEntity with one correct and some Incorrect Question</returns>
+        public static RezultatEntity GenerateLinear(QuesToAns[] mas, int ogr)
         {
             ParseData(mas);
             int DeletingIndex = 0;
@@ -39,7 +39,7 @@ namespace GeneratorAPI
                 newList.Add(OneAnswer);
                 listOfLists.Add(newList);
             }
-            return new Ticket(mas[0].QuestionID, listOfLists,0," ");
+            return new RezultatEntity();
         }
     }
 }

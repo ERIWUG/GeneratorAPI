@@ -18,7 +18,7 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one ticket</param>
         /// <returns>One Ticket with one correct and some Incorrect Question</returns>
-        public static Ticket GenerateGroup(QuesToAns[] mas, int ogr)
+        public static RezultatEntity GenerateGroup(QuesToAns[] mas, int ogr)
         {
             List<int> BlockOfAnswers= new List<int>();
             List<int> CorrectAnswer = new List<int>();
@@ -99,7 +99,7 @@ namespace GeneratorAPI
             }
             int IndexOfCorrectAnswer = 0;
 
-            return new Ticket(mas[0].QuestionID, GroupOfAnswers, IndexOfCorrectAnswer, " ");
+            return new RezultatEntity();
         }
     }
 }

@@ -19,11 +19,11 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one ticket</param>
         /// <returns>One Ticket with one correct and some Incorrect Question</returns>
-        public static Ticket GenerateEnum(QuesToAns[] mas, int ogr)
+        public static RezultatEntity GenerateEnum(QuesToAns[] mas, int ogr)
         {
             ParseData(mas);
             Random k = new Random();
-            Ticket ticket;
+            RezultatEntity ticket;
             List<int> Answers = new List<int>();
             int allOrNo = k.Next(0, 3);
             int DeletingIndex = 0;
@@ -47,7 +47,7 @@ namespace GeneratorAPI
                     newList.Add(OneAnswer);
                     listOfLists.Add(newList);
                 }
-                ticket = new Ticket(mas[0].QuestionID, listOfLists, NowAmountAnswers, " ");
+                ticket = new RezultatEntity();
             }
             else //if "none of the above"
             {
@@ -65,7 +65,7 @@ namespace GeneratorAPI
                     newList.Add(OneAnswer);
                     listOfLists.Add(newList);
                 }
-                ticket = new Ticket(mas[0].QuestionID, listOfLists, NowAmountAnswers + 1, " ");
+                ticket = new RezultatEntity();
             }
 
             //ticket.AnswersID.Add(-1);//все перечисленое

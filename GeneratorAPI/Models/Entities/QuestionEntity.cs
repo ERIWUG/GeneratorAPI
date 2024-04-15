@@ -12,13 +12,14 @@ namespace GeneratorAPI.Models.Entities
 
         public List<ImageEntity> Images { get; set; } = [];
         public List<AnswerEntity> Answers { get; set; } = [];
+        public int? GeneratorID { get; set; }
 
-        public int? Theme {  get; set; }
-
+        public int? IdSet {  get; set; }
+        public int? IdGroup { get; set; }
 
         public List<QuesToIm> QuestionToImage { get; set; } = [];
         public List<QuesToAns> QuestionToAnswer { get; set; } = [];
-        public ThemeEntity? ThemeEntity { get; set; }
+        public ThemeQuestionEntity? Theme { get; set; }
 
     }
 }

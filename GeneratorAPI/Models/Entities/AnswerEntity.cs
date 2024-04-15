@@ -8,7 +8,9 @@ namespace GeneratorAPI.Models.Entities
         public int Id { get; set; }
         public string Text { get; set; } = String.Empty;
 
-        public decimal Par {  get; set; } = decimal.Zero;
+        public decimal Param {  get; set; } = decimal.Zero;
+
+        public decimal Probability { get; set; } = decimal.Zero;
 
         public List<QuestionEntity> Questions { get; set; } = [];
         public List<ImageEntity> Images { get; set; } = [];
@@ -16,7 +18,7 @@ namespace GeneratorAPI.Models.Entities
         public List<QuesToAns> QuestionToAnswer { get; set; } = [];
         public List<ImToAns> ImagesToAnswer { get; set; } = [];
 
-        public ThemeEntity? ThemeEntity { get; set; }
+        public ThemeAnswerEntity? Theme { get; set; }
 
     }
 }

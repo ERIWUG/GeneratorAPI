@@ -36,7 +36,7 @@ namespace GeneratorAPI.Models
 
         //    string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
        //     string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Vitya;password=1234;TrustServerCertificate=True;";
-            string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Sanya;password=123123;TrustServerCertificate=True;";
+            string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
             //string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
             optionsBuilder.UseSqlServer(connection);
         }
@@ -54,7 +54,9 @@ namespace GeneratorAPI.Models
 
         public DbSet<QuesToIm> QuestionsToImages { get; set; }
 
-        public DbSet<ThemeEntity> Themes { get; set; }
+        public DbSet<ThemeQuestionEntity> ThemeQuestions { get; set; }
+        public DbSet<ThemeAnswerEntity> ThemeAnswers { get; set; }
+        public DbSet<BlockOfAnswers> BlockOfAnswers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

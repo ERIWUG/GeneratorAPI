@@ -33,7 +33,7 @@ namespace GeneratorAPI.Repositories
 
         public async Task<List<QuestionEntity>> GetByTheme(int theme)
         {
-            return await _dbContext.Questions.AsNoTracking().Where(q => q.Theme == theme).ToListAsync();
+            return await _dbContext.Questions.AsNoTracking().Where(q => q.IdSet == theme).ToListAsync();
         }
         public async Task<List<QuestionEntity>> GetByPage(int page, int pageSize)
         {
@@ -56,8 +56,8 @@ namespace GeneratorAPI.Repositories
             QuestionEntity question = await GetById(questionId);
             foreach (int answerId in answersIds)
             {
-                AnswerEntity answer = await _answerRepository.GetById(answerId);
-                question.Answers.Add(answer);
+                //AnswerEntity answer = await _answerRepository.GetById(answerId);
+                //question.Answers.Add(answer);
             }
             _dbContext.Update(question);
              await _dbContext.SaveChangesAsync();

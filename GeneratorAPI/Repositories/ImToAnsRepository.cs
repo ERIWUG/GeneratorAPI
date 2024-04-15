@@ -19,14 +19,14 @@ namespace GeneratorAPI.Repositories
         {
             foreach (var answerId in answersIds)
             {
-                AnswerEntity answer = await _answerRepository.GetById(answerId);
-                ImToAns imToAns = new ImToAns
-                {
-                    ImageID = imageId,
-                    AnswerID = answerId,
-                    ThemeAnswer = answer.ThemeEntity.Id
-                };
-                await _dbContext.AddAsync(imToAns);
+                //AnswerEntity answer = await _answerRepository.GetById(answerId);
+                //ImToAns imToAns = new ImToAns
+                //{
+                //    ImageID = imageId,
+                //    AnswerID = answerId,
+                //    ThemeAnswer = answer.ThemeEntity.Id
+                //};
+                //await _dbContext.AddAsync(imToAns);
             }
 
             await _dbContext.SaveChangesAsync();

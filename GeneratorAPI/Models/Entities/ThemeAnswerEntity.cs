@@ -1,12 +1,10 @@
 ﻿namespace GeneratorAPI.Models.Entities
 {
-    [Serializable]
-    public class ThemeEntity
+    public class ThemeAnswerEntity
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } =String.Empty;
         public List<AnswerEntity> Answers { get; set; } = [];
 
-        public List<QuestionEntity> Questions { get; set; }
     }
 }

@@ -36,11 +36,11 @@ namespace GeneratorAPI
             AppDbContext db = new AppDbContext();
             AmountQuestionInAnswer = new Dictionary<int, int>();
            
-            foreach (var counts in db.Answers.GroupBy(x => x.ThemeEntity.Id)
-                      .Select(g => new { g.Key, Count = g.Count() }))
-            {
-                AmountQuestionInAnswer.Add(counts.Key,counts.Count);
-            }
+            //foreach (var counts in db.Answers.GroupBy(x => x.ThemeEntity.Id)
+            //          .Select(g => new { g.Key, Count = g.Count() }))
+            //{
+            //    AmountQuestionInAnswer.Add(counts.Key,counts.Count);
+            //}
 
 
         }

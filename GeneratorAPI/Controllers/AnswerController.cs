@@ -22,18 +22,6 @@ namespace GeneratorAPI.Controllers
             return Ok(answer);
         }
 
-        [HttpGet("/api/Answer/Get-Id-By-Theme")]
-        public async Task<IActionResult> GetIdByIndex(int id)
-        {
-            var c = await _answerRepository.GetIdByTheme(id);
-            if(c is null)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return Ok(c);
-            }
-        }
+       
     }
 }

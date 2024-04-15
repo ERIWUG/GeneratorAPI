@@ -20,11 +20,7 @@ namespace GeneratorAPI.Repositories
              return  _dbContext.Answers.AsNoTracking().ToList();    
          }
 
-        public async Task<int[]> GetIdByTheme(int id)
-        {
-           int[] c = _dbContext.Answers.Include(u => u.ThemeEntity).Where(c => c.ThemeEntity.Id == id).Select(c => c.Id).ToArray();
-            return c;
-        }
+       
         /*
          public async Task<List<QuestionEntity>> GetWithImages()
          {
@@ -50,8 +46,8 @@ namespace GeneratorAPI.Repositories
             var answerData = new AnswerEntity
             {
                 Text = text,
-                ThemeEntity = _dbContext.Themes.Where(c => c.Id == theme).ElementAt(0),
-                Par = par,
+                //ThemeEntity = _dbContext.Themes.Where(c => c.Id == theme).ElementAt(0),
+                //Par = par,
 
             };
             await _dbContext.AddAsync(answerData);
@@ -59,9 +55,9 @@ namespace GeneratorAPI.Repositories
         }
 
 
-        public async Task<AnswerEntity?> GetById(int id)
-        {
-            return await _dbContext.Answers.Include(u => u.ThemeEntity).AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
-        }
+        //public async Task<AnswerEntity?> GetById(int id)
+        //{
+        //    return await _dbContext.Answers.Include(u => u.ThemeEntity).AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+        //}
     }
 }
