@@ -29,6 +29,10 @@ namespace GeneratorAPI.Configurations
                     j.HasKey(t => new { t.AnswerID, t.ImageID });
                 }
                 );
+            builder
+                    .HasMany(c => c.Rezultat)
+                    .WithMany(c => c.Images);
+
         }
     }
 }

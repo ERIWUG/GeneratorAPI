@@ -21,5 +21,8 @@ namespace GeneratorAPI.Models.Entities
         public List<QuesToAns> QuestionToAnswer { get; set; } = [];
         public ThemeQuestionEntity? Theme { get; set; }
 
+
+        public List<RezultatEntity> Rezultat { get; set; } = [];
+
     }
 }

@@ -20,5 +20,7 @@ namespace GeneratorAPI.Models.Entities
 
         public ThemeAnswerEntity? Theme { get; set; }
 
+        public List<RezultatEntity> Rezultat { get; set; } = [];
+
     }
 }

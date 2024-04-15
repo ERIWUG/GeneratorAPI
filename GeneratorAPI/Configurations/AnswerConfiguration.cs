@@ -32,7 +32,9 @@ namespace GeneratorAPI.Configurations
                 }
                 );
 
-
+            builder
+                   .HasMany(c => c.Rezultat)
+                   .WithMany(c => c.Answers);
 
         }
     }

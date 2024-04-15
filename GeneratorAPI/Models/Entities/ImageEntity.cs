@@ -15,6 +15,6 @@ namespace GeneratorAPI.Models.Entities
         public List<ImToAns> ImagesToAnswers { get; set; } = [];
 
 
-
+        public List<RezultatEntity> Rezultat { get; set; } = [];
     }
 }
