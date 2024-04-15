@@ -1,0 +1,79 @@
+﻿@using GeneratorAPI.Models;
+@model AppDbContext
+
+@{
+    int QuestInidex = 1;
+    int[] mas = { 1, 2, 3, 4, 5, 6 };
+    var ThemeCount = Model.Themes.Count();
+    int[] ThemeIDs = Model.Themes.Select(c => c.Id).ToArray();
+    var AnswerCount = Model.Answers.Count();
+}
+
+@{
+    Layout = null;
+}
+
+
+<link rel="stylesheet" href="~/css/QTI.css" />
+<script src="~/js/Index.js" asp-append-version="true"></script>
+
+
+
+<form method="post" class="formClass" action="/Home/MyIndex">
+
+    <div class="leftSide">
+
+    <label>
+        Тема Вопроса:
+    </label>
+
+    <select id="theme-select-question" onchange="GetQuestionByTheme(@Json.Serialize(ThemeIDs))">
+        @foreach (var p in Model.Themes)
+        {
+            <option value="@p.Id">@p.Name</option>
+
+        }
+    </select>
+    <label>Вопрос:</label>
+    @foreach (var i in ThemeIDs)
+    {
+        String n;
+        n = i == 1 ? "display:flex" : "display:none";
+        <div class="div-select-questions" id="div-select-questions-@i" style=@n>
+            <select id="question-select" onchange="GetCheckBoxCorrectAnswer(@AnswerCount)">
+                @foreach (var p in Model.Questions.Where(c => c.ThemeEntity.Id == i))
+                {
+                    <option value="@p.Id">@p.Text</option>
+                }
+            </select>
+
+
+
+        </div>
+    }
+    <input id="question-select-value" type="hidden" name="questionID" value="@QuestInidex" />
+
+    </div>
+
+
+    <div class="rightSide">
+        <label>Images:
+        </label>
+
+        @foreach (var p in Model.Images)
+        {
+            <div class="imageGroup">
+                <img src=@p.Href/>
+            </div>
+        }
+
+
+
+
+    </div>
+
+
+
+
+
+</form>

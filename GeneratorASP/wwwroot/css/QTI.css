@@ -1,0 +1,20 @@
+﻿body {
+}
+
+
+.formClass{
+
+    display:flex;
+    width:100%;
+
+
+}
+.leftSide{
+    width:30%;
+}
+.rightSide{
+    width:70%;
+}
+.imageGroup{
+    display: flex;
+}
