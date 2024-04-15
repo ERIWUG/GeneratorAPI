@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using GeneratorAPI.Models;
 using GeneratorAPI.Models.Entities;
 using GeneratorAPI.Models.TempTable;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeneratorAPI
 {
@@ -18,13 +19,15 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one TicketEntity</param>
         /// <returns>One TicketEntity with one correct and some Incorrect Question</returns>
-        public static RezultatEntity GenerateLinear(QuesToAns[] mas, int ogr)
+        public static RezultatEntity GenerateLinear(QuesToAns[] mas, int minInt,int maxInt)
         {
+            AppDbContext db = new AppDbContext();
             ParseData(mas);
             int DeletingIndex = 0;
             Random k = new Random();
             List<int> Answers = new List<int>();
-            int NowAmountAnswers = k.Next(2, ogr);
+            int NowAmountAnswers = k.Next(minInt,maxInt);
+            int ForSeed = NowAmountAnswers;
             Answers.Add(CorrectAnswerIndexes[k.Next(CorrectAnswerIndexes.Count)]);
             while (NowAmountAnswers-- > 0)
             {
@@ -32,14 +35,19 @@ namespace GeneratorAPI
                 Answers.Add(IncorrectAnswerIndexes[DeletingIndex]);
                 IncorrectAnswerIndexes.RemoveAt(DeletingIndex);
             }
-            List<List<int>> listOfLists = new List<List<int>>();
-            foreach (int OneAnswer in Answers)
+            var t = new RezultatEntity();
+            t.Question = mas[0].Question;
+            t.Seed = $"{t.Question.IdGroup}-{t.Question.IdSet}-GL-QwPicNo-AnswPicNo-{ForSeed}-";
+            foreach (int i in Answers)
             {
-                List<int> newList = new List<int>();
-                newList.Add(OneAnswer);
-                listOfLists.Add(newList);
+                var c = db.Answers.Where(c => c.Id == i).First();
+                t.Seed += $"{c.Id}-";
+                t.Answers.Add(c);
+
             }
-            return new RezultatEntity();
+            t.Seed += "0";
+            t.CorrectAnswer = 0;
+            return t;
         }
     }
 }
