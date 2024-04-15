@@ -19,11 +19,11 @@ namespace GeneratorAPI.Controllers
             var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
 
 
-            return Ok(Generator.GenerateLinear(c, 5).ToJson());
+            return Ok(Generator.GenerateLinear(c, 3, 5).ToJson());
             
         }
 
-        [HttpGet("/api/Ticket/GetEnum/{amount}")]
+        [HttpGet("/api/Ticket/GetEnum")]
 
 
         public async Task<IActionResult> GetEnum(int id, AppDbContext db)
@@ -31,7 +31,7 @@ namespace GeneratorAPI.Controllers
             var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
 
 
-            return Ok(Generator.GenerateEnum(c, 5));
+            return Ok(Generator.GenerateEnum(c, 5).ToJson(0));
 
         }
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using GeneratorAPI.Models;
 using GeneratorAPI.Models.Entities;
 using GeneratorAPI.Models.TempTable;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeneratorAPI
 {
@@ -21,56 +22,90 @@ namespace GeneratorAPI
         /// <returns>One Ticket with one correct and some Incorrect Question</returns>
         public static RezultatEntity GenerateEnum(QuesToAns[] mas, int ogr)
         {
+            AppDbContext db = new AppDbContext();
             ParseData(mas);
             Random k = new Random();
-            RezultatEntity ticket;
             List<int> Answers = new List<int>();
             int allOrNo = k.Next(0, 3);
             int DeletingIndex = 0;
+            int NowAmountAnswers = k.Next(2, ogr - 2);
+            int ForSeed = NowAmountAnswers;
+            var t = new RezultatEntity();
+            t.Question = mas[0].Question;
+            t.Seed = $"{t.Question.IdGroup}-{t.Question.IdSet}-GL-QwPicNo-AnswPicNo-{ForSeed}-";
             if (allOrNo == 0)
             {
-                ticket = GenerateLinear(mas, ogr - 2);
+                Answers.Add(CorrectAnswerIndexes[k.Next(CorrectAnswerIndexes.Count)]);
+                while (NowAmountAnswers-- > 2)
+                {
+                    DeletingIndex = k.Next(IncorrectAnswerIndexes.Count);
+                    Answers.Add(IncorrectAnswerIndexes[DeletingIndex]);
+                    IncorrectAnswerIndexes.RemoveAt(DeletingIndex);
+                }
+                foreach (int i in Answers)
+                {
+                    var c = db.Answers.Where(c => c.Id == i).First();
+                    t.Seed += $"{c.Id}-";
+                    t.Answers.Add(c);
+
+                }
+                t.Seed += "0";
+                t.CorrectAnswer = 0;
+                t.Answers.Add(new AnswerEntity());
+                t.Answers.Add(new AnswerEntity());
+          /**      t.Seed += $"{c.Id}-";
+                t.Seed += $"{c.Id}-";*/
+                t.Seed += "0";
+                t.CorrectAnswer = 0;
             }
             else if (allOrNo == 1)//if "all of the above"
             {
-                int NowAmountAnswers = k.Next(2, ogr - 2);
-                while (NowAmountAnswers-- > 0)
-                {
-                    DeletingIndex = k.Next(CorrectAnswerIndexes.Count);
-                    Answers.Add(CorrectAnswerIndexes[DeletingIndex]);
-                    CorrectAnswerIndexes.RemoveAt(DeletingIndex);
-                }
-                List<List<int>> listOfLists = new List<List<int>>();
-                foreach (int OneAnswer in Answers)
-                {
-                    List<int> newList = new List<int>();
-                    newList.Add(OneAnswer);
-                    listOfLists.Add(newList);
-                }
-                ticket = new RezultatEntity();
-            }
-            else //if "none of the above"
-            {
-                int NowAmountAnswers = k.Next(2, ogr - 2);
+
                 while (NowAmountAnswers-- > 0)
                 {
                     DeletingIndex = k.Next(IncorrectAnswerIndexes.Count);
                     Answers.Add(IncorrectAnswerIndexes[DeletingIndex]);
                     IncorrectAnswerIndexes.RemoveAt(DeletingIndex);
                 }
-                List<List<int>> listOfLists = new List<List<int>>();
-                foreach (int OneAnswer in Answers)
+                foreach (int i in Answers)
                 {
-                    List<int> newList = new List<int>();
-                    newList.Add(OneAnswer);
-                    listOfLists.Add(newList);
-                }
-                ticket = new RezultatEntity();
-            }
+                    var c = db.Answers.Where(c => c.Id == i).First();
+                    t.Seed += $"{c.Id}-";
+                    t.Answers.Add(c);
 
-            //ticket.AnswersID.Add(-1);//все перечисленое
-            //ticket.AnswersID.Add(-2);//ничего из перечисленного
-            return ticket;
+                }
+                t.Answers.Add(new AnswerEntity());
+                t.Answers.Add(new AnswerEntity());
+            /*    t.Seed += $"{c.Id}-";
+                t.Seed += $"{c.Id}-";*/
+                t.Seed += ForSeed-2;
+                t.CorrectAnswer = ForSeed-2;
+            }
+            else //if "none of the above"
+            {
+
+                while (NowAmountAnswers-- > 0)
+                {
+                    DeletingIndex = k.Next(IncorrectAnswerIndexes.Count);
+                    Answers.Add(IncorrectAnswerIndexes[DeletingIndex]);
+                    IncorrectAnswerIndexes.RemoveAt(DeletingIndex);
+                }
+                foreach (int i in Answers)
+                {
+                    var c = db.Answers.Where(c => c.Id == i).First();
+                    t.Seed += $"{c.Id}-";
+                    t.Answers.Add(c);
+
+                }
+                
+                t.Answers.Add(new AnswerEntity());
+                t.Answers.Add(new AnswerEntity());
+          /*      t.Seed += $"{c.Id}-";
+                t.Seed += $"{c.Id}-";*/
+                t.Seed += ForSeed-1;
+                t.CorrectAnswer = ForSeed - 1;
+            }
+            return t;
         }
     }
 }

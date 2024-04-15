@@ -12,7 +12,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(conn
 builder.Services.AddTransient<QuestionRepository>();
 builder.Services.AddTransient<QuesToAnsRepository>();
 builder.Services.AddTransient<AnswerRepository>();
-builder.Services.AddTransient<ThemeRepository>();
+//builder.Services.AddTransient<ThemeRepository>();
 
 var app = builder.Build();
 
