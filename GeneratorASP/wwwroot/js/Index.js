@@ -1,5 +1,4 @@
-﻿function GetCheckBoxByTheme(a) {
-    alert(document.getElementById("theme-select-answer").value);
+﻿function GetCheckBoxByTheme(a) { 
     a.forEach((i) => {
         document.getElementById("div-checkbox-" + i).style.display = "none";
     })
@@ -13,7 +12,6 @@ function GetCheckBoxCorrectAnswer(b) {
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var c = this.responseText.slice(1, this.responseText.length - 1).split(',').map(Number);
-            alert(c);
             for(let i = 1; i <= b; i++) {
                 document.getElementById("div-checkbox-value-" + i).checked = contains(c, Number(document.getElementById("div-checkbox-value-" + i).value));
             }
@@ -27,7 +25,6 @@ function GetCheckBoxCorrectAnswer(b) {
 }
 
 function GetQuestionByTheme(a) {
-   alert(a)
     a.forEach((i)=>{
         document.getElementById("div-select-questions-"+ i).style.display = "none";
     })
@@ -38,3 +35,12 @@ function GetQuestionByTheme(a) {
 function contains(arr, elem) {
     return arr.indexOf(elem) != -1;
 }
+
+function Func() {
+
+    document.getElementById("imagesGroup").addEventListener('click', e => {
+        e.target.style = (e.target.getAttribute("style") == "" ? "filter:blur(5px)" : "");
+        e.target.getAttribute("id")
+    });
+}
+

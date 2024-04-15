@@ -52,6 +52,7 @@
         </div>
     }
     <input id="question-select-value" type="hidden" name="questionID" value="@QuestInidex" />
+    <input type="submit" value="Подтвердить">
 
     </div>
 
@@ -59,18 +60,25 @@
     <div class="rightSide">
         <label>Images:
         </label>
-        <div class="imageGroup">
+        <div class="imageGroup" id="imagesGroup">
+            @{
+                int ff = 0;
+            }
         @foreach (var p in Model.Images)
         {
-            <div class="imageDiv">
-                <img src=@p.Href width="400px" height="400px"/>
+            
+            <div class="imageDiv" >
+                <img src=@p.Href id="Image-@ff" style="" width="400px" height="400px"/>
+                <input type="hidden" name="Values-image" id="Value-Image-@ff" value="true"/>
             </div>
         }
         </div>
 
 
     </div>
-
+    <script>
+        Func()
+    </script>
 
 
 
