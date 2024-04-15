@@ -4,6 +4,7 @@
 
 
 @{
+    Layout = null;
     int QuestInidex = 1;
     int[] mas = { 1, 2, 3, 4, 5, 6 };
     var ThemeCount = Model.Themes.Count();
@@ -15,8 +16,11 @@
 <script src="~/js/Index.js" asp-append-version="true"></script>
 
 
-
 <form method="post" action="/Home/MyIndex">
+    <header>
+
+    </header>
+    <input type="button" value="Очистить">
     <label>
         Тема Вопроса:
     </label>
@@ -29,6 +33,7 @@
         }
     </select>
     <label>Вопрос:</label>
+    
     @foreach (var i in ThemeIDs)
     {
         String n;
