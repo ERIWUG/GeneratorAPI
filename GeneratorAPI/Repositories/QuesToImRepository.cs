@@ -23,8 +23,7 @@ namespace GeneratorAPI.Repositories
                 QuesToIm quesToIm = new QuesToIm
                 {
                     QuestionID = questionId,
-                    ImageID= imageId,
-                  //  ThemeAnswer = answer.ThemeEntity.Id
+                    ImageID= imageId,    
                 };
                 await _dbContext.AddAsync(quesToIm);
             }

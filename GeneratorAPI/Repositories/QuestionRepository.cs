@@ -56,8 +56,8 @@ namespace GeneratorAPI.Repositories
             QuestionEntity question = await GetById(questionId);
             foreach (int answerId in answersIds)
             {
-                //AnswerEntity answer = await _answerRepository.GetById(answerId);
-                //question.Answers.Add(answer);
+                AnswerEntity answer = await _answerRepository.GetById(answerId);
+                question.Answers.Add(answer);
             }
             _dbContext.Update(question);
              await _dbContext.SaveChangesAsync();
