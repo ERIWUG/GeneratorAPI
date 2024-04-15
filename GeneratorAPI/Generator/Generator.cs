@@ -25,10 +25,10 @@ namespace GeneratorAPI
     public static partial class Generator
     {
 
-        private static Dictionary<int, int>? AmountQuestionInAnswer = null;
-        private static List<int>? CorrectAnswerIndexes = null;
-        private static List<int>? IncorrectAnswerIndexes = null;
-        private static List<int>? AllAnswersToQuestion=null;   
+        private static Dictionary<int, int> AmountQuestionInAnswer = null;
+        private static List<int> CorrectAnswerIndexes = null;
+        private static List<int> IncorrectAnswerIndexes = null;
+        private static List<int> AllAnswersToQuestion=null;   
 
 
         private static void UpdateDictionary()

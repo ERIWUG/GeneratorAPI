@@ -8,7 +8,7 @@ namespace GeneratorAPI.Models.TempTable
         public ImageEntity Image { get; set; }
 
         public int AnswerID { get; set; }
-        public AnswerEntity? Answer { get; set; }
+        public AnswerEntity Answer { get; set; }
 
         public int ThemeAnswer { get; set; }
     }

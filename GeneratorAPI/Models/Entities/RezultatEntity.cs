@@ -5,7 +5,7 @@ namespace GeneratorAPI.Models.Entities
     public class RezultatEntity
     {
         public int Id { get; set; }
-        public QuestionEntity? Question { get; set; }
+        public QuestionEntity Question { get; set; }
         public List<ImageEntity> Images { get; set; } = [];
 
         public List<AnswerEntity> Answers { get; set; } = [];

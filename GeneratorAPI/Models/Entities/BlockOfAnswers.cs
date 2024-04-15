@@ -8,7 +8,7 @@ namespace GeneratorAPI.Models.Entities
 
         public int[] Ints { get; set; } = [];
 
-        public RezultatEntity? Ticket { get; set; }
+        public RezultatEntity Ticket { get; set; }
 
     }
 }
