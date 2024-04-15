@@ -21,7 +21,7 @@ namespace GeneratorAPI.Repositories
          }
 
        
-        /*
+        
          public async Task<List<QuestionEntity>> GetWithImages()
          {
              return await _dbContext.Questions.AsNoTracking().Include(q=>q.Images).ToListAsync();
@@ -40,14 +40,14 @@ namespace GeneratorAPI.Repositories
          public async Task<List<QuestionEntity>> GetByPage(int page, int pageSize)
          {
              return await _dbContext.Questions.AsNoTracking().Skip((page-1)*pageSize).Take(pageSize).ToListAsync();
-         }*/
+         }
         public async Task Add(string text, int theme, decimal par)
         {
             var answerData = new AnswerEntity
             {
                 Text = text,
-                //ThemeEntity = _dbContext.Themes.Where(c => c.Id == theme).ElementAt(0),
-                //Par = par,
+                Theme = _dbContext.ThemeAnswers.Where(c => c.Id == theme).ElementAt(0),
+               Probability = par,
 
             };
             await _dbContext.AddAsync(answerData);
@@ -55,9 +55,9 @@ namespace GeneratorAPI.Repositories
         }
 
 
-        //public async Task<AnswerEntity?> GetById(int id)
-        //{
-        //    return await _dbContext.Answers.Include(u => u.ThemeEntity).AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
-        //}
+        public async Task<AnswerEntity?> GetById(int id)
+        {
+            return await _dbContext.Answers.Include(u => u.Theme).AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+        }
     }
 }
