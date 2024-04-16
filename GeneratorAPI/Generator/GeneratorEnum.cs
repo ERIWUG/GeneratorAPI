@@ -20,7 +20,7 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one ticket</param>
         /// <returns>One Ticket with one correct and some Incorrect Question</returns>
-        public static RezultatEntity GenerateEnum(QuesToAns[] mas, int ogr)
+        public static RezultatEntity GenerateEnum(QuesToAns[] mas, int minInt, int maxInt)
         {
             AppDbContext db = new AppDbContext();
             ParseData(mas);
@@ -28,7 +28,8 @@ namespace GeneratorAPI
             List<int> Answers = new List<int>();
             int allOrNo = k.Next(0, 3);
             int DeletingIndex = 0;
-            int NowAmountAnswers = k.Next(2, ogr - 2);
+            if (minInt < 4) minInt = 4;
+            int NowAmountAnswers = k.Next(minInt-2, maxInt - 2);
             int ForSeed = NowAmountAnswers;
             var t = new RezultatEntity();
             t.Question = mas[0].Question;
@@ -49,8 +50,6 @@ namespace GeneratorAPI
                     t.Answers.Add(c);
 
                 }
-                t.Seed += "0";
-                t.CorrectAnswer = 0;
                 t.Answers.Add(new AnswerEntity());
                 t.Answers.Add(new AnswerEntity());
           /**      t.Seed += $"{c.Id}-";
