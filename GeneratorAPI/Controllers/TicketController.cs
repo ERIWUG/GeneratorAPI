@@ -84,25 +84,25 @@ namespace GeneratorAPI.Controllers
                     {
                         if (words[i].Trim().StartsWith('['))//ограничение на число вариантов ответа
                         {
-                            string ogr = words[i].Trim();
+                            string ogr = words[i].Trim().Remove('[').Remove(']');
                             if (ogr.Length==0||ogr==" "||ogr=="0")//если ограничения не заданы, то берем по умолчанию
                             {
                             }
-                            else if (ogr.Contains(","))//если задан минимальный и максимальный предел
+                            else if (ogr.Contains("-"))//если задан минимальный и максимальный предел
                             {
-                                string[]minMax=ogr.Remove('[').Remove(']').Split(",");
+                                string[]minMax=ogr.Split(",");
                                 min = int.Parse(minMax[0].Trim()); 
                                 max = int.Parse(minMax[1].Trim());
                             }
                             else//если задан только максимальный предел
                             {
-                               max = int.Parse(ogr.Remove('[').Remove(']'));
+                               max = int.Parse(ogr);
                             }
                         }
                         else 
                             if (words[i].Trim().StartsWith('{'))//список вариантов ответа
                         {
-                            string[] masAns = words[i].Remove('[').Remove(']').Split(',');
+                            string[] masAns = words[i].Remove('{').Remove('}').Split(',');
                             answersIds = new int[masAns.Length];
                             for (int  j=0; j<masAns.Length; j++)
                                 answersIds[j] = int.Parse(masAns[j].Trim());
