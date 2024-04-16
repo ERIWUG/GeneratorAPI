@@ -84,13 +84,13 @@ namespace GeneratorAPI.Controllers
                     {
                         if (words[i].Trim().StartsWith('['))//ограничение на число вариантов ответа
                         {
-                            string ogr = words[i].Trim().Remove('[').Remove(']');
+                            string ogr = words[i].Trim(new Char[] { ' ', '[', ']' });
                             if (ogr.Length==0||ogr==" "||ogr=="0")//если ограничения не заданы, то берем по умолчанию
                             {
                             }
-                            else if (ogr.Contains("-"))//если задан минимальный и максимальный предел
+                            else if (ogr.Contains('-'))//если задан минимальный и максимальный предел
                             {
-                                string[]minMax=ogr.Split(",");
+                                string[]minMax=ogr.Split("-");
                                 min = int.Parse(minMax[0].Trim()); 
                                 max = int.Parse(minMax[1].Trim());
                             }
@@ -102,7 +102,8 @@ namespace GeneratorAPI.Controllers
                         else 
                             if (words[i].Trim().StartsWith('{'))//список вариантов ответа
                         {
-                            string[] masAns = words[i].Remove('{').Remove('}').Split(',');
+                            string[] masAns = words[i].Trim(new Char[] { ' ', '{', '}' }).Split(',');
+
                             answersIds = new int[masAns.Length];
                             for (int  j=0; j<masAns.Length; j++)
                                 answersIds[j] = int.Parse(masAns[j].Trim());
@@ -125,7 +126,9 @@ namespace GeneratorAPI.Controllers
                         else 
                             if (!Qid)//если не задан id вопроса, получаем idSet и idSetGroup 
                         {
-                            string[] ids = words[i].Remove('[').Remove(']').Split(',');
+                            string[] ids = words[i].Split(',');
+
+
                             idSet = int.Parse(ids[0].Trim()); 
                             idSetGroup = int.Parse(ids[1].Trim());
                         }
@@ -167,10 +170,11 @@ namespace GeneratorAPI.Controllers
 
             }
             Console.WriteLine(generatorType + " " + questionId + " " + idSet + " " + idSetGroup + " " + min + " " + max  + " " + O + " " + YN + " " + X2 + " "+ALL+" "+Qid);           
-            QuesToAns[] mas;
-            if (Qid) mas = null; //questionId???????;//если задан вопрос, то только его взять
-            else if (answersIds.Length!=0) mas = null;//если задан список гребаных вариантов ответа
-            else mas = null;//get по idSet
+         //   QuesToAns[] mas;
+        //    if (Qid) mas = null; //questionId???????;//если задан вопрос, то только его взять
+         //   else if (answersIds.Length!=0) mas = null;//если задан список  вариантов ответа
+        //    else mas = null;//get по idSet
+
          /*   switch (generatorType)
             {
                 
