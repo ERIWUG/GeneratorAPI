@@ -1,5 +1,6 @@
 ﻿using GeneratorAPI.Models;
 using GeneratorAPI.Models.Entities;
+using GeneratorAPI.Models.TempTable;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -45,14 +46,16 @@ namespace GeneratorAPI.Controllers
             string[] words = str.Split(';');
             int count = words.Length;
             string generatorType;
-            int questionId;
-            int idSet;
-            int idSetGroup;
+            int questionId=0;
+            int idSet=0;
+            int idSetGroup=0;
             int min=3;
             int max=5;
-            int[] answersIds;
+            int[] answersIds=new int[0];
             bool O=false, YN = false, X2 = false, ALL = false;
             bool Qid=false;
+            int qwPic, ansPic;
+
             switch (count)
             {
                 case 0:
@@ -60,7 +63,7 @@ namespace GeneratorAPI.Controllers
                     throw new ArgumentOutOfRangeException();
                     break;
                 case 2:
-                    generatorType = words[0];
+                    generatorType = words[0].Trim();
                     try
                     {
                         questionId = int.Parse(words[1].Trim());
@@ -87,22 +90,22 @@ namespace GeneratorAPI.Controllers
                             }
                             else if (ogr.Contains(","))//если задан минимальный и максимальный предел
                             {
-                                string[]minMax=ogr.Split(",");
+                                string[]minMax=ogr.Remove('[').Remove(']').Split(",");
                                 min = int.Parse(minMax[0].Trim()); 
                                 max = int.Parse(minMax[1].Trim());
                             }
                             else//если задан только максимальный предел
                             {
-                               max = int.Parse(ogr);
+                               max = int.Parse(ogr.Remove('[').Remove(']'));
                             }
                         }
                         else 
                             if (words[i].Trim().StartsWith('{'))//список вариантов ответа
                         {
-                            string[] mas = words[i].Split(',');
-                            answersIds = new int[mas.Length];
-                            for (int  j=0; j<mas.Length; j++)
-                                answersIds[j] = int.Parse(mas[j].Trim());
+                            string[] masAns = words[i].Remove('[').Remove(']').Split(',');
+                            answersIds = new int[masAns.Length];
+                            for (int  j=0; j<masAns.Length; j++)
+                                answersIds[j] = int.Parse(masAns[j].Trim());
                         }
                         else
                             if (words[i].Trim().StartsWith('('))//флаги: O, X2, ALL, YN
@@ -122,21 +125,62 @@ namespace GeneratorAPI.Controllers
                         else 
                             if (!Qid)//если не задан id вопроса, получаем idSet и idSetGroup 
                         {
-                            string[] ids=words[i].Split(',');
+                            string[] ids = words[i].Remove('[').Remove(']').Split(',');
                             idSet = int.Parse(ids[0].Trim()); 
                             idSetGroup = int.Parse(ids[1].Trim());
                         }
                         else
                         if (words[i].EndsWith('Y')|| words[i].EndsWith('N')|| words[i].EndsWith('R'))
                         {
-
+                            string[] pics = words[i].Split(',');
+                            switch (pics[0].Trim()[5])//последний символ строки qwPic
+                            {
+                                case 'Y':
+                                    qwPic = 2;
+                                    break;
+                                case 'N':
+                                    qwPic = 1;
+                                    break;
+                                case 'R':
+                                    qwPic = 0;
+                                    break;
+                            }
+                            switch (pics[1].Trim()[6])//последний символ строки ansPic
+                            {
+                                case 'Y':
+                                    ansPic = 2;
+                                    break;
+                                case 'N':
+                                    ansPic = 1;
+                                    break;
+                                case 'R':
+                                    ansPic = 0;
+                                    break;
+                            }
+                        }
+                        else//неверная строка
+                        {
+                            throw new ArgumentOutOfRangeException();
                         }
                     }
                     break;
 
             }
-            
+            Console.WriteLine(generatorType + " " + questionId + " " + idSet + " " + idSetGroup + " " + min + " " + max  + " " + O + " " + YN + " " + X2 + " "+ALL+" "+Qid);           
+            QuesToAns[] mas;
+            if (Qid) mas = null; //questionId???????;//если задан вопрос, то только его взять
+            else if (answersIds.Length!=0) mas = null;//если задан список гребаных вариантов ответа
+            else mas = null;//get по idSet
+         /*   switch (generatorType)
+            {
+                
+                case "Combi":
+                    if (X2) return Ok(Generator.GenerateGroup(null, max));
+                    if (ALL) return Ok(Generator.GenerateEnum(null, min, max));
+                    return Ok(Generator.GenerateEnum(null, min, max));
+                    break;
 
+            }*/
             return null;
         }
 
