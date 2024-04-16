@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol;
+using System.Text.RegularExpressions;
 
 namespace GeneratorAPI.Controllers
 {
@@ -162,10 +163,10 @@ namespace GeneratorAPI.Controllers
 
             }
             Console.WriteLine(generatorType + " " + questionId + " " + idSet + " " + idSetGroup + " " + min + " " + max  + " " + O + " " + YN + " " + X2 + " "+ALL+" "+Qid);           
-            QuesToAns[] mas;
-            if (Qid) mas = null; //questionId???????;//если задан вопрос, то только его взять
-            else if (answersIds.Length!=0) mas = null;//если задан список  вариантов ответа
-            else mas = null;//get по idSet
+         //   QuesToAns[] mas;
+        //    if (Qid) mas = null; //questionId???????;//если задан вопрос, то только его взять
+         //   else if (answersIds.Length!=0) mas = null;//если задан список  вариантов ответа
+        //    else mas = null;//get по idSet
          /*   switch (generatorType)
             {
                 
