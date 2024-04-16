@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using GeneratorAPI.Models;
 using GeneratorAPI.Models.Entities;
 using GeneratorAPI.Models.TempTable;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeneratorAPI
 {
@@ -18,7 +19,7 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one ticket</param>
         /// <returns>One Ticket with one correct and some Incorrect Question</returns>
-        public static RezultatEntity GenerateGroup(QuesToAns[] mas, int ogr)
+        public static RezultatEntity GenerateGroup(QuesToAns[] mas, int minInt, int maxInt)
         {
             List<int> BlockOfAnswers= new List<int>();
             List<int> CorrectAnswer = new List<int>();
@@ -53,13 +54,17 @@ namespace GeneratorAPI
                 return randomElements;
             }
 
+            
+            AppDbContext db = new AppDbContext();
+            var t = new RezultatEntity();
 
-
+            //parse
             ParseData(mas);
             
 
-            int AmountOfAnswersWithQuestion = random.Next(2, ogr);
+            int AmountOfAnswersWithQuestion = random.Next(minInt, maxInt);
 
+            //generate block of answers and correct answer
             while (AmountOfAnswersWithQuestion-- > 0)
             {
 
@@ -76,7 +81,6 @@ namespace GeneratorAPI
 
             if (CorrectAnswer.Count == 0)
             {
-                
                 //CorrectAnswer.Add();
             }
 
@@ -86,6 +90,8 @@ namespace GeneratorAPI
             {
                 maxvalue = 4;
             }
+
+            //generate random answers to questions from block of answers
             int NumberOfAnswers = random.Next(minvalue, maxvalue);
             GroupOfAnswers.Add(CorrectAnswer);
             while (GroupOfAnswers.Count < NumberOfAnswers)
@@ -98,8 +104,9 @@ namespace GeneratorAPI
                 }
             }
             int IndexOfCorrectAnswer = 0;
+            t.Question = mas[0].Question;
 
-            return new RezultatEntity();
+            return t;
         }
     }
 }
