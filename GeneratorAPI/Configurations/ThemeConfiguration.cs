@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GeneratorAPI.Configurations
 {
-    public class ThemeConfiguration : IEntityTypeConfiguration<ThemeQuestionEntity>
+    public class ThemeConfiguration : IEntityTypeConfiguration<IdSetGroupEntity>
     {
-        public void Configure(EntityTypeBuilder<ThemeQuestionEntity> builder)
+        public void Configure(EntityTypeBuilder<IdSetGroupEntity> builder)
         {
             builder.HasKey(c => c.Id);
             builder.Property(c => c.Id).ValueGeneratedOnAdd();

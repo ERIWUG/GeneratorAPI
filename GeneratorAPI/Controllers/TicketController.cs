@@ -19,7 +19,7 @@ namespace GeneratorAPI.Controllers
             var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
 
 
-            return Ok(Generator.GenerateLinear(c, 3, 5).ToJson());
+            return Ok(Generator.GenerateX2(c, 3, 5).ToJson());
             
         }
 

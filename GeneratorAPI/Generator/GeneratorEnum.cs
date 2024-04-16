@@ -32,7 +32,7 @@ namespace GeneratorAPI
             int ForSeed = NowAmountAnswers;
             var t = new RezultatEntity();
             t.Question = mas[0].Question;
-            t.Seed = $"{t.Question.IdGroup}-{t.Question.IdSet}-GL-QwPicNo-AnswPicNo-{ForSeed}-";
+            t.Seed = $"{t.Question.Id }-{t.Question.IdSet}-GL-QwPicNo-AnswPicNo-{ForSeed}-";
             if (allOrNo == 0)
             {
                 Answers.Add(CorrectAnswerIndexes[k.Next(CorrectAnswerIndexes.Count)]);

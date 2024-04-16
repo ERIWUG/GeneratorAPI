@@ -1,6 +1,6 @@
 ﻿namespace GeneratorAPI.Models.Entities
 {
-    public class ThemeAnswerEntity
+    public class ThemeEntity
     {
         public int Id { get; set; }
         public string Name { get; set; } =String.Empty;

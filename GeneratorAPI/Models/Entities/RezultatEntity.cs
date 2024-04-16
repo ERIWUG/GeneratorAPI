@@ -5,6 +5,9 @@ namespace GeneratorAPI.Models.Entities
     public class RezultatEntity
     {
         public int Id { get; set; }
+        public int CorrectAnswer = 0;
+
+        public String Seed = string.Empty;
         public QuestionEntity? Question { get; set; }
         public List<ImageEntity> Images { get; set; } = [];
 
@@ -12,9 +15,7 @@ namespace GeneratorAPI.Models.Entities
 
         public List<BlockOfAnswers> BlockAnswers { get; set; } = [];
 
-        public int CorrectAnswer = 0;
-
-        public String Seed = string.Empty;  
+        
 
     }
 }

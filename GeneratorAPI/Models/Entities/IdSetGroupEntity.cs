@@ -1,7 +1,7 @@
 ﻿namespace GeneratorAPI.Models.Entities
 {
     [Serializable]
-    public class ThemeQuestionEntity
+    public class IdSetGroupEntity
     {
         public int Id { get; set; }
         public string Name { get; set; } = String.Empty;

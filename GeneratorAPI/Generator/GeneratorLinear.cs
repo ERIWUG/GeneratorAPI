@@ -19,7 +19,7 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one TicketEntity</param>
         /// <returns>One TicketEntity with one correct and some Incorrect Question</returns>
-        public static RezultatEntity GenerateLinear(QuesToAns[] mas, int minInt,int maxInt)
+        public static RezultatEntity GenerateX2(QuesToAns[] mas, int maxInt = 5, int minInt = 3, bool flag = false)
         {
             AppDbContext db = new AppDbContext();
             ParseData(mas);
@@ -37,7 +37,7 @@ namespace GeneratorAPI
             }
             var t = new RezultatEntity();
             t.Question = mas[0].Question;
-            t.Seed = $"{t.Question.IdGroup}-{t.Question.IdSet}-GL-QwPicNo-AnswPicNo-{ForSeed}-";
+            t.Seed = $"{t.Question.Id}-{t.Question.Theme.Id}-{t.Question.IdSet}-GL-{ForSeed}-";
             foreach (int i in Answers)
             {
                 var c = db.Answers.Where(c => c.Id == i).First();
@@ -49,5 +49,13 @@ namespace GeneratorAPI
             t.CorrectAnswer = 0;
             return t;
         }
+
+
+        
     }
+
+
+
+
+
 }

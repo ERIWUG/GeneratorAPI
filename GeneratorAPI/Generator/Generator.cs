@@ -138,11 +138,11 @@ namespace GeneratorAPI
         //        switch (type)
         //        {
         //            case 0:
-        //                //questions1[i] = GenerateLinear(mas, 5, 1, true)[0];
+        //                //questions1[i] = GenerateX2(mas, 5, 1, true)[0];
         //                questions[0]++;
         //                break;
         //            case 1:
-        //                // questions1[i] = GenerateLinear(mas, 5, 1, false)[0];
+        //                // questions1[i] = GenerateX2(mas, 5, 1, false)[0];
         //                questions[1]++;
         //                break;
         //            case 2:
