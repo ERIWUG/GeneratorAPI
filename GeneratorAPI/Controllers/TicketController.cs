@@ -36,7 +36,7 @@ namespace GeneratorAPI.Controllers
             var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
 
 
-            return Ok(Generator.GenerateEnum(c, 5,5).ToJson(0));
+            return Ok(Generator.GenerateEnum(c, 5, 5).ToJson());
 
         }
 
