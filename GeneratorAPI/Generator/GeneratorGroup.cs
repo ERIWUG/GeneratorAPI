@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using GeneratorAPI.Models;
 using GeneratorAPI.Models.Entities;
 using GeneratorAPI.Models.TempTable;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeneratorAPI
 {
@@ -18,9 +19,9 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one ticket</param>
         /// <returns>One Ticket with one correct and some Incorrect Question</returns>
-        public static RezultatEntity GenerateGroup(QuesToAns[] mas, int ogr)
+        public static RezultatEntity GenerateGroup(QuesToAns[] mas, int minInt, int maxInt)
         {
-            List<int> BlockOfAnswers= new List<int>();
+            List<int> BlockOfAllAnswers = new List<int>();
             List<int> CorrectAnswer = new List<int>();
             List<List<int>> GroupOfAnswers = new List<List<int>>();
             List<int> randomElements = new List<int>();
@@ -39,7 +40,7 @@ namespace GeneratorAPI
                 int numberOfElements = random.Next(0, tempList.Count + 1);
                 if (numberOfElements == 0)
                 {
-                    
+
                     //return -1;
                 }
                 // Выбор случайных элементов без повторений и в исходном порядке
@@ -54,19 +55,25 @@ namespace GeneratorAPI
             }
 
 
+            AppDbContext db = new AppDbContext();
+            var t = new RezultatEntity();
 
+            //parse
             ParseData(mas);
-            
+            mas[0].Question.Answers = null;
+            mas[0].Question.QuestionToImage = null;
+            mas[0].Question.QuestionToAnswer = null;
 
-            int AmountOfAnswersWithQuestion = random.Next(2, ogr);
+            int AmountOfAnswersWithQuestion = random.Next(minInt, maxInt);
 
+            //generate block of answers and correct answer
             while (AmountOfAnswersWithQuestion-- > 0)
             {
 
                 int IndexOfAnswer = random.Next(AllAnswersToQuestion.Count);
-                
 
-                BlockOfAnswers.Add(AllAnswersToQuestion[IndexOfAnswer]);
+
+                BlockOfAllAnswers.Add(AllAnswersToQuestion[IndexOfAnswer]);
                 if (CorrectAnswerIndexes.Contains(AllAnswersToQuestion[IndexOfAnswer]))
                 {
                     CorrectAnswer.Add(AllAnswersToQuestion[IndexOfAnswer]);
@@ -76,30 +83,54 @@ namespace GeneratorAPI
 
             if (CorrectAnswer.Count == 0)
             {
-                
                 //CorrectAnswer.Add();
             }
 
             int minvalue = 3;
             int maxvalue = 5;
-            if (BlockOfAnswers.Count <= 3)
+            if (BlockOfAllAnswers.Count <= 3)
             {
                 maxvalue = 4;
             }
+
+
+            //generate random answers to questions from block of answers
             int NumberOfAnswers = random.Next(minvalue, maxvalue);
             GroupOfAnswers.Add(CorrectAnswer);
             while (GroupOfAnswers.Count < NumberOfAnswers)
             {
-                List<int> randomAnswer= new List<int>();
-                randomAnswer.AddRange(GenerateRandomStrings(BlockOfAnswers));
+                List<int> randomAnswer = new List<int>();
+                randomAnswer.AddRange(GenerateRandomStrings(BlockOfAllAnswers));
                 if (!GroupOfAnswers.Contains(randomAnswer))
                 {
                     GroupOfAnswers.Add(randomAnswer);
                 }
             }
             int IndexOfCorrectAnswer = 0;
-
-            return new RezultatEntity();
+            //filling result entity
+            t.CorrectAnswer = IndexOfCorrectAnswer;
+            t.Question = mas[0].Question;
+            //filling Answers entity
+            foreach (int answer in BlockOfAllAnswers)
+            {
+                var c = db.Answers.Where(c => c.Id == answer).First();
+                t.Answers.Add(c);
+            }
+            int[] innnn = new int[t.Answers.Count];
+            //filling Block entity
+            foreach (List<int> OneAnswer in GroupOfAnswers)
+            {
+                List<int> templist = new List<int>();
+                foreach (int answer in OneAnswer)
+                {
+                    var index = db.Answers.Where(index => index.Id == answer).First();
+                    templist.Add(index.Id);
+                }
+                BlockOfAnswers blockOfAnswers = new BlockOfAnswers();
+                blockOfAnswers.Ints = templist.ToArray();
+                t.BlockAnswers.Add(blockOfAnswers);
+            }
+            return t;
         }
     }
 }

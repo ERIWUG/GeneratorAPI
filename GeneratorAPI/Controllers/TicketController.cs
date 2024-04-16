@@ -45,6 +45,21 @@ namespace GeneratorAPI.Controllers
 
         }
 
+        [HttpGet("/api/Ticket/GetGroup")]
+
+        public async Task<IActionResult> GetGroup(int id, AppDbContext db)
+        {
+            var c = db.QuestionsToAnswers
+                            .Where(c => c.QuestionID == id)
+                            .Include(c => c.Question)
+                            .AsNoTracking()
+                            .ToArray();
+
+
+            return Ok(Generator.GenerateGroup(c, 3, 5));
+
+        }
+
         [HttpGet("/api/Ticket/GetHDMI")]
         public async Task<IActionResult> GetRezultat(string str)
         {
