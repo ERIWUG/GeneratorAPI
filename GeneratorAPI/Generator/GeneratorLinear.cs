@@ -36,13 +36,16 @@ namespace GeneratorAPI
                 IncorrectAnswerIndexes.RemoveAt(DeletingIndex);
             }
             var t = new RezultatEntity();
-            t.Question = mas[0].Question;
-            t.Seed = $"{t.Question.Id}-{t.Question.Theme.Id}-{t.Question.IdSet}-GL-{ForSeed}-";
+            mas[0].Question.Answers = null;
+            mas[0].Question.QuestionToImage = null;
+            mas[0].Question.QuestionToAnswer = null;
+            t.Question = mas[0].Question; var c= db.Questions.Where(c => c.Id == mas[0].QuestionID).Include(c => c.Theme).First() ;
+            t.Seed = $"{c.Id}-{c.Theme.Id}-{c.IdSet}-GL-{ForSeed}-";
             foreach (int i in Answers)
             {
-                var c = db.Answers.Where(c => c.Id == i).First();
-                t.Seed += $"{c.Id}-";
-                t.Answers.Add(c);
+                var qq = db.Answers.Where(c => c.Id == i).First();
+                t.Seed += $"{qq.Id}-";
+                t.Answers.Add(qq);
 
             }
             t.Seed += "0";

@@ -2,12 +2,13 @@
 
 namespace GeneratorAPI.Models.Entities
 {
+    [Serializable]
     public class RezultatEntity
     {
         public int Id { get; set; }
-        public int CorrectAnswer = 0;
+        public int CorrectAnswer { get; set; } = 0;
 
-        public String Seed = string.Empty;
+        public string Seed { get; set; } = string.Empty;
         public QuestionEntity? Question { get; set; }
         public List<ImageEntity> Images { get; set; } = [];
 

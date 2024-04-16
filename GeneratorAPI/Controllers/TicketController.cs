@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using System.Text.RegularExpressions;
 
@@ -21,10 +22,14 @@ namespace GeneratorAPI.Controllers
 
         public async Task<IActionResult> GetLinear(int id,AppDbContext db,int amount)
         {
-            var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
+            var c = db.QuestionsToAnswers
+                            .Where(c => c.QuestionID == id)
+                            .Include(c => c.Question)
+                            .AsNoTracking()
+                            .ToArray();
 
 
-            return Ok(Generator.GenerateX2(c, 3, 5).ToJson());
+            return Ok(Generator.GenerateX2(c, 5,3));
             
         }
 
