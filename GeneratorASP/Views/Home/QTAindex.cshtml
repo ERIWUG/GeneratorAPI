@@ -75,19 +75,7 @@
 
         String n;
         n = i == 1 ? "display:flex" : "display:none";
-        <div class="div-checkbox" id="div-checkbox-@i" style=@n>
-            @foreach (var c in Model.Answers.Where(c => c.Theme.Id == i))
-            {
-                <label>
-                    <input type="checkbox" id="div-checkbox-value-@c.Id" name="div-checkbox-values" value="@c.Id" />
-                    @c.Text
-
-                </label>
-
-            } 
-
-
-        </div>
+        
     } 
     <input type="submit" value="Подтвердить">
     <input asp-action="QTAindex" asp-controller="Home" formmethod="get" type="submit" value="Сброс">

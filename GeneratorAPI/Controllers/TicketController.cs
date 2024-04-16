@@ -1,6 +1,10 @@
 ﻿using GeneratorAPI.Models;
+using GeneratorAPI.Models.Entities;
+using GeneratorAPI.Models.TempTable;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NuGet.Protocol;
 using System.Text.RegularExpressions;
 
@@ -32,7 +36,7 @@ namespace GeneratorAPI.Controllers
             var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
 
 
-            return Ok(Generator.GenerateEnum(c, 5).ToJson(0));
+            return Ok(Generator.GenerateEnum(c, 5,5).ToJson(0));
 
         }
 
@@ -99,6 +103,7 @@ namespace GeneratorAPI.Controllers
                             if (words[i].Trim().StartsWith('{'))//список вариантов ответа
                         {
                             string[] masAns = words[i].Trim(new Char[] { ' ', '{', '}' }).Split(',');
+
                             answersIds = new int[masAns.Length];
                             for (int  j=0; j<masAns.Length; j++)
                                 answersIds[j] = int.Parse(masAns[j].Trim());
@@ -122,6 +127,8 @@ namespace GeneratorAPI.Controllers
                             if (!Qid)//если не задан id вопроса, получаем idSet и idSetGroup 
                         {
                             string[] ids = words[i].Split(',');
+
+
                             idSet = int.Parse(ids[0].Trim()); 
                             idSetGroup = int.Parse(ids[1].Trim());
                         }
@@ -167,6 +174,7 @@ namespace GeneratorAPI.Controllers
         //    if (Qid) mas = null; //questionId???????;//если задан вопрос, то только его взять
          //   else if (answersIds.Length!=0) mas = null;//если задан список  вариантов ответа
         //    else mas = null;//get по idSet
+
          /*   switch (generatorType)
             {
                 

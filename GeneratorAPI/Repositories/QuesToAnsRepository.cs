@@ -37,15 +37,8 @@ namespace GeneratorAPI.Repositories
         {
             foreach (var answerId in answersIds)
             {
-                AnswerEntity answer = await _answerRepository.GetById(answerId);
-                QuesToAns quesToAns = new QuesToAns
-                {
-                    QuestionID = questionId,
-                    AnswerID = answerId,
-                    ThemeAnswer = answer.Theme.Id
-                };
-                if (_dbContext.QuestionsToAnswers.Where(c => c.QuestionID == questionId).Where(c => c.AnswerID == answerId).Select(c => c.ThemeAnswer) is not null)
-                    _dbContext.Remove(quesToAns);
+                if (_dbContext.QuestionsToAnswers.Where(c => c.QuestionID == questionId).Where(c => c.AnswerID == answerId).Select(c => c.ThemeAnswer).ToList().Count!=0)
+                    _dbContext.Remove(_dbContext.QuestionsToAnswers.Where(a => a.QuestionID == questionId).Where(a => a.AnswerID == answerId).ToList()[0]);
                 if ( _dbContext.QuestionsToAnswers.Where(a => a.QuestionID == questionId).Where(a => a.AnswerID == answerId).ToList().Count!=0)
                 _dbContext.Remove(_dbContext.QuestionsToAnswers.Where(a => a.QuestionID == questionId).Where(a => a.AnswerID == answerId).ToList()[0]);
             }
