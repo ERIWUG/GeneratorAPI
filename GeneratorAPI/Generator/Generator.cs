@@ -36,11 +36,11 @@ namespace GeneratorAPI
             AppDbContext db = new AppDbContext();
             AmountQuestionInAnswer = new Dictionary<int, int>();
            
-            foreach (var counts in db.Answers.GroupBy(x => x.Theme.Id)
-                      .Select(g => new { g.Key, Count = g.Count() }))
-            {
-                AmountQuestionInAnswer.Add(counts.Key,counts.Count);
-            }
+            //foreach (var counts in db.Answers.GroupBy(x => x.Theme.Id)
+            //          .Select(g => new { g.Key, Count = g.Count() }))
+            //{
+            //    AmountQuestionInAnswer.Add(counts.Key,counts.Count);
+            //}
 
 
         }
@@ -61,11 +61,11 @@ namespace GeneratorAPI
             CorrectAnswerIndexes.Clear();
             IncorrectAnswerIndexes.Clear();
             AllAnswersToQuestion.Clear();
-            int Amount = AmountQuestionInAnswer[mas[0].ThemeAnswer];
-            for(int i = 1; i < Amount+1; i++)
-            {
-                IncorrectAnswerIndexes.Add(i);
-            }
+            //int Amount = AmountQuestionInAnswer[mas[0].ThemeAnswer];
+            //for(int i = 1; i < Amount+1; i++)
+            //{
+            //    IncorrectAnswerIndexes.Add(i);
+            //}
             AllAnswersToQuestion.AddRange(IncorrectAnswerIndexes);
 
             foreach(var ind in mas)

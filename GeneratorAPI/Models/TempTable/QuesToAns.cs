@@ -12,7 +12,6 @@ namespace GeneratorAPI.Models.TempTable
         public int AnswerID { get; set; }
         public AnswerEntity? Answer { get; set; }
 
-        public int ThemeAnswer { get; set; }
 
     }
 }

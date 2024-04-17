@@ -46,7 +46,7 @@ namespace GeneratorAPI.Repositories
             var answerData = new AnswerEntity
             {
                 Text = text,
-                Theme = _dbContext.ThemeAnswers.Where(c => c.Id == theme).ElementAt(0),
+                //Theme = _dbContext.ThemeAnswers.Where(c => c.Id == theme).ElementAt(0),
                Probability = par,
 
             };
@@ -55,9 +55,9 @@ namespace GeneratorAPI.Repositories
         }
 
 
-        public async Task<AnswerEntity?> GetById(int id)
-        {
-            return await _dbContext.Answers.Include(u => u.Theme).AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
-        }
+        //public async Task<AnswerEntity?> GetById(int id)
+        //{
+        //    return await _dbContext.Answers.Include(u => u.Theme).AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+        //}
     }
 }

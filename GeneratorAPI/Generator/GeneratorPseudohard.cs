@@ -18,7 +18,7 @@ namespace GeneratorAPI
                 Ans.Add(c.AnswerID);
             }
 
-            b.Seed=$"{t.Id}-{t.Theme.Id}-{t.IdSet}-GL-{Answers.Length}-";
+           // b.Seed=$"{t.Id}-{t.Theme.Id}-{t.IdSet}-GL-{Answers.Length}-";
             int l = -1;
             b.Question = mas[0].Question;
             foreach(int i in Answers)

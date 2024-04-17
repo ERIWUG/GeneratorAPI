@@ -39,7 +39,7 @@ namespace GeneratorAPI
             var t = new RezultatEntity();
             t.Question = mas[0].Question;
             t.Answers.Add(n); t.Answers.Add(ans[0]); t.Answers.Add(ans[1]);
-            t.Seed = $"{t.Question.Id}-{t.Question.Theme.Id}-{t.Question.IdSet}-{n}-ISIT-2-{ans[0].Id}-{ans[1].Id}";
+            //t.Seed = $"{t.Question.Id}-{t.Question.Theme.Id}-{t.Question.IdSet}-{n}-ISIT-2-{ans[0].Id}-{ans[1].Id}";
 
 
 
