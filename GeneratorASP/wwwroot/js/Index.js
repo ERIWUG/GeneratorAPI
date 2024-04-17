@@ -37,10 +37,11 @@ function contains(arr, elem) {
 }
 
 function Func() {
-
-    document.getElementById("imagesGroup").addEventListener('click', e => {
-        e.target.style = (e.target.getAttribute("style") == "" ? "filter:blur(5px)" : "");
-        e.target.getAttribute("id")
+    
+    document.getElementById("imageGroup").addEventListener('click', e => {
+        e.target.style = (e.target.getAttribute("style") == "" ? "filter:blur(20px)" : "");
+        console.log(e.target.getAttribute("Id"));
+        
     });
 }
 

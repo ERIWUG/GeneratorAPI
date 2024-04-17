@@ -1,86 +1,104 @@
-﻿@using GeneratorAPI.Models;
-@model AppDbContext
+﻿@using GeneratorAPI.Models
+@using GeneratorAPI.Models.Entities;
+@using Microsoft.EntityFrameworkCore
+@model QuestionEntity
 
 @{
-    int QuestInidex = 1;
-    int[] mas = { 1, 2, 3, 4, 5, 6 };
-    // var ThemeCount = Model.Themes.Count();
-    // int[] ThemeIDs = Model.Themes.Select(c => c.Id).ToArray();
-    var AnswerCount = Model.Answers.Count();
+   
 }
 
 @{
     Layout = null;
+    AppDbContext db = ViewBag.Db;
+    var IdGroups = db.IdGroup.AsNoTracking().Include(c=>c.IdSets);
 }
-
-
+<!DOCTYPE html>
+<head>
 <link rel="stylesheet" href="~/css/QTI.css" />
 <script src="~/js/Index.js" asp-append-version="true"></script>
+</head>
 
+<body onload="Func()">
+    <form>
+        <input type="hidden" name="IdQuestion" value="@Model.Id"/>
+        <div>
+            <p>@ViewBag.IdGroup</p>
+            <p>@Model.IdSet.Id</p>
+            <p>@Model.Text</p>
+        </div>
 
-
-<form method="post" class="formClass" action="/Home/MyIndex">
-
-    <div class="leftSide">
-
-    <label>
-        Тема Вопроса:
-    </label>
-
-  @*   <select id="theme-select-question" onchange="GetQuestionByTheme(@Json.Serialize(ThemeIDs))">
-        @foreach (var p in Model.Themes)
-        {
-            <option value="@p.Id">@p.Name</option>
-
-        }
-    </select> *@
-    <label>Вопрос:</label>
-   @*  @foreach (var i in ThemeIDs)
-    {
-        String n;
-        n = i == 1 ? "display:flex" : "display:none";
-        <div class="div-select-questions" id="div-select-questions-@i" style=@n>
-            <select id="question-select" onchange="GetCheckBoxCorrectAnswer(@AnswerCount)">
-                 @foreach (var p in Model.Questions.Where(c => c.ThemeEntity.Id == i))
-                {
-                    <option value="@p.Id">@p.Text</option>
-                } 
+        <div>
+            <select>
+            @foreach(var c in IdGroups.Select(c=>c.Id))
+            {
+                <option value="@c">
+                    @c
+                </option>
+            }
             </select>
 
-
-
-        </div>
-    } *@
-    <input id="question-select-value" type="hidden" name="questionID" value="@QuestInidex" />
-    <input type="submit" value="Подтвердить">
-
-    </div>
-
-
-    <div class="rightSide">
-        <label>Images:
-        </label>
-        <div class="imageGroup" id="imagesGroup">
-            @{
-                int ff = 0;
-            }
-        @foreach (var p in Model.Images)
-        {
-            
-            <div class="imageDiv" >
-                <img src=@p.Href id="Image-@ff" style="" width="400px" height="400px"/>
-                <input type="hidden" name="Values-image" id="Value-Image-@ff" value="true"/>
+            <div>
+                @{
+                    int i = 0;
+                }
+                @foreach(var c in IdGroups)
+                {
+                    
+                    <select id = "selectIdSet-@i">
+                    @foreach(var q in c.IdSets)
+                    {
+                            <option value="@q.Id">@q.Id</option>
+                    }
+                    </select>
+                    i++;
+                }
             </div>
-        }
+            
+
+
         </div>
 
 
-    </div>
-    <script>
-        Func()
-    </script>
+        <div id="imageGroup" class="imageGroup">
+            @{
+                i = 0;
+            }
+            @foreach(var c in db.Images.AsNoTracking().Select(c=>c.Href))
+            {
+                <div>
+                    <img src="@c" id="image-@i" width="400px" height="400px" style=""/>
+                    <input type="hidden" id="image-value-@i" value="false"/>
+
+                </div>
+                i++;
+            }
+
+
+
+        </div>
 
 
 
 
-</form>
+
+
+
+
+    </form>
+
+    
+
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+
