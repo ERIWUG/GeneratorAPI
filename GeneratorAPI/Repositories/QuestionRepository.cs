@@ -9,16 +9,24 @@ namespace GeneratorAPI.Repositories
     {
         private readonly AppDbContext _dbContext;
         private readonly AnswerRepository _answerRepository;
+       // private readonly ThemeRepository _themeRepository;
 
         public QuestionRepository(AppDbContext context)
         {
             _dbContext = context;
             _answerRepository = new AnswerRepository(context);
+       //     _themeRepository = new ThemeRepository(context);
         }
 
         public async Task<List<QuestionEntity>> Get()
         {
             return await _dbContext.Questions.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<List<QuestionEntity>> GetWithTheme()
+        {
+            return null;
+     //       return await _dbContext.Questions.Include(u => u.ThemeEntity).AsNoTracking().ToListAsync();
         }
 
         public async Task<List<QuestionEntity>> GetWithImages()
@@ -33,11 +41,12 @@ namespace GeneratorAPI.Repositories
 
         public async Task<List<QuestionEntity>> GetByTheme(int theme)
         {
-            return await _dbContext.Questions.AsNoTracking().Where(q => q.IdSet == theme).ToListAsync();
+            return await _dbContext.Questions.AsNoTracking().Where(q => q.Theme.Id == theme).ToListAsync();
+
         }
         public async Task<List<QuestionEntity>> GetByPage(int page, int pageSize)
         {
-            return await _dbContext.Questions.AsNoTracking().Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            return await _dbContext.Questions.Include(u => u.Theme).AsNoTracking().Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
         public async Task Add(string text)
@@ -51,6 +60,20 @@ namespace GeneratorAPI.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task Add(string text, int themeId)
+        {
+            var questiondata = new QuestionEntity
+            {
+                Text = text,
+
+            };
+    //        ThemeEntity themeEntity = await _themeRepository.GetById(themeId);
+    //        themeEntity.Questions.Add(questiondata);
+            await _dbContext.AddAsync(questiondata);
+    //        _dbContext.Update(themeEntity);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task AddAnswersForQuestion(int questionId, List<int> answersIds)
         {
             QuestionEntity question = await GetById(questionId);
@@ -60,11 +83,23 @@ namespace GeneratorAPI.Repositories
                 question.Answers.Add(answer);
             }
             _dbContext.Update(question);
-             await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
+        public async Task Edit(int questionId, string text)
+        {
+            QuestionEntity question = await GetById(questionId);
+            question.Text = text;
+            _dbContext.Update(question);
+            await _dbContext.SaveChangesAsync();
+        }
 
+        public async Task Delete(int questionId)
+        {
+            if (_dbContext.Questions.Where(a => a.Id == questionId).ToList().Count != 0)
+                _dbContext.Remove(_dbContext.Questions.Where(a => a.Id == questionId).ToList()[0]);
+
+            _dbContext.SaveChanges();
+        }
     }
 }
-
-

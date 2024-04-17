@@ -1,0 +1,111 @@
+﻿@using GeneratorAPI.Models;
+@model AppDbContext;
+
+@{
+    int QuestInidex = 1;
+    int[] mas = { 1, 2, 3, 4, 5, 6 };
+
+
+    var ThemeAnswerCount = Model.ThemeAnswers.Count();
+    int[] ThemeAnswersIDs = Model.ThemeAnswers.Select(c => c.Id).ToArray();
+
+    var ThemeQuestionsCount = Model.ThemeQuestions.Count();
+    int[] ThemeQuestionsIDs = Model.ThemeQuestions.Select(c => c.Id).ToArray();
+
+
+    var AnswerCount = Model.Answers.Count();
+}
+
+<link rel="stylesheet" href="~/css/Index.css" />
+<script src="~/js/Index.js" asp-append-version="true"></script>
+
+
+<div>
+    <label>
+        Тема Вопроса:
+    </label>
+
+    <select id="theme-select-question" onchange="GetQuestionByTheme(@Json.Serialize(ThemeQuestionsIDs))">
+        @foreach (var p in Model.ThemeQuestions)
+        {
+            <option value="@p.Id">@p.Name</option>
+
+        }
+    </select>
+    <label>Вопрос:</label>
+    @foreach (var i in ThemeQuestionsIDs)
+    {
+        String n;
+        n = i == 1 ? "display:flex" : "display:none";
+        <div class="div-select-questions" id="div-select-questions-@i" style=@n>
+            <table id="question-select" onchange="GetCheckBoxCorrectAnswer(@AnswerCount)">
+                <thead>
+                <td>id</td>
+                <td>scripshot</td>
+                <td>O</td>
+                <td>X2</td>
+                <td>ALL</td>
+                <td>YN</td></thead>
+                @foreach (var p in Model.Questions.Where(c => c.Theme.Id == i))
+                {
+                    <tr>
+                    <form method="post" action="/Home/EditQuestion">
+                        <td>
+                            @p.Id @p.Text
+                        </td>
+                    <td>
+                        <input id="question-select-value" name="questionText" value="@p.Text" />
+                    </td>
+                        <div id=" div-checkbox-values-@p.Id">
+                        <td>
+                            <input type="checkbox" id="div-checkbox-value-O-@p.Id" name="div-checkbox-values" value="O" />
+                               
+                        </td>
+                        <td>
+                            <input type="checkbox" id="div-checkbox-value-O-@p.Id" name="div-checkbox-values" value="X2" />
+
+                        </td>
+                        <td>
+                            <input type="checkbox" id="div-checkbox-value-O-@p.Id" name="div-checkbox-values" value="ALL" />
+
+                        </td>
+                        <td>
+                            <input type="checkbox" id="div-checkbox-value-O-@p.Id" name="div-checkbox-values" value="YN" />
+
+                        </td>
+                        </div>
+                    <td>
+                    <input id="question-select-value" type="hidden" name="questionID" value="@p.Id" />
+                    <input type="submit" value="Сохранить изменения">
+                    </td>
+                     </form>
+                     <td>
+                            <form method="post" action="/Home/DeleteQuestion">
+                                <input id="question-select-value" type="hidden" name="questionID" value="@p.Id" />
+                                <input type="submit" value="Удалить">
+                                </form>
+                            
+                     </td>
+                    </tr>
+                }
+            
+
+
+        </table>
+        </div>
+
+        <form id="addQuestion-@i" method="post" action="/Home/AddQuestion" style=@n>
+            Текст вопроса:
+            <td>
+                <input id="question-select-value" name="questionText" value="" />
+            </td>
+            <input id="question-select-value" type="hidden" name="themeId" value="@i" />
+            <input type="submit" value="Добавить">
+        </form>
+    }
+   
+</div>
+
+<script>
+    GetCheckBoxCorrectAnswer(@AnswerCount)
+</script>
