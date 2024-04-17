@@ -80,7 +80,9 @@ namespace GeneratorASP.Controllers
         {
             int questionId = Int32.Parse(Request.Form["questionID"]);
             String text = Request.Form["questionText"];
-            await _questionRepository.Edit(questionId, text);
+            List<string> flags = new List<string>();
+            flags = Request.Form["div-checkbox-values-"+ questionId].ToList(); 
+            await _questionRepository.Edit(questionId, text, flags);
             return Redirect("/Home/QuestionIndex");
         }
 

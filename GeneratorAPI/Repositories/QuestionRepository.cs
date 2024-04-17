@@ -86,10 +86,16 @@ namespace GeneratorAPI.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Edit(int questionId, string text)
+        public async Task Edit(int questionId, string text, List<String>flags)
         {
+            bool O = flags.Contains("O");
+            bool X2 = flags.Contains("X2");
+            bool ALL = flags.Contains("ALL");
+            bool YN = flags.Contains("YN");
             QuestionEntity question = await GetById(questionId);
             question.Text = text;
+           
+
             _dbContext.Update(question);
             await _dbContext.SaveChangesAsync();
         }
