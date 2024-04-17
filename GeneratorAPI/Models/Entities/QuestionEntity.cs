@@ -14,7 +14,6 @@ namespace GeneratorAPI.Models.Entities
         public List<AnswerEntity> Answers { get; set; } = [];
         public int? GeneratorID { get; set; } = 1;
 
-        public int? IdSet {  get; set; }
         public bool IsImageRequired { get; set; } = false;
         public bool IsNegative { get; set; } = false;
 
@@ -22,7 +21,7 @@ namespace GeneratorAPI.Models.Entities
 
         public List<QuesToIm> QuestionToImage { get; set; } = [];
         public List<QuesToAns> QuestionToAnswer { get; set; } = [];
-        public IdSetGroupEntity? Theme { get; set; }
+        public IdSetEntity? IdSet { get; set; }
 
 
         public List<RezultatEntity> Rezultat { get; set; } = [];

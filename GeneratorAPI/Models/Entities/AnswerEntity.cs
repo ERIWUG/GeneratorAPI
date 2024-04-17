@@ -21,7 +21,7 @@ namespace GeneratorAPI.Models.Entities
 
         public bool IsImageRequired { get; set; } = false;
 
-        public ThemeEntity? Theme { get; set; }
+        public IdSetEntity? IdSet { get; set; }
 
         public List<RezultatEntity> Rezultat { get; set; } = [];
 

@@ -13,7 +13,7 @@ namespace GeneratorAPI.Models.Entities
 
         public List<QuesToIm> QuestionToImage { get; set; } = [];
         public List<ImToAns> ImagesToAnswers { get; set; } = [];
-
+        public IdSetEntity? IdSet { get; set; }
 
         public List<RezultatEntity> Rezultat { get; set; } = [];
     }
