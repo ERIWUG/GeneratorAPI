@@ -55,9 +55,9 @@ namespace GeneratorAPI.Repositories
         }
 
 
-        //public async Task<AnswerEntity?> GetById(int id)
-        //{
-        //    return await _dbContext.Answers.Include(u => u.Theme).AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
-        //}
+        public async Task<AnswerEntity?> GetById(int id)
+        {
+            return await _dbContext.Answers.Include(u => u.IdSet).AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+        }
     }
 }

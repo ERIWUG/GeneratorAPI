@@ -9,16 +9,23 @@ namespace GeneratorAPI.Repositories
     {
         private readonly AppDbContext _dbContext;
         private readonly AnswerRepository _answerRepository;
+        private readonly IdSetRepository idSetRepository;
 
         public QuestionRepository(AppDbContext context)
         {
             _dbContext = context;
             _answerRepository = new AnswerRepository(context);
+            idSetRepository = new IdSetRepository(context);
         }
 
         public async Task<List<QuestionEntity>> Get()
         {
             return await _dbContext.Questions.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<List<QuestionEntity>> GetWithTheme()
+        {
+                   return await _dbContext.Questions.Include(u => u.IdSet).AsNoTracking().ToListAsync();
         }
 
         public async Task<List<QuestionEntity>> GetWithImages()
@@ -31,13 +38,14 @@ namespace GeneratorAPI.Repositories
             return await _dbContext.Questions.AsNoTracking().FirstOrDefaultAsync(q => q.Id == id);
         }
 
-        //public async Task<List<QuestionEntity>> GetByTheme(int theme)
-        //{
-        //    return await _dbContext.Questions.AsNoTracking().Where(q => q.IdSet == theme).ToListAsync();
-        //}
+        public async Task<List<QuestionEntity>> GetByTheme(int theme)
+        {
+            return await _dbContext.Questions.AsNoTracking().Where(q => q.IdSet.Id == theme).ToListAsync();
+
+        }
         public async Task<List<QuestionEntity>> GetByPage(int page, int pageSize)
         {
-            return await _dbContext.Questions.AsNoTracking().Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            return await _dbContext.Questions.Include(u => u.IdSet).AsNoTracking().Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
         public async Task Add(string text)
@@ -51,20 +59,50 @@ namespace GeneratorAPI.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task Add(string text, int themeId)
+        {
+            var questiondata = new QuestionEntity
+            {
+                Text = text,
+
+            };
+            IdSetEntity idSetEntity=await idSetRepository.GetById(themeId);
+            idSetEntity.Questions.Add(questiondata);
+            await _dbContext.AddAsync(questiondata);
+                    _dbContext.Update(idSetEntity);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task AddAnswersForQuestion(int questionId, List<int> answersIds)
         {
             QuestionEntity question = await GetById(questionId);
             foreach (int answerId in answersIds)
             {
-                //AnswerEntity answer = await _answerRepository.GetById(answerId);
-                //question.Answers.Add(answer);
+                AnswerEntity answer = await _answerRepository.GetById(answerId);
+                question.Answers.Add(answer);
             }
             _dbContext.Update(question);
-             await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
+        public async Task Edit(int questionId, string text, List<String> flags)
+        {
+            bool O = flags.Contains("O");
+            bool YN = flags.Contains("YN");
+            QuestionEntity question = await GetById(questionId);
+            question.Text = text;
+            question.IsNegative = O;
+            question.IsItQuestion = YN;
+            _dbContext.Update(question);
+            await _dbContext.SaveChangesAsync();
+        }
 
+        public async Task Delete(int questionId)
+        {
+            if (_dbContext.Questions.Where(a => a.Id == questionId).ToList().Count != 0)
+                _dbContext.Remove(_dbContext.Questions.Where(a => a.Id == questionId).ToList()[0]);
+
+            _dbContext.SaveChanges();
+        }
     }
 }
-
-
