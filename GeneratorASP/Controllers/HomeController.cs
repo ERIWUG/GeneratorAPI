@@ -31,6 +31,11 @@ namespace GeneratorASP.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult pss()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task <RedirectResult> MyIndex()

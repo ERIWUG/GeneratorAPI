@@ -19,7 +19,7 @@
 </head>
 
 <body onload="Func()">
-    <form>
+    <form asp-action="pss" asp-controller="Home" method="post">
         <input type="hidden" name="IdQuestion" value="@Model.Id"/>
         <div>
             <p>@ViewBag.IdGroup</p>
@@ -27,33 +27,33 @@
             <p>@Model.Text</p>
         </div>
 
-        <div>
-            <select>
-            @foreach(var c in IdGroups.Select(c=>c.Id))
-            {
-                <option value="@c">
-                    @c
-                </option>
-            }
+        <div class="select-nav">
+            <select id="select-idGroup" onchange="GetIdSet()">
+                @foreach (var c in IdGroups.Select(c => c.Id))
+                {
+                    <option value="@c">
+                        @c
+                    </option>
+                }
             </select>
 
             <div>
                 @{
                     int i = 0;
                 }
-                @foreach(var c in IdGroups)
+                @foreach (var c in IdGroups)
                 {
-                    
-                    <select id = "selectIdSet-@i">
-                    @foreach(var q in c.IdSets)
-                    {
+                    String n = i == 0 ? "display:flex" : "display:none"; i++;
+                    <select id="select-IdSet-@i" style=@n onchange="GetAnswers(@i)">
+                        @foreach (var q in c.IdSets)
+                        {
                             <option value="@q.Id">@q.Id</option>
-                    }
+                        }
                     </select>
-                    i++;
                 }
+                <input type="hidden" id="display-id" value="1"></input>
             </div>
-            
+
 
 
         </div>
@@ -63,16 +63,20 @@
             @{
                 i = 0;
             }
-            @foreach(var c in db.Images.AsNoTracking().Select(c=>c.Href))
+            @foreach(var c in db.Images.AsNoTracking())
             {
                 <div>
-                    <img src="@c" id="image-@i" width="400px" height="400px" style=""/>
-                    <input type="hidden" id="image-value-@i" value="false"/>
+                    <img src="@c.Href" id="image-@c.Id" width="400px" height="400px" style=""/>
+                    <input type="hidden" id="image-value-@c.Id" value="false"/>
 
                 </div>
                 i++;
             }
         </div>
+
+        <input type="submit"></input>
+
+
     </form>
 </body>
 
