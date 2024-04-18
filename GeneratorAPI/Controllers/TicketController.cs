@@ -7,6 +7,7 @@ using Microsoft.Build.Framework;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace GeneratorAPI.Controllers
@@ -68,80 +69,149 @@ namespace GeneratorAPI.Controllers
 
         }
 
-        [HttpGet("/api/Ticket/GetNewParsing")]
-        public async Task<IActionResult> GetNewParsing(string str)
-        {
-            string generatorType;
-            int fixQwId = 0;
-            int idSet = 0;
-            int idSetGroup = 0;
-            int min = 3;
-            int max = 5;
-            int[] fixAnswid = new int[5];
-            bool O = false, YN = false, X2 = false, ALL = false;
-            Pics qwPic, answPic;
-
-            string[] words = str.Trim().Split(',');
-            int count = words.Length;
-            if (count < 5) //5 параметров должен быть обязательно
-                new ArgumentOutOfRangeException();//заменить на нормальный error
-            generatorType = words[0];//имя генератора
-            switch (words[1][5])//QwPic
+            [HttpGet("/api/Ticket/GetNewParsing")]
+            public async Task<IActionResult> GetNewParsing(string str, AppDbContext db)
             {
-                case 'Y':
-                    qwPic = Pics.Yes;
-                    break;
-                case 'N':
-                    qwPic = Pics.No;
-                    break;
-                case 'R':
-                    qwPic = Pics.Random;
-                    break;
-            }
+                string generatorType;
+                int fixQwId = 0;
+                int idSet = 0;
+                int idSetGroup = 0;
+                int min = 3;
+                int max = 5;
+                int[] fixAnswid = new int[5];
+                bool O = false, YN = false, X2 = false, ALL = false;
+                Pics qwPic, answPic;
 
-            switch (words[2][6])//AnswPic
-            {
-                case 'Y':
-                    answPic = Pics.Yes;
-                    break;
-                case 'N':
-                    answPic = Pics.No;
-                    break;
-                case 'R':
-                    answPic = Pics.Random;
-                    break;
-            }
-            idSet = int.Parse(words[3]);
-            idSetGroup = int.Parse(words[4]);
-            try
-            {
-                min = int.Parse(words[5]);
-                max = int.Parse(words[6]);
-                if (max < min) max = min;
-                int number = int.Parse(words[7]);
-                if (number == 1) O = true;
-                number = int.Parse(words[8]);
-                if (number == 1) X2 = true;
-                number = int.Parse(words[9]);
-                if (number == 1) ALL = true;
-                number = int.Parse(words[9]);
-                if (number == 1) YN = true;
-                fixQwId = int.Parse(words[11]);//номер вопроса
-                //номера ответов
-                fixAnswid[0] = int.Parse(words[12]);
-                fixAnswid[1] = int.Parse(words[13]);
-                fixAnswid[2] = int.Parse(words[14]);
-                fixAnswid[3] = int.Parse(words[15]);
-                fixAnswid[4] = int.Parse(words[16]);
+                string[] words = str.Trim().Split(',');
+                int count = words.Length;
+                if (count < 5) //5 параметров должен быть обязательно
+                    new ArgumentOutOfRangeException();//заменить на нормальный error
+                generatorType = words[0];//имя генератора
+                switch (words[1][5])//QwPic
+                {
+                    case 'Y':
+                        qwPic = Pics.Yes;
+                        break;
+                    case 'N':
+                        qwPic = Pics.No;
+                        break;
+                    case 'R':
+                        qwPic = Pics.Random;
+                        break;
+                }
 
-            }
-            catch (IndexOutOfRangeException)//если не указаны все параметры, то на обычный выход
-            {
-                return Ok("scripshot");
-            }
-            Console.WriteLine(generatorType + " " + idSet + " " + idSetGroup + " " + min + " " + max + " " + O + " " + YN + " " + X2 + " " + ALL + " " + fixQwId + " " + fixAnswid[0] + " " + fixAnswid[1] + " " + fixAnswid[2] + " " + fixAnswid[3] + " " + fixAnswid[4]);
-            return Ok("scripshot");
+                switch (words[2][6])//AnswPic
+                {
+                    case 'Y':
+                        answPic = Pics.Yes;
+                        break;
+                    case 'N':
+                        answPic = Pics.No;
+                        break;
+                    case 'R':
+                        answPic = Pics.Random;
+                        break;
+                }
+                idSet = int.Parse(words[3]);
+                idSetGroup = int.Parse(words[4]);
+                try
+                {
+                    min = int.Parse(words[5]);
+                    max = int.Parse(words[6]);
+                    if (max < min) max = min;
+                    int number = int.Parse(words[7]);
+                    if (number == 1) O = true;
+                    number = int.Parse(words[8]);
+                    if (number == 1) X2 = true;
+                    number = int.Parse(words[9]);
+                    if (number == 1) ALL = true;
+                    number = int.Parse(words[9]);
+                    if (number == 1) YN = true;
+                    fixQwId = int.Parse(words[11]);//номер вопроса
+                                                   //номера ответов
+                    fixAnswid[0] = int.Parse(words[12]);
+                    fixAnswid[1] = int.Parse(words[13]);
+                    fixAnswid[2] = int.Parse(words[14]);
+                    fixAnswid[3] = int.Parse(words[15]);
+                    fixAnswid[4] = int.Parse(words[16]);
 
+                }
+                catch (IndexOutOfRangeException)//если не указаны все параметры, то на обычный выход
+                {
+
+                }
+
+
+                List<QuesToAns> questionsArray;
+                
+                if (fixQwId != 0)//если задано конкретное id вопроса
+                {
+                    questionsArray = db.QuestionsToAnswers
+                               .Where(c => c.QuestionID == fixQwId)
+                               .Include(c => c.Question)
+                               .AsNoTracking()
+                               .ToList();
+                }
+                else if (idSet != 0)//если задано конкретный idset
+                {
+                    var q = db.Questions.Where(c => c.IdSet.Id == idSet).AsNoTracking().Select(c => c.Id).ToArray();
+                    questionsArray = db.QuestionsToAnswers
+                                .Where(c => q.Contains(c.QuestionID))
+                                .Include(c => c.Question)
+                                .AsNoTracking()
+                                 .ToList();
+                }
+                else if (idSetGroup != 0)//если задано только конкретный idset
+                {
+                    List<int> set = db.IdSet.Where(c => c.IdGroup.Id == idSetGroup).AsNoTracking().Select(c => c.Id).ToList();
+                    var q = db.Questions.Where(c => set.Contains(c.IdSet.Id)).AsNoTracking().Select(c => c.Id).ToArray();
+                    questionsArray = db.QuestionsToAnswers
+                                .Where(c => q.Contains(c.QuestionID))
+                                .Include(c => c.Question)
+                                .AsNoTracking()
+                                .ToList();
+                }
+                else//если ничего не зодано -- все вопросы
+                {
+                    questionsArray = db.QuestionsToAnswers.Include(c => c.Question)
+                                .AsNoTracking()
+                                .ToList(); ;
+                }
+                if (fixAnswid[0] != 0)//если заданы конкретные id вопросов, то фильтруем из массива, чтоб были только они
+                                      //иначе -- оставляем весь массив для рандомной выборки внутри генератора
+                {
+                List<QuesToAns> copyQuestionArray=new List<QuesToAns>(questionsArray);
+                    foreach (QuesToAns q in questionsArray)
+                    {
+                        foreach (int ansId in fixAnswid)
+                        {
+                            if (ansId != 0 && q.AnswerID != ansId) questionsArray.Remove(q);
+                        }
+                    }
+                    Random r=new Random();
+                    while (questionsArray.Count < max)//если при этом не хватило, добираем рандомными вопросами 
+                    {
+                        int k=r.Next(questionsArray.Count);
+                        if (!questionsArray.Contains(copyQuestionArray[k]) )
+                        questionsArray.Add(copyQuestionArray[k]);   
+                    }
+                }
+
+
+                switch (generatorType.ToLower())//может быть задан именем или цифрами
+                {
+                    case "combi":
+                    case "1":
+
+                        break;
+                    case "onpic":
+                    case "2":
+                        break;
+                }
+
+                RezultatEntity t = new RezultatEntity();
+
+                return Ok(t);
         }
 
         [HttpGet("/api/Ticket/GetHDMI")]
