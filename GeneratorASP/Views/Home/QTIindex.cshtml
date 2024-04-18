@@ -9,6 +9,11 @@
 
 @{
     Layout = null;
+    List<int> KL = new List<int>();
+    foreach (var sd in Model.Images)
+    {
+        KL.Add(sd.Id);
+    }
     AppDbContext db = ViewBag.Db;
     var IdGroups = db.IdGroup.AsNoTracking().Include(c=>c.IdSets);
 }
@@ -44,7 +49,7 @@
                 @foreach (var c in IdGroups)
                 {
                     String n = i == 0 ? "display:flex" : "display:none"; i++;
-                    <select id="select-IdSet-@i" style=@n onchange="GetAnswers(@i)">
+                    <select id="select-IdSet-@i" style=@n onchange="GetImage(@i)">
                         @foreach (var q in c.IdSets)
                         {
                             <option value="@q.Id">@q.Id</option>
@@ -59,20 +64,49 @@
         </div>
 
 
-        <div id="imageGroup" class="imageGroup">
-            @{
-                i = 0;
-            }
-            @foreach(var c in db.Images.AsNoTracking())
-            {
-                <div>
-                    <img src="@c.Href" id="image-@c.Id" width="400px" height="400px" style=""/>
-                    <input type="hidden" id="image-value-@c.Id" value="false"/>
 
+        @{
+            i = 0;
+        }
+        <div id="imageGroup">
+
+        @foreach (var c in db.IdGroup.AsNoTracking().Include(c => c.IdSets).ThenInclude(c => c.Images))
+        {
+            foreach (var q in c.IdSets)
+            {
+
+                String n = i == 0 ? "display:flex" : "display:none"; i++;
+                <div id="imageGroup-@q.Id" class="imageGroup" style=@n>
+                    @{
+                        i = 0;
+                        bool fl;
+                    }
+                    @foreach (var l in q.Images)
+                    {
+                        <div>
+                            @if (KL.Contains(l.Id))
+                            {
+                                n="filter:blur(20px)";
+                                fl = true;
+                            }
+                            else
+                            {
+                                n = "";
+                                fl = false;
+                            }
+                            <img src="@l.Href" id="image-@l.Id" width="400px" height="400px" style="@n" value="@l.Id"/>
+                            <input type="checkbox" name="ImageValues" id="image-value-@l.Id" value="@l.Id" checked="@fl" style="display:none"/>
+
+                        </div>
+                        i++;
+                    }
                 </div>
-                i++;
             }
+        }
         </div>
+        <input type="hidden" id="Image-id-shown" value="1"></input>
+
+       
 
         <input type="submit"></input>
 
