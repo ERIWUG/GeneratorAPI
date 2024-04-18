@@ -15,6 +15,8 @@ using GeneratorAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using GeneratorAPI.Models.TempTable;
 using Microsoft.EntityFrameworkCore;
+using GeneratorAPI.Controllers;
+using Microsoft.AspNetCore.Mvc;
 //using Newtonsoft.Json.Linq;
 
 namespace GeneratorAPI
@@ -28,10 +30,105 @@ namespace GeneratorAPI
        
         private static List<int>? CorrectAnswerIndexes = null;
         private static List<int>? IncorrectAnswerIndexes = null;
-        private static List<int>? AllAnswersToQuestion=null;   
+        private static List<int>? AllAnswersToQuestion=null;
+
+        public enum Pics
+        {
+            Yes,
+            No,
+            Random
+        }
 
 
-        private static void UpdateDictionary()
+
+        public static RezultatEntity GeneratorCombi(int fixQwId, int idSet, int idSetGroup, int min, int max, int[] fixAnswid, bool O, bool YN, bool X2, bool ALL, Pics qwPic, Pics answPic)
+        {
+            AppDbContext db = new AppDbContext();
+            int[] idSets;
+            List<QuesToAns> questionsArray;
+            questionsArray = db.QuestionsToAnswers.Include(c => c.Question)
+                          .AsNoTracking()
+                          .ToList(); ;
+
+            if (fixQwId != 0)//если задано конкретное id вопроса
+            {
+                questionsArray = db.QuestionsToAnswers
+                           .Where(c => c.QuestionID == fixQwId)
+                           .Include(c => c.Question)
+                           .AsNoTracking()
+                           .ToList();
+            }
+            if (idSet != 0)
+            {
+                idSets = new int[] { idSet };
+            }
+            else if (idSetGroup != 0)
+            {
+                idSets = db.IdSet.Where(c => c.IdGroup.Id == idSetGroup).AsNoTracking().Select(c => c.Id).ToArray();
+            }
+            else idSets = db.IdSet.AsNoTracking().Select(c => c.Id).ToArray();
+            /*  else if (idSet != 0)//если задано конкретный idset
+              {
+                  var q = db.Questions.Where(c => c.IdSet.Id == idSet).AsNoTracking().Select(c => c.Id).ToArray();
+                  questionsArray = db.QuestionsToAnswers
+                              .Where(c => q.Contains(c.QuestionID))
+                              .Include(c => c.Question)
+                              .AsNoTracking()
+                               .ToList();
+              }
+              else if (idSetGroup != 0)//если задано только конкретный idset
+              {
+                  List<int> set = db.IdSet.Where(c => c.IdGroup.Id == idSetGroup).AsNoTracking().Select(c => c.Id).ToList();
+                  var q = db.Questions.Where(c => set.Contains(c.IdSet.Id)).AsNoTracking().Select(c => c.Id).ToArray();
+                  questionsArray = db.QuestionsToAnswers
+                              .Where(c => q.Contains(c.QuestionID))
+                              .Include(c => c.Question)
+                              .AsNoTracking()
+                              .ToList();
+              }
+              else//если ничего не зодано -- все вопросы
+              {
+                  questionsArray = db.QuestionsToAnswers.Include(c => c.Question)
+                              .AsNoTracking()
+                              .ToList(); ;
+              }*/
+            if (fixAnswid[0] != 0)//если заданы конкретные id вопросов, то фильтруем из массива, чтоб были только они
+                                  //иначе -- оставляем весь массив для рандомной выборки внутри генератора
+            {
+                List<QuesToAns> copyQuestionArray = new List<QuesToAns>(questionsArray);
+                foreach (QuesToAns q in questionsArray)
+                {
+                    foreach (int ansId in fixAnswid)
+                    {
+                        if (ansId != 0 && q.AnswerID != ansId) questionsArray.Remove(q);
+                    }
+                }
+                Random r = new Random();
+                while (questionsArray.Count < max)//если при этом не хватило, добираем рандомными вопросами 
+                {
+                    int k = r.Next(questionsArray.Count);
+                    if (!questionsArray.Contains(copyQuestionArray[k]))
+                        questionsArray.Add(copyQuestionArray[k]);
+                }
+            }
+                RezultatEntity t = new RezultatEntity();
+
+               
+                        if (YN)
+                        {
+                            AnswerEntity[] answers = null;//явл -- не явл
+                            t = Generator.GenerateIsIt(questionsArray.ToArray(), idSets, answers);
+                        }
+                        else if (ALL) t = Generator.GenerateEnum(questionsArray.ToArray(), idSets, min, max);
+                        else if (X2) t = Generator.GenerateGroup(questionsArray.ToArray(), idSets, min, max);
+                        else t = Generator.GenerateX2(questionsArray.ToArray(), idSets, max, min, O);
+
+     
+            return t;
+            }
+
+
+            private static void UpdateDictionary()
         {
             AppDbContext db = new AppDbContext();
            
