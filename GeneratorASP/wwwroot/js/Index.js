@@ -45,3 +45,25 @@ function Func() {
     });
 }
 
+
+function GetIdSet() {
+    alert("Here");
+    var x = document.getElementById("select-idGroup").value;
+    var n = document.getElementById("display-id").value;
+    document.getElementById("select-IdSet-" + n).style.display = "none";
+    document.getElementById("select-IdSet-" + x).style.display = "flex";
+    document.getElementById("display-id").value = x;
+    
+}
+
+
+function GetAnswers(a) {
+    var x = document.getElementById("select-IdSet-" + a).value;
+
+    var l = document.getElementById("Answer-id-shown").value;
+
+    document.getElementById("table-" + l).style.display = "none";
+    document.getElementById("table-" + x).style.display = "flex";
+    document.getElementById("Answer-id-shown").value = x;
+
+}

@@ -39,8 +39,8 @@ namespace GeneratorAPI
             mas[0].Question.Answers = null;
             mas[0].Question.QuestionToImage = null;
             mas[0].Question.QuestionToAnswer = null;
-           // t.Question = mas[0].Question; var c= db.Questions.Where(c => c.Id == mas[0].QuestionID).Include(c => c.Theme).First() ;
-            //t.Seed = $"{c.Id}-{c.Theme.Id}-{c.IdSet}-GL-{ForSeed}-";
+            t.Question = mas[0].Question; var c= db.Questions.Where(c => c.Id == mas[0].QuestionID).Include(c => c.IdSet).First() ;
+            t.Seed = $"{c.Id}-{c.IdSet.IdGroup.Id}-{c.IdSet.Id}-GL-{ForSeed}-";
             foreach (int i in Answers)
             {
                 var qq = db.Answers.Where(c => c.Id == i).First();

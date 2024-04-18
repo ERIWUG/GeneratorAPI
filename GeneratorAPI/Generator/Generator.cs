@@ -21,7 +21,6 @@ namespace GeneratorAPI
     /// <summary>
     /// Class that generate and print questions
     /// </summary>
-    /// <Author>Belyi Egor</Author>
     public static partial class Generator
     {
 
