@@ -35,14 +35,14 @@ namespace GeneratorASP.Controllers
         [HttpPost]
         public async Task <RedirectResult> MyIndex()
         {
-            int questionId = Int32.Parse(Request.Form["questionID"]);
+            int questionId = Int32.Parse(Request.Form["IdQuestion"]);
            List<AnswerEntity>allAnswers= _answerRepository.Get();
             List<int>allAnswersId= new List<int>();
             foreach (AnswerEntity answer in allAnswers) { 
                 allAnswersId.Add(answer.Id);
             }
              List<string> answersIdsStr=new List<string>();
-              answersIdsStr = Request.Form["div-checkbox-values"].ToList();
+              answersIdsStr = Request.Form["Answers"].ToList();
             List<int> answersIds = new List<int>();
         foreach(string IdStr in answersIdsStr) 
                 answersIds.Add(Int32.Parse(IdStr));
