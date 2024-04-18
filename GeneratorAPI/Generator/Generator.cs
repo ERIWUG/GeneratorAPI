@@ -166,7 +166,7 @@ namespace GeneratorAPI
         //                break;
 
         //            case 4:
-        //                questions1[i] = GenerateGroup(mas, 5, 1)[0];
+        //                questions1[i] = GenerateX2(mas, 5, 1)[0];
         //                questions[4]++;
         //                break;
         //        }
