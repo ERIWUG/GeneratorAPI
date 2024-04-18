@@ -6,6 +6,11 @@
 
 @{
     Layout = null;
+    List<int> KL = new List<int>();
+    foreach(var sd in Model.Answers)
+    {
+        KL.Add(sd.Id);
+    }
     AppDbContext db = ViewBag.Db;
     var IdGroups = db.IdGroup.AsNoTracking().Include(c => c.IdSets);
 }
@@ -17,7 +22,7 @@
 </head>
 
 <body >
-    <form asp-action="pss" asp-controller="Home" method="post">
+    <form asp-action="MyIndex" asp-controller="Home" method="post">
         <input type="hidden" name="IdQuestion" value="@Model.Id" />
         <div>
             <p>@ViewBag.IdGroup</p>
@@ -64,14 +69,16 @@
         {
             foreach(var q in c.IdSets)
             {
+               
                 String n = i == 0 ? "display:flex" : "display:none";i++;
                 <table border="1" id="table-@q.Id" style=@n>
 
                     @foreach (var l in q.Answers)
                     {
+                        
                         <tr>
                             <td>
-                                <input type="checkbox" checked="@Model.Answers.Contains(l)" name="Answers" value="@l.Id"></input>
+                                <input type="checkbox" checked="@KL.Contains(l.Id)" name="Answers" value="@l.Id"></input>
                             </td>
                             <td>
                                 <p>@l.Text</p>

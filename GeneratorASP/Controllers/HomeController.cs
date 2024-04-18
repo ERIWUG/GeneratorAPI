@@ -31,11 +31,6 @@ namespace GeneratorASP.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public IActionResult pss()
-        {
-            return View();
-        }
 
         [HttpPost]
         public async Task <RedirectResult> MyIndex()
@@ -61,7 +56,7 @@ namespace GeneratorASP.Controllers
         public IActionResult QTAindex()
         {
             ViewBag.Db = new AppDbContext();
-            var q = db.Questions.AsNoTracking().Where(c => c.Id == 1).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).FirstAsync();
+            var q = db.Questions.AsNoTracking().Where(c => c.Id == 1).Include(c=>c.Answers).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).FirstAsync();
             ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
             return View(q.Result);
         }
