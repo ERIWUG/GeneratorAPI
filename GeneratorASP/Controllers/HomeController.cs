@@ -12,7 +12,7 @@ namespace GeneratorASP.Controllers
     public class HomeController : Controller
 
     {
-        public readonly AppDbContext db;// = new AppDbContext();
+        public readonly AppDbContext db = new AppDbContext();
         private readonly QuestionRepository _questionRepository;
         private readonly AnswerRepository _answerRepository;
         private readonly QuesToAnsRepository _quesToAnsRepository;
@@ -20,9 +20,9 @@ namespace GeneratorASP.Controllers
 
         public HomeController(ILogger<HomeController> logger, QuestionRepository questionRepository, QuesToAnsRepository quesToAnsRepository, AnswerRepository answerRepository)
         {
-        /*    _questionRepository = questionRepository;
+            _questionRepository = questionRepository;
             _quesToAnsRepository= quesToAnsRepository;
-            _answerRepository = answerRepository;*/
+            _answerRepository = answerRepository;
             _logger = logger;
         }
 
