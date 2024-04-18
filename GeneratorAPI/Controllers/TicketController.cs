@@ -37,7 +37,7 @@ namespace GeneratorAPI.Controllers
                             .ToArray();
 
 
-            return Ok(Generator.GenerateX2(c, 5,3));
+            return Ok(Generator.GenerateX2(c,[1], 5,3));
             
         }
 
@@ -49,7 +49,7 @@ namespace GeneratorAPI.Controllers
             var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
 
 
-            return Ok(Generator.GenerateEnum(c, 5, 5).ToJson());
+            return Ok(Generator.GenerateEnum(c,[1], 5, 5).ToJson());
 
         }
 
@@ -64,7 +64,7 @@ namespace GeneratorAPI.Controllers
                             .ToArray();
 
 
-            return Ok(Generator.GenerateGroup(c, 3, 5));
+            return Ok(Generator.GenerateGroup(c,[1], 3, 5));
 
         }
 

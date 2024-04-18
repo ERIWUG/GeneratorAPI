@@ -14,6 +14,7 @@ using System.Net.WebSockets;
 using GeneratorAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using GeneratorAPI.Models.TempTable;
+using Microsoft.EntityFrameworkCore;
 //using Newtonsoft.Json.Linq;
 
 namespace GeneratorAPI
@@ -24,7 +25,7 @@ namespace GeneratorAPI
     public static partial class Generator
     {
 
-        private static Dictionary<int, int>? AmountQuestionInAnswer = null;
+       
         private static List<int>? CorrectAnswerIndexes = null;
         private static List<int>? IncorrectAnswerIndexes = null;
         private static List<int>? AllAnswersToQuestion=null;   
@@ -33,24 +34,17 @@ namespace GeneratorAPI
         private static void UpdateDictionary()
         {
             AppDbContext db = new AppDbContext();
-            AmountQuestionInAnswer = new Dictionary<int, int>();
            
-            //foreach (var counts in db.Answers.GroupBy(x => x.Theme.Id)
-            //          .Select(g => new { g.Key, Count = g.Count() }))
-            //{
-            //    AmountQuestionInAnswer.Add(counts.Key,counts.Count);
-            //}
+           
+            
 
 
         }
         
 
-        private static void ParseData(QuesToAns[] mas)
+        private static void ParseData(QuesToAns[] mas, int[] IdSets)
         {
-            if(AmountQuestionInAnswer is null)
-            {
-                UpdateDictionary();
-            }
+            AppDbContext db = new AppDbContext();
             if (CorrectAnswerIndexes is null)
             {
                 CorrectAnswerIndexes = new List<int>();
@@ -60,12 +54,30 @@ namespace GeneratorAPI
             CorrectAnswerIndexes.Clear();
             IncorrectAnswerIndexes.Clear();
             AllAnswersToQuestion.Clear();
-            //int Amount = AmountQuestionInAnswer[mas[0].ThemeAnswer];
-            //for(int i = 1; i < Amount+1; i++)
-            //{
-            //    IncorrectAnswerIndexes.Add(i);
-            //}
+
+
+            foreach(var c in IdSets)
+            {
+                var q = db.IdSet.AsNoTracking().Where(l => l.Id == c).Include(l=>l.Answers);
+                foreach(var kl in q)
+                {
+                    foreach (var kl2 in kl.Answers)
+                    {
+                        IncorrectAnswerIndexes.Add(kl2.Id);
+                    }
+                }
+                
+
+
+
+
+            }
+
+
             AllAnswersToQuestion.AddRange(IncorrectAnswerIndexes);
+
+
+
 
             foreach(var ind in mas)
             {

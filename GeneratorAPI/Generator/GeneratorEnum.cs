@@ -20,10 +20,10 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one ticket</param>
         /// <returns>One Ticket with one correct and some Incorrect Question</returns>
-        public static RezultatEntity GenerateEnum(QuesToAns[] mas, int minInt, int maxInt)
+        public static RezultatEntity GenerateEnum(QuesToAns[] mas, int[] IdSets,int minInt, int maxInt)
         {
             AppDbContext db = new AppDbContext();
-            ParseData(mas);
+            ParseData(mas, IdSets);
             Random k = new Random();
             List<int> Answers = new List<int>();
             int allOrNo = k.Next(0, 3);

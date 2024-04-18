@@ -19,10 +19,10 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one TicketEntity</param>
         /// <returns>One TicketEntity with one correct and some Incorrect Question</returns>
-        public static RezultatEntity GenerateX2(QuesToAns[] mas, int maxInt = 5, int minInt = 3, bool flag = false)
+        public static RezultatEntity GenerateX2(QuesToAns[] mas,int[] IdSets, int maxInt = 5, int minInt = 3, bool flag = false)
         {
             AppDbContext db = new AppDbContext();
-            ParseData(mas);
+            ParseData(mas, IdSets);
             int DeletingIndex = 0;
             Random k = new Random();
             List<int> Answers = new List<int>();
@@ -39,12 +39,16 @@ namespace GeneratorAPI
             mas[0].Question.Answers = null;
             mas[0].Question.QuestionToImage = null;
             mas[0].Question.QuestionToAnswer = null;
-            t.Question = mas[0].Question; var c= db.Questions.Where(c => c.Id == mas[0].QuestionID).Include(c => c.IdSet).First() ;
+            t.Question = mas[0].Question; var c= db.Questions.Where(c => c.Id == mas[0].QuestionID).Include(c => c.IdSet).ThenInclude(c=>c.IdGroup).First() ;
             t.Seed = $"{c.Id}-{c.IdSet.IdGroup.Id}-{c.IdSet.Id}-GL-{ForSeed}-";
             foreach (int i in Answers)
             {
                 var qq = db.Answers.Where(c => c.Id == i).First();
                 t.Seed += $"{qq.Id}-";
+                qq.IdSet.Answers = null;
+                qq.IdSet.IdGroup.IdSets = null;
+                qq.IdSet.Questions = null;
+                qq.IdSet.Images = null;
                 t.Answers.Add(qq);
 
             }

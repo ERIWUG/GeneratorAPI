@@ -20,10 +20,10 @@ namespace GeneratorAPI
         /// <param name="mas">Array of Data</param>
         /// <param name="amount">Amount of Question</param>
         /// <Author>Belyi Egor</Author>
-        public static RezultatEntity GenerateIsIt(QuesToAns[] mas, AnswerEntity[] ans)
+        public static RezultatEntity GenerateIsIt(QuesToAns[] mas, int[] IdSets,AnswerEntity[] ans)
         {
             AppDbContext db = new AppDbContext();
-            ParseData(mas);
+            ParseData(mas,IdSets);
             Random k = new Random();
             int i = k.Next();
             int c = 0;
