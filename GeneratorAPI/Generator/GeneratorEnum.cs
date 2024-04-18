@@ -32,12 +32,15 @@ namespace GeneratorAPI
             int NowAmountAnswers = k.Next(minInt-2, maxInt - 2);
             int ForSeed = NowAmountAnswers;
             var t = new RezultatEntity();
+            mas[0].Question.Answers = null;
+            mas[0].Question.QuestionToImage = null;
+            mas[0].Question.QuestionToAnswer = null;
             t.Question = mas[0].Question;
-        //    t.Seed = $"{t.Question.Id }-{t.Question.IdSet}-GL-QwPicNo-AnswPicNo-{ForSeed}-";
+            //    t.Seed = $"{t.Question.Id }-{t.Question.IdSet}-GL-QwPicNo-AnswPicNo-{ForSeed}-";
             if (allOrNo == 0)
             {
                 Answers.Add(CorrectAnswerIndexes[k.Next(CorrectAnswerIndexes.Count)]);
-                while (NowAmountAnswers-- > 2)
+                while (NowAmountAnswers-- > 0)
                 {
                     DeletingIndex = k.Next(IncorrectAnswerIndexes.Count);
                     Answers.Add(IncorrectAnswerIndexes[DeletingIndex]);
@@ -45,9 +48,13 @@ namespace GeneratorAPI
                 }
                 foreach (int i in Answers)
                 {
-                    var c = db.Answers.Where(c => c.Id == i).First();
-                    t.Seed += $"{c.Id}-";
-                    t.Answers.Add(c);
+                    var qq = db.Answers.Include(c=>c.IdSet).Where(c => c.Id == i).First();
+                    t.Seed += $"{qq.Id}-";
+                    qq.IdSet.Answers = null;
+                   // qq.IdSet.IdGroup.IdSets = null;
+                    qq.IdSet.Questions = null;
+                    qq.IdSet.Images = null;
+                    t.Answers.Add(qq);
 
                 }
                 t.Answers.Add(new AnswerEntity());
@@ -68,9 +75,13 @@ namespace GeneratorAPI
                 }
                 foreach (int i in Answers)
                 {
-                    var c = db.Answers.Where(c => c.Id == i).First();
-                    t.Seed += $"{c.Id}-";
-                    t.Answers.Add(c);
+                    var qq = db.Answers.Include(c => c.IdSet).Where(c => c.Id == i).First();
+                    t.Seed += $"{qq.Id}-";
+                    qq.IdSet.Answers = null;
+                    // qq.IdSet.IdGroup.IdSets = null;
+                    qq.IdSet.Questions = null;
+                    qq.IdSet.Images = null;
+                    t.Answers.Add(qq);
 
                 }
                 t.Answers.Add(new AnswerEntity());
@@ -91,9 +102,13 @@ namespace GeneratorAPI
                 }
                 foreach (int i in Answers)
                 {
-                    var c = db.Answers.Where(c => c.Id == i).First();
-                    t.Seed += $"{c.Id}-";
-                    t.Answers.Add(c);
+                    var qq = db.Answers.Include(c => c.IdSet).Where(c => c.Id == i).First();
+                    t.Seed += $"{qq.Id}-";
+                    qq.IdSet.Answers = null;
+                    // qq.IdSet.IdGroup.IdSets = null;
+                    qq.IdSet.Questions = null;
+                    qq.IdSet.Images = null;
+                    t.Answers.Add(qq);
 
                 }
                 

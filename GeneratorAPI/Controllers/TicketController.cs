@@ -24,11 +24,11 @@ namespace GeneratorAPI.Controllers
     public class TicketController : ControllerBase
     {
         private readonly AppDbContext _appDbContext = new AppDbContext();
-        
+
 
         [HttpGet("/api/Ticket/GetLinear")]
 
-        public async Task<IActionResult> GetLinear(int id,AppDbContext db,int amount)
+        public async Task<IActionResult> GetLinear(int id, AppDbContext db, int amount)
         {
             var c = db.QuestionsToAnswers
                             .Where(c => c.QuestionID == id)
@@ -37,8 +37,8 @@ namespace GeneratorAPI.Controllers
                             .ToArray();
 
 
-            return Ok(Generator.GenerateX2(c,[1], 5,3));
-            
+            return Ok(Generator.GenerateX2(c, [1], 5, 3));
+
         }
 
         [HttpGet("/api/Ticket/GetEnum")]
@@ -46,10 +46,10 @@ namespace GeneratorAPI.Controllers
 
         public async Task<IActionResult> GetEnum(int id, AppDbContext db)
         {
-            var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
+            var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).Include(c => c.Question).AsNoTracking().ToArray();
 
 
-            return Ok(Generator.GenerateEnum(c,[1], 5, 5).ToJson());
+            return Ok(Generator.GenerateEnum(c, [1], 5, 5));
 
         }
 
@@ -64,12 +64,12 @@ namespace GeneratorAPI.Controllers
                             .ToArray();
 
 
-            return Ok(Generator.GenerateGroup(c,[1], 3, 5));
+            return Ok(Generator.GenerateGroup(c, [1], 3, 5));
 
         }
 
         [HttpGet("/api/Ticket/GetNewParsing")]
-        public async Task<IActionResult> GetNewParsing(string str)
+        public async Task<IActionResult> GetNewParsing(string str, AppDbContext db)
         {
             string generatorType;
             int fixQwId = 0;
@@ -127,7 +127,7 @@ namespace GeneratorAPI.Controllers
                 number = int.Parse(words[9]);
                 if (number == 1) YN = true;
                 fixQwId = int.Parse(words[11]);//номер вопроса
-                //номера ответов
+                                               //номера ответов
                 fixAnswid[0] = int.Parse(words[12]);
                 fixAnswid[1] = int.Parse(words[13]);
                 fixAnswid[2] = int.Parse(words[14]);
@@ -135,13 +135,68 @@ namespace GeneratorAPI.Controllers
                 fixAnswid[4] = int.Parse(words[16]);
 
             }
-            catch (IndexOutOfRangeException)//если не указаны все параметры, то на обычный выход
+            catch (IndexOutOfRangeException)//если не указаны все параметры, то продолжаем дальше
             {
-                return Ok("scripshot");
-            }
-            Console.WriteLine(generatorType + " " + idSet + " " + idSetGroup + " " + min + " " + max + " " + O + " " + YN + " " + X2 + " " + ALL + " " + fixQwId + " " + fixAnswid[0] + " " + fixAnswid[1] + " " + fixAnswid[2] + " " + fixAnswid[3] + " " + fixAnswid[4]);
-            return Ok("scripshot");
 
+            }
+
+
+            List<QuesToAns> questionsArray= db.QuestionsToAnswers
+                           .Include(c => c.Question)
+                           .AsNoTracking()
+                           .ToList();
+
+            if (fixQwId != 0)//если задано конкретное id вопроса
+            {
+                questionsArray = db.QuestionsToAnswers
+                           .Where(c => c.QuestionID == fixQwId)
+                           .Include(c => c.Question)
+                           .AsNoTracking()
+                           .ToList();
+            }
+            
+            if (fixAnswid[0] != 0)//если заданы конкретные id вопросов, то фильтруем из массива, чтоб были только они
+                                  //иначе -- оставляем весь массив для рандомной выборки внутри генератора
+            {
+                List<QuesToAns> copyQuestionArray = new List<QuesToAns>(questionsArray);
+                foreach (QuesToAns q in questionsArray)
+                {
+                    foreach (int ansId in fixAnswid)
+                    {
+                        if (ansId != 0 && q.AnswerID != ansId) questionsArray.Remove(q);
+                    }
+                }
+                Random r = new Random();
+                while (questionsArray.Count < max)//если при этом не хватило, добираем рандомными вопросами 
+                {
+                    int k = r.Next(questionsArray.Count);
+                    if (!questionsArray.Contains(copyQuestionArray[k]))
+                        questionsArray.Add(copyQuestionArray[k]);
+                }
+            }
+            RezultatEntity t = new RezultatEntity();
+
+            switch (generatorType.ToLower())//может быть задан именем или цифрами
+            {
+                case "combi":
+                case "1":
+                    if (YN)
+                    {
+                        AnswerEntity[] answers = null;//явл -- не явл
+                        t = Generator.GenerateIsIt(questionsArray.ToArray(),[1], answers);
+                    }
+                    else if (ALL) t = Generator.GenerateEnum(questionsArray.ToArray(),[1], min, max);
+                    else t = Generator.GenerateX2(questionsArray.ToArray(),[1], max, min, O);
+                    //а генератор ГХ когда вызывать???
+                    break;
+                case "onpic":
+                case "2":
+                    break;
+            }
+
+
+
+            return Ok(t);
         }
 
         [HttpGet("/api/Ticket/GetHDMI")]
@@ -150,14 +205,14 @@ namespace GeneratorAPI.Controllers
             string[] words = str.Split(';');
             int count = words.Length;
             string generatorType;
-            int questionId=0;
-            int idSet=0;
-            int idSetGroup=0;
-            int min=3;
-            int max=5;
-            int[] answersIds=new int[0];
-            bool O=false, YN = false, X2 = false, ALL = false;
-            bool Qid=false;
+            int questionId = 0;
+            int idSet = 0;
+            int idSetGroup = 0;
+            int min = 3;
+            int max = 5;
+            int[] answersIds = new int[0];
+            bool O = false, YN = false, X2 = false, ALL = false;
+            bool Qid = false;
             int qwPic, ansPic;
 
             switch (count)
@@ -184,32 +239,32 @@ namespace GeneratorAPI.Controllers
                     break;
                 default:
                     generatorType = words[0];
-                    for (int i=1; i < count; i++)
+                    for (int i = 1; i < count; i++)
                     {
                         if (words[i].Trim().StartsWith('['))//ограничение на число вариантов ответа
                         {
                             string ogr = words[i].Trim(new Char[] { ' ', '[', ']' });
-                            if (ogr.Length==0||ogr==" "||ogr=="0")//если ограничения не заданы, то берем по умолчанию
+                            if (ogr.Length == 0 || ogr == " " || ogr == "0")//если ограничения не заданы, то берем по умолчанию
                             {
                             }
                             else if (ogr.Contains('-'))//если задан минимальный и максимальный предел
                             {
-                                string[]minMax=ogr.Split("-");
-                                min = int.Parse(minMax[0].Trim()); 
+                                string[] minMax = ogr.Split("-");
+                                min = int.Parse(minMax[0].Trim());
                                 max = int.Parse(minMax[1].Trim());
                             }
                             else//если задан только максимальный предел
                             {
-                               max = int.Parse(ogr);
+                                max = int.Parse(ogr);
                             }
                         }
-                        else 
+                        else
                             if (words[i].Trim().StartsWith('{'))//список вариантов ответа
                         {
                             string[] masAns = words[i].Trim(new Char[] { ' ', '{', '}' }).Split(',');
 
                             answersIds = new int[masAns.Length];
-                            for (int  j=0; j<masAns.Length; j++)
+                            for (int j = 0; j < masAns.Length; j++)
                                 answersIds[j] = int.Parse(masAns[j].Trim());
                         }
                         else
@@ -221,23 +276,23 @@ namespace GeneratorAPI.Controllers
                             if (allFlags.Contains("ALL")) ALL = true;
                             if (allFlags.Contains("YN")) YN = true;
                         }
-                        else 
+                        else
                             if (words[i].Trim().EndsWith("d"))//Qid -- id вопроса
                         {
                             Qid = true;
                             questionId = int.Parse(Regex.Replace(words[i], @"[^\d]", "", RegexOptions.Compiled));
                         }
-                        else 
+                        else
                             if (!Qid)//если не задан id вопроса, получаем idSet и idSetGroup 
                         {
                             string[] ids = words[i].Split(',');
 
 
-                            idSet = int.Parse(ids[0].Trim()); 
+                            idSet = int.Parse(ids[0].Trim());
                             idSetGroup = int.Parse(ids[1].Trim());
                         }
                         else
-                        if (words[i].EndsWith('Y')|| words[i].EndsWith('N')|| words[i].EndsWith('R'))
+                        if (words[i].EndsWith('Y') || words[i].EndsWith('N') || words[i].EndsWith('R'))
                         {
                             string[] pics = words[i].Split(',');
                             switch (pics[0].Trim()[5])//последний символ строки qwPic
@@ -273,22 +328,22 @@ namespace GeneratorAPI.Controllers
                     break;
 
             }
-            Console.WriteLine(generatorType + " " + questionId + " " + idSet + " " + idSetGroup + " " + min + " " + max  + " " + O + " " + YN + " " + X2 + " "+ALL+" "+Qid);           
-         //   QuesToAns[] mas;
-        //    if (Qid) mas = null; //questionId???????;//если задан вопрос, то только его взять
-         //   else if (answersIds.Length!=0) mas = null;//если задан список  вариантов ответа
-        //    else mas = null;//get по idSet
+            Console.WriteLine(generatorType + " " + questionId + " " + idSet + " " + idSetGroup + " " + min + " " + max + " " + O + " " + YN + " " + X2 + " " + ALL + " " + Qid);
+            //   QuesToAns[] mas;
+            //    if (Qid) mas = null; //questionId???????;//если задан вопрос, то только его взять
+            //   else if (answersIds.Length!=0) mas = null;//если задан список  вариантов ответа
+            //    else mas = null;//get по idSet
 
-         /*   switch (generatorType)
-            {
-                
-                case "Combi":
-                    if (X2) return Ok(Generator.GenerateGroup(null, max));
-                    if (ALL) return Ok(Generator.GenerateEnum(null, min, max));
-                    return Ok(Generator.GenerateEnum(null, min, max));
-                    break;
+            /*   switch (generatorType)
+               {
 
-            }*/
+                   case "Combi":
+                       if (X2) return Ok(Generator.GenerateGroup(null, max));
+                       if (ALL) return Ok(Generator.GenerateEnum(null, min, max));
+                       return Ok(Generator.GenerateEnum(null, min, max));
+                       break;
+
+               }*/
             return null;
         }
 
