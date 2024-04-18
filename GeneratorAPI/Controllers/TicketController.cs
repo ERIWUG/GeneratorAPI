@@ -7,6 +7,7 @@ using Microsoft.Build.Framework;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 
 namespace GeneratorAPI.Controllers
@@ -69,7 +70,7 @@ namespace GeneratorAPI.Controllers
         }
 
         [HttpGet("/api/Ticket/GetNewParsing")]
-        public async Task<IActionResult> GetNewParsing(string str)
+        public async Task<IActionResult> GetNewParsing(string str, AppDbContext db)
         {
             string generatorType;
             int fixQwId = 0;
@@ -137,10 +138,75 @@ namespace GeneratorAPI.Controllers
             }
             catch (IndexOutOfRangeException)//если не указаны все параметры, то на обычный выход
             {
-                return Ok("scripshot");
+                
             }
-            Console.WriteLine(generatorType + " " + idSet + " " + idSetGroup + " " + min + " " + max + " " + O + " " + YN + " " + X2 + " " + ALL + " " + fixQwId + " " + fixAnswid[0] + " " + fixAnswid[1] + " " + fixAnswid[2] + " " + fixAnswid[3] + " " + fixAnswid[4]);
-            return Ok("scripshot");
+
+
+            List<QuesToAns> questionsArray;
+            if (fixQwId!=0)//если задано конкретное id вопроса
+            {
+                questionsArray = db.QuestionsToAnswers
+                           .Where(c => c.QuestionID == fixQwId)
+                           .Include(c => c.Question)
+                           .AsNoTracking()
+                           .ToList();
+            }
+            else if (idSet != 0)//если задано конкретный idset
+            {
+                var q = db.Questions.Where(c=>c.IdSet.Id== idSet).AsNoTracking().Select(c=>c.Id).ToArray();
+                questionsArray = db.QuestionsToAnswers
+                            .Where(c=>q.Contains(c.QuestionID))
+                            .Include(c => c.Question)
+                            .AsNoTracking()
+                             .ToList();
+            }
+            else if (idSetGroup!= 0)//если задано только конкретный idset
+            {
+                List<int> set = db.IdSet.Where(c => c.IdGroup.Id == idSetGroup).AsNoTracking().Select(c => c.Id).ToList();
+                var q = db.Questions.Where(c => set.Contains(c.IdSet.Id)).AsNoTracking().Select(c => c.Id).ToArray();
+                questionsArray = db.QuestionsToAnswers
+                            .Where(c => q.Contains(c.QuestionID))
+                            .Include(c => c.Question)
+                            .AsNoTracking()
+                            .ToList();
+            }
+            else//если ничего не зодано -- все вопросы
+            {
+                questionsArray = db.QuestionsToAnswers.Include(c => c.Question)
+                            .AsNoTracking()
+                            .ToList(); ;
+            }
+            if (fixAnswid[0]!=0)//если заданы конкретные id вопросов, то фильтруем из массива, чтоб были только они
+                     //иначе -- оставляем весь массив для рандомной выборки внутри генератора
+            {
+                foreach (QuesToAns q in questionsArray)
+                {
+                    foreach (int ansId in fixAnswid)
+                    {
+                        if (ansId!=0&&q.AnswerID != ansId) questionsArray.Remove(q);
+                    }
+                }
+                if (questionsArray.Count<max)//если при этом не хватило, добираем  
+                {
+
+                }
+            }
+
+
+            switch (generatorType.ToLower())
+            {
+                case "combi":
+                case "1":
+                   
+                    break;
+                case "onpic":
+                case "2":
+                    break;
+            }
+
+            RezultatEntity t=new RezultatEntity();
+            
+            return Ok(t);
 
         }
 
