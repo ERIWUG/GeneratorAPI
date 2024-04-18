@@ -1,0 +1,112 @@
+﻿﻿@using GeneratorAPI.Models;
+@using GeneratorAPI.Models.Entities;
+@using Microsoft.EntityFrameworkCore
+@model AppDbContext;
+
+@{
+    Layout = null;
+    AppDbContext db = ViewBag.Db;
+    var IdGroups = db.IdGroup.AsNoTracking().Include(c => c.IdSets);
+    int[] ThemeQuestionsIDs = Model.Questions.Select(c => c.Id).ToArray();
+}
+
+<link rel="stylesheet" href="~/css/Index.css" />
+<script src="~/js/Index.js" asp-append-version="true"></script>
+
+
+<div>
+    <select>
+        @foreach (var c in IdGroups.Select(c => c.Id))
+        {
+            <option value="@c">
+                @c
+            </option>
+        }
+    </select>
+
+    <div>
+        @{
+            int j = 0;
+        }
+        @foreach (var c in IdGroups)
+        {
+
+            <select id="selectIdSet-@j">
+                @foreach (var q in c.IdSets)
+                {
+                    <option value="@q.Id">@q.Id</option>
+                }
+            </select>
+
+            j++;
+        }
+    </div>
+
+
+
+</div>
+
+    <label>Вопрос:</label>
+    @foreach (var i in db.IdSet.Select(c=>c.Id))
+    {
+        String n;
+        n = i == 1 ? "display:flex" : "display:none";
+        <div class="div-select-questions" id="div-select-questions-@i" style=@n>
+            <table border="1" id="question-select" >
+                <thead>
+                <td>id текст</td>
+                <td>редактировать текст</td>
+                <td>O</td>
+                <td>YN</td></thead>
+                @foreach (var p in Model.Questions.Where(c => c.IdSet.Id == i))
+                {
+                    <tr>
+                        <form method="post" action="/Home/EditQuestion">
+                        <td>
+                                @p.Id @p.Text
+                        </td>
+                        <td>
+                            <input id="question-select-value" name="questionText" value="@p.Text" />
+                        </td>
+                    <div class="div-checkbox" id="div-checkbox-@p.Id">
+                        <td>
+                            <input type="checkbox" id="div-checkbox-value-O-@p.Id" name="div-checkbox-values" value="O-@p.Id" />
+
+                        </td>
+                        <td>
+                            <input type="checkbox" id="div-checkbox-value-YN-@p.Id" name="div-checkbox-values" value="YN-@p.Id" />
+
+                        </td>
+                         </div>
+            <td>
+                <input id="question-select-value" type="hidden" name="questionID" value="@p.Id" />
+                <input type="submit" value="Сохранить изменения">
+            </td>
+            </form>
+            <td>
+                <form method="post" action="/Home/DeleteQuestion">
+                    <input id="question-select-value" type="hidden" name="questionID" value="@p.Id" />
+                    <input type="submit" value="Удалить">
+                </form>
+
+            </td>
+            </tr>
+                }
+
+
+
+        </table>
+    </div>
+
+    <form id="addQuestion-@i" method="post" action="/Home/AddQuestion" style=@n>
+        Текст вопроса:
+        <td>
+            <input id="question-select-value" name="questionText" value="" />
+        </td>
+        <input id="question-select-value" type="hidden" name="themeId" value="@i" />
+        <input type="submit" value="Добавить">
+    </form>
+    }
+
+</div>
+

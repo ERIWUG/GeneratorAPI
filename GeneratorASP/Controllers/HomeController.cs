@@ -67,6 +67,48 @@ namespace GeneratorASP.Controllers
         }
 
 
+        public IActionResult QuestionIndex()
+        {
+            ViewBag.Db = new AppDbContext();
+            /* int pageSize = 5; 
+             IEnumerable<QuestionEntity> questions = await _questionRepository.GetWithTheme();//await _questionRepository.GetByPage(page, pageSize);// await _questionRepository.GetByPage(page, pageSize);
+             PageViewModel pageInfo = new PageViewModel (questions.Count(), page, pageSize);
+             IEnumerable<QuestionEntity> questions1 = await _questionRepository.GetByPage(page, pageSize);
+             QuestionIndexViewModel ivm = new QuestionIndexViewModel { PageInfo = pageInfo, Questions = questions1 };
+             return View(ivm);*/
+            return View(db);
+            //return Redirect("/Home/QuestionIndex");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditQuestion()
+        {
+            int questionId = Int32.Parse(Request.Form["questionID"]);
+            String text = Request.Form["questionText"];
+            List<string> flags = new List<string>();
+            flags = Request.Form["div-checkbox-values"].ToList();
+            Console.WriteLine(flags[0]);
+            await _questionRepository.Edit(questionId, text, flags);
+            return Redirect("/Home/QuestionIndex");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddQuestion()
+        {
+            int themeId = Int32.Parse(Request.Form["themeId"]);
+            Console.WriteLine(themeId);
+            String text = Request.Form["questionText"];
+            await _questionRepository.Add(text, themeId);
+            return Redirect("/Home/QuestionIndex");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteQuestion(int questionID)
+        {
+            Console.WriteLine("============" + questionID + "===============");
+            await _questionRepository.Delete(questionID);
+            return Redirect("/Home/QuestionIndex");
+        }
 
 
         public IActionResult Privacy()
