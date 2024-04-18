@@ -50,11 +50,15 @@ namespace GeneratorAPI
             List<int> ImageIDS = new List<int>();
             foreach(var l in entity.Answers)
             {
-                entity.Images.Add(l.Images[random.Next(l.Images.Count)]);
+                var im = l.Images[random.Next(l.Images.Count)];
+                while (ImageIDS.Contains(im.Id))
+                {
+                    im = l.Images[random.Next(l.Images.Count)];
+                }
+                ImageIDS.Add(im.Id);
+                
+                entity.Images.Add(im);
             }
-
-
-
             return entity;
         }
 
