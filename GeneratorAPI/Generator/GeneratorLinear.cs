@@ -19,7 +19,7 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one TicketEntity</param>
         /// <returns>One TicketEntity with one correct and some Incorrect Question</returns>
-        public static RezultatEntity GenerateX2(QuesToAns[] mas,int[] IdSets, int maxInt = 5, int minInt = 3, bool flag = false)
+        public static RezultatEntity GenerateLinear(QuesToAns[] mas,int[] IdSets, int maxInt = 5, int minInt = 3, bool flag = false)
         {
             AppDbContext db = new AppDbContext();
             ParseData(mas, IdSets);

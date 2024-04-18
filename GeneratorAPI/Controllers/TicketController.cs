@@ -37,7 +37,7 @@ namespace GeneratorAPI.Controllers
                             .ToArray();
 
 
-            return Ok(Generator.GenerateX2(c,[1], 5,3));
+            return Ok(Generator.GenerateLinear(c,[1], 5,3));
             
         }
 

@@ -38,7 +38,7 @@ namespace GeneratorAPI.Models
             //     string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Vitya;password=1234;TrustServerCertificate=True;";
            // string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
             //string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
-            string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Vitya;password=1234;TrustServerCertificate=True;";
+            string connection = "Server=adrive.bx;Database=adriveby_data;user id=adriveby_student;password=DdVRVAQ$;TrustServerCertificate=True;";
             optionsBuilder.UseSqlServer(connection);
         }
 
