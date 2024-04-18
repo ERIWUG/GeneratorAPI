@@ -19,7 +19,7 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one ticket</param>
         /// <returns>One Ticket with one correct and some Incorrect Question</returns>
-        public static RezultatEntity GenerateGroup(QuesToAns[] mas, int[] IdSets, int minInt, int maxInt)
+        public static RezultatEntity GenerateX2(QuesToAns[] mas, int[] IdSets, int minInt, int maxInt)
         {
             List<int> BlockOfAllAnswers = new List<int>();
             List<int> CorrectAnswer = new List<int>();

@@ -74,6 +74,14 @@ namespace GeneratorASP.Controllers
             return View(q.Result);
         }
 
+        public IActionResult ATIindex()
+        {
+            ViewBag.Db = new AppDbContext();
+            var q = db.Images.AsNoTracking().Where(c => c.Id == 2).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).FirstAsync();
+            ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
+            return View(q.Result);
+        }
+
 
         public IActionResult QuestionIndex()
         {

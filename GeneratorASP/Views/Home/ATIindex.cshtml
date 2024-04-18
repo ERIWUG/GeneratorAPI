@@ -1,0 +1,103 @@
+﻿@using GeneratorAPI.Models
+@using GeneratorAPI.Models.Entities;
+@using Microsoft.EntityFrameworkCore
+@model ImageEntity
+
+@{
+
+}
+
+@{
+    Layout = null;
+    AppDbContext db = ViewBag.Db;
+    var IdGroups = db.IdGroup.AsNoTracking().Include(c => c.IdSets);
+}
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="~/css/QTI.css" />
+    <link rel="stylesheet" href="~/css/QTA.css" />
+    <script src="~/js/Index.js" asp-append-version="true"></script>
+</head>
+
+<body onload="Func()">
+    <form>
+        <input type="hidden" name="IdImage" value="@Model.Id" />
+        <div>
+            <div id="OneImage" class="imageGroup">
+                
+                <img src="@Model.Href" id="image-1" width="400px" height="400px" style="" />
+                <input type="hidden" id="image-value-1" value="false" />
+
+            </div>
+            
+        </div>
+
+        <div class="select-nav">
+            <select id="select-idGroup" onchange="GetIdSet()">
+                @foreach (var c in IdGroups.Select(c => c.Id))
+                {
+                    <option value="@c">
+                        @c
+                    </option>
+                }
+            </select>
+
+            <div>
+                @{
+                    int i = 0;
+                }
+                @foreach (var c in IdGroups)
+                {
+                    String n = i == 0 ? "display:flex" : "display:none"; i++;
+                    <select id="select-IdSet-@i" style=@n onchange="GetAnswers(@i)">
+                        @foreach (var q in c.IdSets)
+                        {
+                            <option value="@q.Id">@q.Id</option>
+                        }
+                    </select>
+                }
+                <input type="hidden" id="display-id" value="1"></input>
+            </div>
+
+
+
+        </div>
+
+
+        @{
+            i = 0;
+        }
+        @foreach (var c in db.IdGroup.AsNoTracking().Include(c => c.IdSets).ThenInclude(c => c.Answers))
+        {
+            foreach (var q in c.IdSets)
+            {
+                String n = i == 0 ? "display:flex" : "display:none"; i++;
+                <table border="1" id="table-@q.Id" style=@n>
+
+                    @foreach (var l in q.Answers)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" checked="@Model.Answers.Contains(l)" name="Answers" value="@l.Id"></input>
+                            </td>
+                            <td>
+                                <p>@l.Text</p>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+        }
+        <input type="hidden" id="Answer-id-shown" value="1"></input>
+
+        <input type="submit"></input>
+
+
+    </form>
+
+
+</body>
+
+
+
+
