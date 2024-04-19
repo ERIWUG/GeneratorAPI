@@ -27,6 +27,12 @@ namespace GeneratorAPI
             entity.Question = q;
             Random k = new Random();
             entity.Images.Add(q.Images[k.Next(q.Images.Count)]);
+            entity.Question.Images = null;
+            foreach(var c in entity.Images)
+            {
+                c.Questions = null;
+                c.IdSet.Images = null;
+            }
             return entity;
         }
 
@@ -49,7 +55,8 @@ namespace GeneratorAPI
             Random random = new Random();
             List<int> ImageIDS = new List<int>();
             int ql = 0;
-            foreach(var l in entity.Answers)
+            entity.Question.Images = null;
+            foreach (var l in entity.Answers)
             {
                 ql = 0;
                 var im = l.Images[random.Next(l.Images.Count)];
@@ -62,6 +69,11 @@ namespace GeneratorAPI
                 ImageIDS.Add(im.Id);
                 
                 entity.Images.Add(im);
+               
+            }
+            foreach (var c in entity.Images)
+            {
+                c.Questions = null;
             }
             return entity;
         }

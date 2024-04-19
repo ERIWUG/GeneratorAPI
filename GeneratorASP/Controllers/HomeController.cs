@@ -101,7 +101,7 @@ namespace GeneratorASP.Controllers
         public IActionResult QTIindex()
         {
             ViewBag.Db = new AppDbContext();
-            var q = db.Questions.AsNoTracking().Where(c => c.Id == 1).Include(c=>c.IdSet).ThenInclude(c=>c.IdGroup).FirstAsync();
+            var q = db.Questions.AsNoTracking().Where(c => c.Id == 1).Include(c=>c.IdSet).ThenInclude(c=>c.IdGroup).Include(c=>c.Images).FirstAsync();
             ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
             return View(q.Result);
         }

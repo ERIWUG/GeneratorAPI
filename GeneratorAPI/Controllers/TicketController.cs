@@ -66,7 +66,9 @@ namespace GeneratorAPI.Controllers
                 .AsNoTracking()
                 .Where(c => c.Id == id)
                 .Include(c => c.Images)
+                .ThenInclude(c=>c.IdSet)
                 .Include(c => c.Answers)
+                .Include(c=>c.QuestionToAnswer)
                 .FirstAsync();
             var rez = Generator.GeneratorImage(c.Result, [1], false, 5, 3);
             if (rez is null) return NoContent();
