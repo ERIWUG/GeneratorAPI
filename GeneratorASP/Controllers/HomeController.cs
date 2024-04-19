@@ -16,13 +16,15 @@ namespace GeneratorASP.Controllers
         private readonly QuestionRepository _questionRepository;
         private readonly AnswerRepository _answerRepository;
         private readonly QuesToAnsRepository _quesToAnsRepository;
+        private readonly ImageRepository _imageRepository;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, QuestionRepository questionRepository, QuesToAnsRepository quesToAnsRepository, AnswerRepository answerRepository)
+        public HomeController(ILogger<HomeController> logger, QuestionRepository questionRepository, QuesToAnsRepository quesToAnsRepository, AnswerRepository answerRepository, ImageRepository imageRepository)
         {
             _questionRepository = questionRepository;
             _quesToAnsRepository= quesToAnsRepository;
             _answerRepository = answerRepository;
+            _imageRepository = imageRepository;
             _logger = logger;
         }
 
@@ -220,6 +222,12 @@ namespace GeneratorASP.Controllers
             return View(db);
         }
 
+        public IActionResult ImageIndex()
+        {
+            ViewBag.Db = new AppDbContext();
+            return View(db);
+        }
+
         [HttpPost]
         public async Task<IActionResult> EditQuestion()
         {
@@ -281,6 +289,23 @@ namespace GeneratorASP.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> AddImage()
+        {
+            int themeId = Int32.Parse(Request.Form["themeId"]);
+            Console.WriteLine(themeId);
+            String text = Request.Form["imageText"];
+            await _imageRepository.Add(text, themeId);
+            return Redirect("/Home/ImageIndex");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteImage(int imageID)
+        {
+            await _imageRepository.Delete(imageID);
+            return Redirect("/Home/ImageIndex");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> QTAindex(int questionID)
         {
             ViewBag.Db = new AppDbContext();
@@ -298,7 +323,23 @@ namespace GeneratorASP.Controllers
             return View(q.Result);
         }
 
+        [HttpPost]
+        public IActionResult ITAindex(int answerID)
+        {
+            ViewBag.Db = new AppDbContext();
+            var q = db.Answers.AsNoTracking().Where(c => c.Id == answerID).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Images).FirstAsync();
+            ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
+            return View(q.Result);
+        }
 
+        [HttpPost]
+        public IActionResult ATIindex(int imageID)
+        {
+            ViewBag.Db = new AppDbContext();
+            var q = db.Images.AsNoTracking().Where(c => c.Id == imageID).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Answers).FirstAsync();
+            ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
+            return View(q.Result);
+        }
 
         public IActionResult Privacy()
         {

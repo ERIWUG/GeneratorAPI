@@ -1,5 +1,6 @@
 ﻿using GeneratorAPI.Models;
 using GeneratorAPI.Models.Entities;
+using GeneratorAPI.Models.TempTable;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
 
@@ -64,7 +65,7 @@ namespace GeneratorAPI.Repositories
         {
             AnswerEntity answerData = await GetById(answerId);
             answerData.Text = text;
-            await _dbContext.AddAsync(answerData);
+            _dbContext.Update(answerData);
             await _dbContext.SaveChangesAsync();
         }
 

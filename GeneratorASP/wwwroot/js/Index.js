@@ -88,6 +88,28 @@ function GetQuestions(a) {
 
 }
 
+function GetAnswers2(a) {
+    var x = document.getElementById("select-IdSet-" + a).value;
+
+    var l = document.getElementById("Answer-Shown").value;
+
+    document.getElementById("div-select-answers-" + l).style.display = "none";
+    document.getElementById("div-select-answers-" + x).style.display = "flex";
+    document.getElementById("Answer-Shown").value = x;
+    document.getElementById("answer-select-value-id").value = x;
+}
+
+function GetImages(a) {
+    var x = document.getElementById("select-IdSet-" + a).value;
+
+    var l = document.getElementById("Image-Shown").value;
+
+    document.getElementById("div-select-images-" + l).style.display = "none";
+    document.getElementById("div-select-images-" + x).style.display = "flex";
+    document.getElementById("Image-Shown").value = x;
+    document.getElementById("image-select-value-id").value = x;
+}
+
 function GetImage(a) {
     var x = document.getElementById("select-IdSet-" + a).value;
 
