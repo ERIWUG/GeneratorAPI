@@ -27,6 +27,17 @@ namespace GeneratorAPI
             List<int> randomElements = new List<int>();
             Random random = new Random();
 
+            bool ContainsSublist(List<List<int>> mainList, List<int> sublist)
+            {
+                foreach (var existingSublist in mainList)
+                {
+                    if (existingSublist.SequenceEqual(sublist))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
 
             List<int> GenerateRandomStrings(List<int> list)
             {
@@ -53,6 +64,8 @@ namespace GeneratorAPI
                 randomElements.Sort((a, b) => list.IndexOf(a).CompareTo(list.IndexOf(b)));
                 return randomElements;
             }
+
+            
 
 
             AppDbContext db = new AppDbContext();
@@ -101,14 +114,14 @@ namespace GeneratorAPI
             {
                 List<int> randomAnswer = new List<int>();
                 randomAnswer.AddRange(GenerateRandomStrings(BlockOfAllAnswers));
-                if (!GroupOfAnswers.Contains(randomAnswer))
+                if(!ContainsSublist(GroupOfAnswers, randomAnswer))
                 {
                     GroupOfAnswers.Add(randomAnswer);
                 }
             }
             int IndexOfCorrectAnswer = 0;
             //filling result entity
-            t.CorrectAnswer = IndexOfCorrectAnswer;
+            
             t.Question = mas[0].Question;
             //filling Answers entity
             foreach (int answer in BlockOfAllAnswers)
@@ -130,6 +143,9 @@ namespace GeneratorAPI
                 blockOfAnswers.Ints = templist.ToArray();
                 t.BlockAnswers.Add(blockOfAnswers);
             }
+            IndexOfCorrectAnswer=Shuffling(t, IndexOfCorrectAnswer);
+            t.CorrectAnswer = IndexOfCorrectAnswer;
+
             return t;
         }
     }
