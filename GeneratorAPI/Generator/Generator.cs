@@ -121,7 +121,7 @@ namespace GeneratorAPI
                             t = Generator.GenerateIsIt(questionsArray.ToArray(), idSets, answers);
                         }
                         else if (ALL) t = Generator.GenerateEnum(questionsArray.ToArray(), idSets, min, max);
-                        else if (X2) t = Generator.GenerateGroup(questionsArray.ToArray(), idSets, min, max);
+                        else if (X2) t = Generator.GenerateX2(questionsArray.ToArray(), idSets, min, max);
                         else t = Generator.GenerateLinear(questionsArray.ToArray(), idSets, max, min);
 
      
