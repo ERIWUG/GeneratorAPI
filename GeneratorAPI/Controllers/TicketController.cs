@@ -59,21 +59,8 @@ namespace GeneratorAPI.Controllers
         }
 
 
-        [HttpGet("/api/Ticket/GetImageQuestionByQuestion")]
-        public async Task<IActionResult> GetNewImage(int id, AppDbContext db,bool flag)
-        {
-            var c = db.Questions
-                .AsNoTracking()
-                .Where(c => c.Id == id)
-                .Include(c => c.Images)
-                .ThenInclude(c=>c.IdSet)
-                .Include(c => c.Answers)
-                .Include(c=>c.QuestionToAnswer)
-                .FirstAsync();
-            var rez = Generator.GeneratorImage(c.Result, [1], flag, 5, 3);
-            if (rez is null) return NoContent();
-            else { return Ok(rez); }
-        }
+        
+      
 
         [HttpGet("/api/Ticket/GetImageQuestionByImage")]
         public async Task<IActionResult> GetNewImageMyImage(int id, AppDbContext db, bool flag)
