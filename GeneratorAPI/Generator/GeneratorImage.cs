@@ -11,6 +11,7 @@ using GeneratorAPI.Models.TempTable;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.Host.Mef;
+using System.Linq.Expressions;
 //using Newtonsoft.Json.Linq;
 
 namespace GeneratorAPI
@@ -89,22 +90,24 @@ namespace GeneratorAPI
         }
 
 
-        public static async Task<RezultatEntity> GeneratorImage(ImageEntity im, int[] IdSets, int maxInd = 5, int minInd = 3)
+        public static async Task<RezultatEntity> GeneratorImage(QuestionEntity q,int[] IdSets, int maxInd = 5, int minInd = 3)
         {
-            QuestionEntity q;
+            AppDbContext db = new AppDbContext();
             Random k= new Random();
-            try
+            RezultatEntity rez = Generator.GenerateLinear(q.QuestionToAnswer.ToArray(), IdSets, maxInd, minInd);
+
+
+
+            var im = await db.Answers.Where(c => c.Id == q.Answers[0].Id).Include(c => c.Images).AsNoTracking().FirstAsync();
+
+            q.Answers[0].Images.Add(im.Images[k.Next(im.Images.Count)]);
+            foreach(var j in q.Answers[0].Images)
             {
-                 q = im.Questions[k.Next(im.Questions.Count)];
+                j.Answers = null;
+                j.Questions = null;
             }
-            catch (System.ArgumentOutOfRangeException)
-            {
-                return null;
-            }
-            RezultatEntity rez = GenerateLinear(q.QuestionToAnswer.ToArray(), IdSets, maxInd, minInd);
-            im.Questions = null;
-            rez.Images.Add(im);
-            rez.Question.Images = null;
+
+
             return rez;
         }
 

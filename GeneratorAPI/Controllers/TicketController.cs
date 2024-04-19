@@ -66,15 +66,14 @@ namespace GeneratorAPI.Controllers
         
       
 
-        [HttpGet("/api/Ticket/GetImageQuestionByImage")]
+        [HttpGet("/api/Ticket/GetImageQuestion")]
         public async Task<IActionResult> GetNewImageMyImage(int id, AppDbContext db, bool flag)
         {
-            var c = db.Images
-                .AsNoTracking()
-                .Where(c => c.Id == id)
-                .Include(c => c.Questions)
-                .ThenInclude(c=>c.QuestionToAnswer)
-                .FirstAsync();
+            var c = db.Questions
+                            .Where(c => c.Id == id)
+                            .Include(c => c.QuestionToAnswer)
+                            .AsNoTracking()
+                            .FirstAsync();
             var rez = Generator.GeneratorImage(c.Result, [1], 5, 3);
             if (rez is null) return NoContent();
             else { return Ok(rez); }
@@ -134,7 +133,7 @@ namespace GeneratorAPI.Controllers
                     foreach (ImageEntity image in images)
                         if (image.Questions.Count >= 1)
                         {
-                            t = await Generator.GeneratorImage(image, [idSet], Vd, V);
+                            t = await Generator.GeneratorImage(, [idSet], Vd, V);
                             break;
                             Console.WriteLine(t.Answers.ToString());
                         }
