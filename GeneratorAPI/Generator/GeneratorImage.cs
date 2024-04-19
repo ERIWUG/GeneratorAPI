@@ -22,7 +22,12 @@ namespace GeneratorAPI
     {
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="flag"></param>
+        /// <returns></returns>
         public async static Task<RezultatEntity> GeneratorImage(RezultatEntity entity,int flag)
         {
             AppDbContext db = new AppDbContext();
@@ -55,6 +60,7 @@ namespace GeneratorAPI
                         else
                         {
                             er = 1;
+                            break;
                         }
                     }
 

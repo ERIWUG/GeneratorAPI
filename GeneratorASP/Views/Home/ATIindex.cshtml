@@ -1,4 +1,4 @@
-﻿@using GeneratorAPI.Models
+﻿﻿@using GeneratorAPI.Models
 @using GeneratorAPI.Models.Entities;
 @using Microsoft.EntityFrameworkCore
 @model ImageEntity
@@ -29,12 +29,12 @@
         <input type="hidden" name="IdImage" value="@Model.Id" />
         <div>
             <div id="OneImage" class="imageGroup">
-                
+
                 <img src="@Model.Href" id="image-1" width="400px" height="400px" style="" />
                 <input type="hidden" id="image-value-1" value="false" />
 
             </div>
-            
+
         </div>
 
         <div class="select-nav">
@@ -102,7 +102,3 @@
 
 
 </body>
-
-
-
-

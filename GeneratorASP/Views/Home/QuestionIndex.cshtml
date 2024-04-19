@@ -14,7 +14,7 @@
 <script src="~/js/Index.js" asp-append-version="true"></script>
 
 
-<div>
+<div class="select-nav">
     <select id="select-idGroup" onchange="GetIdSet()">
         @foreach (var c in IdGroups.Select(c => c.Id))
         {
@@ -31,15 +31,14 @@
         @foreach (var c in IdGroups)
         {
             String n = j == 0 ? "display:flex" : "display:none"; j++;
-            <select id="selectIdSet-@j" style=@n onchange="GetAnswers(@j)">
+            <select id="select-IdSet-@j" style=@n onchange="GetQuestions(@j)">
                 @foreach (var q in c.IdSets)
                 {
                     <option value="@q.Id">@q.Id</option>
                 }
             </select>
-
-            j++;
         }
+        <input type="hidden" id="display-id" value="1"></input>
     </div>
 
 
@@ -109,16 +108,18 @@
                 </table>
                 </div>
 
-    <form id="addQuestion-@i" method="post" action="/Home/AddQuestion" style=@n>
-        Добавление вопроса
-        Текст вопроса:
-
-        <input id="question-select-value" name="questionText" value="" />
-        <input id="question-select-value" type="hidden" name="themeId" value="@i" />
-        Отрицательный вопрос <input type="checkbox" name="questionO" value="O" />
-
-        Вопрос Yes/No <input type="checkbox" name="questionYN" value="YN" />
-        <input type="submit" value="Добавить">
-    </form>
+    
 }
+<input type="hidden" id="Question-Shown" value="1"></input>
+<form id="addQuestion-" method="post" action="/Home/AddQuestion" >
+    Добавление вопроса
+    Текст вопроса:
+
+    <input id="question-select-value" name="questionText" value="" />
+    <input id="question-select-value-id" type="hidden" name="themeId" value="1" />
+    Отрицательный вопрос <input type="checkbox" name="questionO" value="O" />
+
+    Вопрос Yes/No <input type="checkbox" name="questionYN" value="YN" />
+    <input type="submit" value="Добавить">
+</form>
     </div>

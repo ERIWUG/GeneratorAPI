@@ -15,11 +15,13 @@ namespace GeneratorAPI
     public static partial class Generator
     {
         /// <summary>
-        /// Function that generate and print IsItquestion
+        /// Генератор, использующий для генерации вопросов типа Является/ Не является.
+        /// При этом вопрос для этого генератора должен иметь __ Для замены на ответ
         /// </summary>
-        /// <param name="mas">Array of Data</param>
-        /// <param name="amount">Amount of Question</param>
-        /// <Author>Belyi Egor</Author>
+        /// <param name="mas">Массив из данных, необходимых для генерирования</param>
+        /// <param name="IdSets">ID set ответов</param>
+        /// <param name="ans">Ответы является/Не является из бд</param>
+        /// <returns></returns>
         public static RezultatEntity GenerateIsIt(QuesToAns[] mas, int[] IdSets,AnswerEntity[] ans)
         {
             AppDbContext db = new AppDbContext();
@@ -45,7 +47,7 @@ namespace GeneratorAPI
             mas[0].Question.QuestionToImage = null;
             mas[0].Question.QuestionToAnswer = null;
             var l = new QuestionEntity();
-            l.Text = mas[0].Question.Text.Replace("______", n.Text);
+            l.Text = mas[0].Question.Text.Replace("__", n.Text);
             t.Question = l;
             t.Answers.Add(n); t.Answers.Add(ans[0]); t.Answers.Add(ans[1]);
             t.Seed = $"{mas[0].Question.Id}-{mas[0].Question.IdSet.IdGroup.Id}-{t.Question.IdSet.Id}-{l}-ISIT-2-{ans[0].Id}-{ans[1].Id}-{c}";
