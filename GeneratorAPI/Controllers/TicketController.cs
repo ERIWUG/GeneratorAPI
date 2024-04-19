@@ -37,10 +37,14 @@ namespace GeneratorAPI.Controllers
         [HttpGet("/api/Ticket/GetEnum")]
         public async Task<IActionResult> GetEnum(int id, AppDbContext db)
         {
-            var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
+            var c = db.QuestionsToAnswers
+                           .Where(c => c.QuestionID == id)
+                           .Include(c => c.Question)
+                           .AsNoTracking()
+                           .ToArray();
 
 
-            return Ok(Generator.GenerateEnum(c,[1], 5, 5).ToJson());
+            return Ok(Generator.GenerateEnum(c,[1], 5, 5));
 
         }
 

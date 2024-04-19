@@ -59,12 +59,14 @@ namespace GeneratorAPI.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Add(string text, int themeId)
+        public async Task Add(string text, int themeId, bool O, bool YN)
         {
             var questiondata = new QuestionEntity
             {
                 Text = text,
-
+                IsNegative = O,
+                IsItQuestion=YN
+            
             };
             IdSetEntity idSetEntity=await idSetRepository.GetById(themeId);
             idSetEntity.Questions.Add(questiondata);

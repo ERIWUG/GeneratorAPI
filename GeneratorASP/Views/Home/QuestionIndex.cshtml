@@ -48,8 +48,7 @@
 
 <label>Вопрос:</label>
 @foreach (var i in db.IdSet.Select(c => c.Id))
-{
-    String n;
+{    String n;
     n = i == 1 ? "display:flex" : "display:none";
     <div class="div-select-questions" id="div-select-questions-@i" style=@n>
         <table border="1" id="question-select">
@@ -88,7 +87,17 @@
                 <input id="question-select-value" type="hidden" name="questionID" value="@p.Id" />
                 <input type="submit" value="Удалить">
             </form>
-
+            </td><td>
+            <form method="post" action="/Home/QTAIndex">
+                <input id="question-select-value" type="hidden" name="questionID" value="@p.Id" />
+                <input type="submit" value="Добавить связи с ответами">
+            </form>
+        </td>
+        <td>
+            <form method="post" action="/Home/QTIIndex">
+                <input id="question-select-value" type="hidden" name="questionID" value="@p.Id" />
+                <input type="submit" value="Добавить связи с картинками">
+            </form>
         </td>
                     </tr>
             }
@@ -96,17 +105,19 @@
 
 
             </table>
-        </div>
-
-    <form id="addQuestion-@i" method="post" action="/Home/AddQuestion" style=@n>
-        Текст вопроса:
-        <td>
+            </div>
+ 
+  <form id="addQuestion-@i" method="post" action="/Home/AddQuestion" style=@n>
+        Добавление вопроса
+                Текст вопроса:
+ 
             <input id="question-select-value" name="questionText" value="" />
-        </td>
         <input id="question-select-value" type="hidden" name="themeId" value="@i" />
+       Отрицательный вопрос <input type="checkbox"   name="questionO" value="O" />
+
+       Вопрос Yes/No <input type="checkbox"  name="questionYN" value="YN" />
         <input type="submit" value="Добавить">
     </form>
-}
-
-</div>
-
+    }
+    </div>
+       
