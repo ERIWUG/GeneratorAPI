@@ -30,7 +30,7 @@ namespace GeneratorAPI
             int allOrNo = k.Next(0, 3);
             int DeletingIndex = 0;
             if (minInt < 4) minInt = 4;
-            int NowAmountAnswers = k.Next(minInt - 2, maxInt - 2);
+            int NowAmountAnswers = k.Next(minInt - 1, maxInt - 1);
             int ForSeed = NowAmountAnswers;
             var t = new RezultatEntity();
             mas[0].Question.Answers = null;
@@ -58,17 +58,17 @@ namespace GeneratorAPI
                     t.Answers.Add(qq);
 
                 }
-                var qq1 = db.Answers.Where(c => c.Id == 73).Include(c => c.IdSet).First();//все перечисленное
+                var qq1 = db.Answers.Where(c => c.Id == 73).Include(c => c.IdSet).ThenInclude(c => c.IdGroup.IdSets).First();//все перечисленное
                 t.Seed += $"{qq1.Id}-";
                 qq1.IdSet.Answers = null;
-            //    qq1.IdSet.IdGroup.IdSets = null;
+               qq1.IdSet.IdGroup.IdSets = null;
                 qq1.IdSet.Questions = null;
                 qq1.IdSet.Images = null;
                 t.Answers.Add(qq1);
-                 qq1 = db.Answers.Where(c => c.Id == 74).Include(c => c.IdSet).First();//ничего  перечисленное
+                 qq1 = db.Answers.Where(c => c.Id == 74).Include(c => c.IdSet).ThenInclude(c => c.IdGroup.IdSets).First();//ничего  перечисленное
                 t.Seed += $"{qq1.Id}-";
                 qq1.IdSet.Answers = null;
-             //   qq1.IdSet.IdGroup.IdSets = null;
+                qq1.IdSet.IdGroup.IdSets = null;
                 qq1.IdSet.Questions = null;
                 qq1.IdSet.Images = null;
                 t.Answers.Add(qq1);
@@ -95,15 +95,17 @@ namespace GeneratorAPI
                     t.Answers.Add(qq);
 
                 }
-                var qq1 = db.Answers.Where(c => c.Id == 73).Include(c => c.IdSet).First();//все перечисленное
+                var qq1 = db.Answers.Where(c => c.Id == 73).Include(c => c.IdSet).ThenInclude(c => c.IdGroup.IdSets).First();//все перечисленное
                 t.Seed += $"{qq1.Id}-";
-              //  qq1.IdSet.IdGroup.IdSets = null;
+                qq1.IdSet.Answers = null;
+                qq1.IdSet.IdGroup.IdSets = null;
                 qq1.IdSet.Questions = null;
                 qq1.IdSet.Images = null;
                 t.Answers.Add(qq1);
-                qq1 = db.Answers.Where(c => c.Id == 74).Include(c => c.IdSet).First();//ничего  перечисленное
+                qq1 = db.Answers.Where(c => c.Id == 74).Include(c => c.IdSet).ThenInclude(c => c.IdGroup.IdSets).First();//ничего  перечисленное
                 t.Seed += $"{qq1.Id}-";
-             //   qq1.IdSet.IdGroup.IdSets = null;
+                qq1.IdSet.Answers = null;
+                qq1.IdSet.IdGroup.IdSets = null;
                 qq1.IdSet.Questions = null;
                 qq1.IdSet.Images = null;
                 t.Answers.Add(qq1);
@@ -123,6 +125,7 @@ namespace GeneratorAPI
                 {
                     var qq = db.Answers.Where(c => c.Id == i).First();
                     t.Seed += $"{qq.Id}-";
+                    qq.IdSet.Answers = null;
                     qq.IdSet.IdGroup.IdSets = null;
                     qq.IdSet.Questions = null;
                     qq.IdSet.Images = null;
@@ -130,15 +133,17 @@ namespace GeneratorAPI
 
                 }
 
-                var qq1 = db.Answers.Where(c => c.Id == 73).Include(c=>c.IdSet).First();//все перечисленное
+                var qq1 = db.Answers.Where(c => c.Id == 73).Include(c=>c.IdSet).ThenInclude(c=>c.IdGroup.IdSets).First();//все перечисленное
                 t.Seed += $"{qq1.Id}-";
-             //   qq1.IdSet.IdGroup.IdSets = null;
+                qq1.IdSet.Answers = null;
+                qq1.IdSet.IdGroup.IdSets = null;
                 qq1.IdSet.Questions = null;
                 qq1.IdSet.Images = null;
                 t.Answers.Add(qq1);
-                qq1 = db.Answers.Where(c => c.Id == 74).Include(c => c.IdSet).First();//ничего  перечисленное
+                qq1 = db.Answers.Where(c => c.Id == 74).Include(c => c.IdSet).ThenInclude(c => c.IdGroup.IdSets).First();//ничего  перечисленное
                 t.Seed += $"{qq1.Id}-";
-             //   qq1.IdSet.IdGroup.IdSets = null;
+                qq1.IdSet.Answers = null;
+                qq1.IdSet.IdGroup.IdSets = null;
                 qq1.IdSet.Questions = null;
                 qq1.IdSet.Images = null;
                 t.Answers.Add(qq1);
