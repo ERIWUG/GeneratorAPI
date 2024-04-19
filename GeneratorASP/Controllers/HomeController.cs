@@ -36,7 +36,6 @@ namespace GeneratorASP.Controllers
         {
             
             int QuestionId = Int32.Parse(Request.Form["IdQuestion"]);
-            List<int> allAnswersId = new List<int>();
             List<string> answersIdsStr = new List<string>();
             answersIdsStr = Request.Form["ImageValues"].ToList();
             List<int> ImageIDS = new List<int>();
@@ -90,7 +89,47 @@ namespace GeneratorASP.Controllers
     
         }
 
-        public IActionResult QTAindex()
+
+        [HttpPost]
+        public async Task<RedirectResult> AddAnswersToImage()
+        {
+
+            int ImageId = Int32.Parse(Request.Form["IdImage"]);
+            List<int> allAnswersId = new List<int>();
+            List<string> answersIdsStr = new List<string>();
+            answersIdsStr = Request.Form["Answers"].ToList();
+            List<int> AnswersIds = new List<int>();
+            foreach (string IdStr in answersIdsStr)
+                AnswersIds.Add(Int32.Parse(IdStr));
+            ImageEntity c = db.Images.Where(c => c.Id == ImageId).Include(c => c.Answers).FirstOrDefault();
+            List<AnswerEntity> kl = new List<AnswerEntity>();
+            foreach (var i in c.Answers)
+            {
+
+                if (AnswersIds.Contains(i.Id))
+                {
+                    AnswersIds.Remove(i.Id);
+                }
+                else
+                {
+                    kl.Add(i);
+                }
+            }
+            foreach (var i in kl)
+            {
+                c.Answers.Remove(i);
+            }
+            foreach (var i in AnswersIds)
+            {
+                c.Answers.Add(db.Answers.Where(c => c.Id == i).First());
+            }
+            await db.SaveChangesAsync();
+
+            return Redirect("/Home/Index");
+        }
+
+
+            public IActionResult QTAindex()
         {
             ViewBag.Db = new AppDbContext();
             var q = db.Questions.AsNoTracking().Where(c => c.Id == 1).Include(c=>c.Answers).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).FirstAsync();

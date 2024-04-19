@@ -20,7 +20,7 @@
 </head>
 
 <body onload="Func()">
-    <form>
+    <form asp-action="AddAnswersToImage" asp-controller="Home" method="post">
         <input type="hidden" name="IdImage" value="@Model.Id" />
         <div>
             <div id="OneImage" class="imageGroup">
