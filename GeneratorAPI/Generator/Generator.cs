@@ -47,7 +47,7 @@ namespace GeneratorAPI
             AppDbContext db = new AppDbContext();
             int[] idSets;
             List<QuesToAns> questionsArray;
-            questionsArray = db.QuestionsToAnswers.Include(c => c.Question).Where(c=>c.Question.IsNegative==O)
+            questionsArray = db.QuestionsToAnswers.Include(c => c.Question).Where(c => c.Question.IsNegative == O)
                           .AsNoTracking()
                           .ToList();
 
@@ -112,30 +112,26 @@ namespace GeneratorAPI
                         questionsArray.Add(copyQuestionArray[k]);
                 }
             }
-                RezultatEntity t = new RezultatEntity();
+            RezultatEntity t = new RezultatEntity();
 
-               
-                        if (YN)
-                        {
-                            AnswerEntity[] answers = null;//явл -- не явл
-                            t = Generator.GenerateIsIt(questionsArray.ToArray(), idSets, answers);
-                        }
-                        else if (ALL) t = Generator.GenerateEnum(questionsArray.ToArray(), idSets, min, max);
-                        else if (X2) t = Generator.GenerateX2(questionsArray.ToArray(), idSets, min, max);
-                        else t = Generator.GenerateLinear(questionsArray.ToArray(), idSets, max, min);
 
-     
-            return t;
+            if (YN)
+            {
+                AnswerEntity[] answers = null;//явл -- не явл
+                t = Generator.GenerateIsIt(questionsArray.ToArray(), idSets, answers);
             }
+            else if (ALL) t = Generator.GenerateEnum(questionsArray.ToArray(), idSets, min, max);
+            else if (X2) t = Generator.GenerateX2(questionsArray.ToArray(), idSets, min, max);
+            else t = Generator.GenerateLinear(questionsArray.ToArray(), idSets, max, min);
 
 
-            private static void UpdateDictionary()
+            return t;
+        }
+
+
+        private static void UpdateDictionary()
         {
             AppDbContext db = new AppDbContext();
-           
-           
-            
-
 
         }
         

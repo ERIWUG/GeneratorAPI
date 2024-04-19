@@ -75,6 +75,62 @@ namespace GeneratorAPI.Controllers
             else { return Ok(rez); }
         }
 
+        [HttpGet("/api/Ticket/getBezParsinga")]
+        public async Task<IActionResult> getBezParsinga(string generatorType, string qwP, string answP, int idSet, int idSetGroup, int max = 5, int min = 3, bool O = false, bool X2 = false, bool ALL = false, bool YN = false, int fixQwId = 0, int fixAnswid1 = 0, int fixAnswid2 = 0, int fixAnswid3 = 0, int fixAnswid4 = 0, int fixAnswid5 = 0)
+        {
+            Pics qwPic, answPic;
+            int[] fixAnswid = new int[5];
+            fixAnswid[0] = fixAnswid1;
+            fixAnswid[1] = fixAnswid2;
+            fixAnswid[2] = fixAnswid3;
+            fixAnswid[3] = fixAnswid4;
+            fixAnswid[4] = fixAnswid5;
+
+            switch (qwP[5])//QwPic
+            {
+                case 'Y':
+                    qwPic = Pics.Yes;
+                    break;
+                case 'N':
+                    qwPic = Pics.No;
+                    break;
+                case 'R':
+                default:
+                    qwPic = Pics.Random;
+                    break;
+            }
+
+            switch (answP[7])//AnswPic
+            {
+                case 'Y':
+                    answPic = Pics.Yes;
+                    break;
+                case 'N':
+                    answPic = Pics.No;
+                    break;
+                case 'R':
+                default:
+                    answPic = Pics.Random;
+                    break;
+            }
+
+            RezultatEntity t = new RezultatEntity();
+            switch (generatorType.ToLower())//может быть задан именем или цифрами
+            {
+                case "combi":
+                case "1":
+                    t = Generator.GeneratorCombi(fixQwId, idSet, idSetGroup, min, max, fixAnswid, O, YN, X2, ALL, qwPic, answPic);
+
+                    break;
+                case "onpic":
+                case "2":
+                    break;
+            }
+
+            return Ok(t);
+
+        }
+
         [HttpGet("/api/Ticket/GetNewParsing")]
         public async Task<IActionResult> GetNewParsing(string str)
         {
