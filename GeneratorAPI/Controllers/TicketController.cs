@@ -35,8 +35,6 @@ namespace GeneratorAPI.Controllers
         }
 
         [HttpGet("/api/Ticket/GetEnum")]
-
-
         public async Task<IActionResult> GetEnum(int id, AppDbContext db)
         {
             var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
@@ -47,7 +45,6 @@ namespace GeneratorAPI.Controllers
         }
 
         [HttpGet("/api/Ticket/GetGroup")]
-
         public async Task<IActionResult> GetGroup(int id, AppDbContext db)
         {
             var c = db.QuestionsToAnswers
@@ -59,6 +56,21 @@ namespace GeneratorAPI.Controllers
 
             return Ok(Generator.GenerateX2(c,[1], 3, 5));
 
+        }
+
+
+        [HttpGet("/api/Ticket/GetImageQuestion")]
+        public async Task<IActionResult> GetNewImage(int id, AppDbContext db,bool flag)
+        {
+            var c = db.Questions
+                .AsNoTracking()
+                .Where(c => c.Id == id)
+                .Include(c => c.Images)
+                .Include(c => c.Answers)
+                .FirstAsync();
+            var rez = Generator.GeneratorImage(c.Result, [1], false, 5, 3);
+            if (rez is null) return NoContent();
+            else { return Ok(rez); }
         }
 
         [HttpGet("/api/Ticket/GetNewParsing")]

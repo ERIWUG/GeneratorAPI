@@ -371,3 +371,4 @@ FodyWeavers.xsd
 /GeneratorAPI/Controllers/TicketController.cs
 /GeneratorAPI/Generator/Generator.cs
 /GeneratorAPI/Generator/GeneratorEnum.cs
+/GeneratorAPI/Models/AppDbContext.cs

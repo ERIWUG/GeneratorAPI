@@ -48,13 +48,17 @@ namespace GeneratorAPI
             RezultatEntity entity = GenerateLinear(q.QuestionToAnswer.ToArray(), IdSets, maxInd, minInd);
             Random random = new Random();
             List<int> ImageIDS = new List<int>();
+            int ql = 0;
             foreach(var l in entity.Answers)
             {
+                ql = 0;
                 var im = l.Images[random.Next(l.Images.Count)];
-                while (ImageIDS.Contains(im.Id))
+                while (ImageIDS.Contains(im.Id)||ql<10)
                 {
                     im = l.Images[random.Next(l.Images.Count)];
+                    ql++;
                 }
+                if (ql == 10) { return null; }
                 ImageIDS.Add(im.Id);
                 
                 entity.Images.Add(im);
