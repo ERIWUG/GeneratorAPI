@@ -91,24 +91,23 @@ namespace GeneratorASP.Controllers
 
 
         [HttpPost]
-        public async Task<RedirectResult> AddAnswersToImage()
+        public async Task<RedirectResult> AddImageToAnwer()
         {
 
-            int ImageId = Int32.Parse(Request.Form["IdImage"]);
-            List<int> allAnswersId = new List<int>();
-            List<string> answersIdsStr = new List<string>();
-            answersIdsStr = Request.Form["Answers"].ToList();
-            List<int> AnswersIds = new List<int>();
-            foreach (string IdStr in answersIdsStr)
-                AnswersIds.Add(Int32.Parse(IdStr));
-            ImageEntity c = db.Images.Where(c => c.Id == ImageId).Include(c => c.Answers).FirstOrDefault();
-            List<AnswerEntity> kl = new List<AnswerEntity>();
-            foreach (var i in c.Answers)
+            int AnswerId = Int32.Parse(Request.Form["IdAnswer"]);
+            List<string> ImagesIdsStr = new List<string>();
+            ImagesIdsStr = Request.Form["ImageValues"].ToList();
+            List<int> ImageIDS = new List<int>();
+            foreach (string IdStr in ImagesIdsStr)
+                ImageIDS.Add(Int32.Parse(IdStr));
+            AnswerEntity c = db.Answers.Where(c => c.Id == AnswerId).Include(c => c.Images).FirstOrDefault();
+            List<ImageEntity> kl = new List<ImageEntity>();
+            foreach (var i in c.Images)
             {
 
-                if (AnswersIds.Contains(i.Id))
+                if (ImageIDS.Contains(i.Id))
                 {
-                    AnswersIds.Remove(i.Id);
+                    ImageIDS.Remove(i.Id);
                 }
                 else
                 {
@@ -117,15 +116,16 @@ namespace GeneratorASP.Controllers
             }
             foreach (var i in kl)
             {
-                c.Answers.Remove(i);
+                c.Images.Remove(i);
             }
-            foreach (var i in AnswersIds)
+            foreach (var i in ImageIDS)
             {
-                c.Answers.Add(db.Answers.Where(c => c.Id == i).First());
+                c.Images.Add(db.Images.Where(c => c.Id == i).First());
             }
             await db.SaveChangesAsync();
 
             return Redirect("/Home/Index");
+            
         }
 
 
@@ -148,7 +148,7 @@ namespace GeneratorASP.Controllers
         public IActionResult ATIindex()
         {
             ViewBag.Db = new AppDbContext();
-            var q = db.Images.AsNoTracking().Where(c => c.Id == 2).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Answers).FirstAsync();
+            var q = db.Answers.AsNoTracking().Where(c => c.Id == 2).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Images).FirstAsync();
             ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
             return View(q.Result);
         }
