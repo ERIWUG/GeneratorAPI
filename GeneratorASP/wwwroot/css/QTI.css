@@ -1,7 +1,14 @@
 ﻿body {
 }
-
-
+.ImageClass {
+    display: flex;
+    flex-direction: column;
+}
+.select-nav {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 10px;
+}
 .formClass{
 
     display:flex;

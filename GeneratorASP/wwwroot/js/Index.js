@@ -39,9 +39,12 @@ function contains(arr, elem) {
 function Func() {
     
     document.getElementById("imageGroup").addEventListener('click', e => {
-        e.target.style = (e.target.getAttribute("style") == "" ? "filter:blur(20px)" : "");
-        console.log(document.getElementById("image-value-" + e.target.getAttribute("value")).value);
-        document.getElementById("image-value-" + e.target.getAttribute("value")).checked = (e.target.getAttribute("style") == "" ? false : true);
+        console.log(e.target.getAttribute("height") == "400px");
+        if (e.target.getAttribute("height") == "400px") {
+            e.target.style = (e.target.getAttribute("style") == "" ? "filter:blur(20px)" : "");
+            
+            document.getElementById("image-value-" + e.target.getAttribute("value")).checked = (e.target.getAttribute("style") == "" ? false : true);
+        }
         
         
     });
@@ -73,10 +76,10 @@ function GetAnswers(a) {
 function GetImage(a) {
     var x = document.getElementById("select-IdSet-" + a).value;
 
-    var l = document.getElementById("Answer-id-shown").value;
+    var l = document.getElementById("Image-id-shown").value;
 
-    document.getElementById("table-" + l).style.display = "none";
-    document.getElementById("table-" + x).style.display = "flex";
-    document.getElementById("Answer-id-shown").value = x;
+    document.getElementById("imageGroup-" + l).style.display = "none";
+    document.getElementById("imageGroup-" + x).style.display = "flex";
+    document.getElementById("Image-id-shown").value = x;
 
 }

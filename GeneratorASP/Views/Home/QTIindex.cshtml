@@ -19,8 +19,8 @@
 }
 <!DOCTYPE html>
 <head>
-<link rel="stylesheet" href="~/css/QTI.css" />
-<script src="~/js/Index.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/QTI.css" />
+    <script src="~/js/Index.js" asp-append-version="true"></script>
 </head>
 
 <body onload="Func()">
@@ -83,7 +83,7 @@
                     }
                     @foreach (var l in q.Images)
                     {
-                        <div>
+                        <div class="ImageClass">
                             @if (KL.Contains(l.Id))
                             {
                                 n="filter:blur(20px)";
@@ -95,6 +95,9 @@
                                 fl = false;
                             }
                             <img src="@l.Href" id="image-@l.Id" width="400px" height="400px" style="@n" value="@l.Id"/>
+                            <label>
+                                @l.Href.Split('/').Last();
+                            </label>
                             <input type="checkbox" name="ImageValues" id="image-value-@l.Id" value="@l.Id" checked="@fl" style="display:none"/>
 
                         </div>
