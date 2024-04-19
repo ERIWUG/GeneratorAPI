@@ -1,0 +1,105 @@
+﻿﻿﻿@using GeneratorAPI.Models;
+@using GeneratorAPI.Models.Entities;
+@using Microsoft.EntityFrameworkCore
+@model AppDbContext;
+
+@{
+    Layout = null;
+    AppDbContext db = ViewBag.Db;
+    var IdGroups = db.IdGroup.AsNoTracking().Include(c => c.IdSets);
+    int[] ThemeAnswersIDs = Model.Answers.Select(c => c.Id).ToArray();
+}
+
+<link rel="stylesheet" href="~/css/Index.css" />
+<script src="~/js/Index.js" asp-append-version="true"></script>
+
+
+<div>
+    <select id="select-idGroup" onchange="GetIdSet()">
+        @foreach (var c in IdGroups.Select(c => c.Id))
+        {
+            <option value="@c">
+                @c
+            </option>
+        }
+    </select>
+
+    <div>
+        @{
+            int j = 0;
+        }
+        @foreach (var c in IdGroups)
+        {
+            String n = j == 0 ? "display:flex" : "display:none"; j++;
+            <select id="selectIdSet-@j" style=@n onchange="GetAnswers(@j)">
+                @foreach (var q in c.IdSets)
+                {
+                    <option value="@q.Id">@q.Id</option>
+                }
+            </select>
+
+            j++;
+        }
+    </div>
+
+
+
+</div>
+
+<label>Вопрос:</label>
+@foreach (var i in db.IdSet.Select(c => c.Id))
+{
+    String n;
+    n = i == 1 ? "display:flex" : "display:none";
+    <div class="div-select-answers" id="div-select-answers-@i" style=@n>
+        <table border="1" id="answer-select">
+            <thead>
+            <td>id текст</td>
+            <td>редактировать текст</td>
+            @foreach (var p in Model.Answers.Where(c => c.IdSet.Id == i))
+            {
+                <tr>
+                    <form method="post" action="/Home/EditAnswer">
+                    <td>
+                            @p.Id @p.Text
+                    </td>
+                    <td>
+                        <input id="answer-select-value" name="answerText" value="@p.Text" />
+                    </td>
+                    <div class="div-checkbox" id="div-checkbox-@p.Id">
+        </div>
+        <td>
+            <input id="answer-select-value" type="hidden" name="answerID" value="@p.Id" />
+            <input type="submit" value="Сохранить изменения">
+        </td>
+                            </form>
+        <td>
+            <form method="post" action="/Home/DeleteAnswer">
+                            <input id="answer-select-value" type="hidden" name="answerID" value="@p.Id" />
+                <input type="submit" value="Удалить">
+            </form>
+        </td>
+        <td>
+            <form method="post" action="/Home/ATIIndex">
+                            <input id="answer-select-value" type="hidden" name="answerID" value="@p.Id" />
+                <input type="submit" value="Добавить связи с изображениями">
+            </form>
+        </td>
+                            </tr>
+            }
+
+
+
+                </table>
+                </div>
+
+    <form id="addAnswer-@i" method="post" action="/Home/AddAnswer" style=@n>
+        Добавление ответа
+        Текст ответа:
+
+        <input id="answer-select-value" name="answerText" value="" />
+        <input id="answer-select-value" type="hidden" name="themeId" value="@i" />
+        <input type="submit" value="Добавить">
+    </form>
+}
+    </div>
