@@ -59,33 +59,55 @@ namespace GeneratorAPI
         /// <returns></returns>
 
 
-        public static int Shuffling(List<string> originalList, int index)
+        public static int Shuffling(RezultatEntity t, int index)
         {
-
             Random random = new Random();
-            for (int i = originalList.Count - 1; i >= 1; i--)
+            if (t.BlockAnswers == null)
             {
-
-                int j = random.Next(i + 1);
-                // Обменять значения originalList[j] и originalList[i]
-                string temp = originalList[j];
-                originalList[j] = originalList[i];
-                originalList[i] = temp;
-                //temp = HashShufflingList[j];
-                //HashShufflingList[j] = HashShufflingList[i];
-                //HashShufflingList[i] = temp;
-
-                if (i == index)
+                for (int i = t.Answers.Count - 1; i >= 1; i--)
                 {
 
-                    index = j;
+                    int j = random.Next(i + 1);
+                    // Обменять значения originalList[j] и originalList[i]
+                    var temp = t.Answers[j];
+                    t.Answers[j] = t.Answers[i];
+                    t.Answers[i] = temp;
+                    //temp = HashShufflingList[j];
+                    //HashShufflingList[j] = HashShufflingList[i];
+                    //HashShufflingList[i] = temp;
+
+                    if (i == index)
+                    {
+
+                        index = j;
+                    }
+                    else if (j == index)
+                    {
+
+                        index = i;
+                    }
+
+
                 }
-                else if (j == index)
+            }
+            if (t.BlockAnswers != null)
+            {
+                for (int i=t.BlockAnswers.Count - 1;i >= 0;i--) 
                 {
+                    int n = random.Next(i + 1);
+                    var tempX2 = t.BlockAnswers[n];
+                    t.BlockAnswers[n] = t.BlockAnswers[i];
+                    t.BlockAnswers[i] = tempX2;
+                    if (i == index)
+                    {
 
-                    index = i;
+                        index = n;
+                    }
+                    else if (n == index)
+                    {
+                        index = i;
+                    }
                 }
-
             }
             return index;
         }

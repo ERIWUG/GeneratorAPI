@@ -171,7 +171,7 @@ namespace GeneratorASP.Controllers
         public IActionResult QTAindex()
         {
             ViewBag.Db = new AppDbContext();
-            var q = db.Questions.AsNoTracking().Where(c => c.Id == 12).Include(c=>c.Answers).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).FirstAsync();
+            var q = db.Questions.AsNoTracking().Where(c => c.Id == 13).Include(c=>c.Answers).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).FirstAsync();
             ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
             return View(q.Result);
         }
@@ -187,7 +187,7 @@ namespace GeneratorASP.Controllers
         public IActionResult ITAindex()
         {
             ViewBag.Db = new AppDbContext();
-            var q = db.Answers.AsNoTracking().Where(c => c.Id == 1).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Images).FirstAsync();
+            var q = db.Answers.AsNoTracking().Where(c => c.Id == 72).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Images).FirstAsync();
             ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
             return View(q.Result);
         }
