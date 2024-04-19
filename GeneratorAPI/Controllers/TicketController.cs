@@ -8,17 +8,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using System.Text.RegularExpressions;
+using static GeneratorAPI.Generator;
 
 namespace GeneratorAPI.Controllers
 {
-    enum Pics
-    {
-        Yes,
-        No,
-        Random
-    }
-
-
     [Route("api/[controller]")]
     [ApiController]
     public class TicketController : ControllerBase
@@ -42,8 +35,6 @@ namespace GeneratorAPI.Controllers
         }
 
         [HttpGet("/api/Ticket/GetEnum")]
-
-
         public async Task<IActionResult> GetEnum(int id, AppDbContext db)
         {
             var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
@@ -54,7 +45,6 @@ namespace GeneratorAPI.Controllers
         }
 
         [HttpGet("/api/Ticket/GetGroup")]
-
         public async Task<IActionResult> GetGroup(int id, AppDbContext db)
         {
             var c = db.QuestionsToAnswers
@@ -66,6 +56,21 @@ namespace GeneratorAPI.Controllers
 
             return Ok(Generator.GenerateX2(c,[1], 3, 5));
 
+        }
+
+
+        [HttpGet("/api/Ticket/GetImageQuestion")]
+        public async Task<IActionResult> GetNewImage(int id, AppDbContext db,bool flag)
+        {
+            var c = db.Questions
+                .AsNoTracking()
+                .Where(c => c.Id == id)
+                .Include(c => c.Images)
+                .Include(c => c.Answers)
+                .FirstAsync();
+            var rez = Generator.GeneratorImage(c.Result, [1], false, 5, 3);
+            if (rez is null) return NoContent();
+            else { return Ok(rez); }
         }
 
         [HttpGet("/api/Ticket/GetNewParsing")]
@@ -95,6 +100,7 @@ namespace GeneratorAPI.Controllers
                     qwPic = Pics.No;
                     break;
                 case 'R':
+                default:
                     qwPic = Pics.Random;
                     break;
             }
@@ -108,6 +114,7 @@ namespace GeneratorAPI.Controllers
                     answPic = Pics.No;
                     break;
                 case 'R':
+                default:
                     answPic = Pics.Random;
                     break;
             }
@@ -137,10 +144,21 @@ namespace GeneratorAPI.Controllers
             }
             catch (IndexOutOfRangeException)//если не указаны все параметры, то на обычный выход
             {
-                return Ok("scripshot");
             }
-            Console.WriteLine(generatorType + " " + idSet + " " + idSetGroup + " " + min + " " + max + " " + O + " " + YN + " " + X2 + " " + ALL + " " + fixQwId + " " + fixAnswid[0] + " " + fixAnswid[1] + " " + fixAnswid[2] + " " + fixAnswid[3] + " " + fixAnswid[4]);
-            return Ok("scripshot");
+            RezultatEntity t= new RezultatEntity();
+            switch (generatorType.ToLower())//может быть задан именем или цифрами
+            {
+                case "combi":
+                case "1":
+                    t=Generator.GeneratorCombi(fixQwId, idSet, idSetGroup, min, max, fixAnswid, O, YN, X2, ALL, qwPic, answPic);
+
+                    break;
+                case "onpic":
+                case "2":
+                    break;
+            }
+
+            return Ok(t);
 
         }
 

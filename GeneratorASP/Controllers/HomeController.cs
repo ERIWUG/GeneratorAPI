@@ -32,9 +32,41 @@ namespace GeneratorASP.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult pss()
+        public async Task<RedirectResult>  pss()
         {
-            return View();
+            
+            int QuestionId = Int32.Parse(Request.Form["IdQuestion"]);
+            List<int> allAnswersId = new List<int>();
+            List<string> answersIdsStr = new List<string>();
+            answersIdsStr = Request.Form["ImageValues"].ToList();
+            List<int> ImageIDS = new List<int>();
+            foreach (string IdStr in answersIdsStr)
+                ImageIDS.Add(Int32.Parse(IdStr));
+            QuestionEntity c = db.Questions.Where(c=>c.Id==QuestionId).Include(c=>c.Images).FirstOrDefault();
+            List<ImageEntity> kl = new List<ImageEntity>();
+            foreach(var i in c.Images)
+            {
+
+                if (ImageIDS.Contains(i.Id))
+                {
+                    ImageIDS.Remove(i.Id);
+                }
+                else
+                {
+                    kl.Add(i);
+                }
+            }
+            foreach(var i in kl)
+            {
+                c.Images.Remove(i);
+            }
+            foreach (var i in ImageIDS)
+            {
+                c.Images.Add(db.Images.Where(c => c.Id == i).First());
+            }
+            await db.SaveChangesAsync();
+
+            return Redirect("/Home/Index");
         }
 
         [HttpPost]
