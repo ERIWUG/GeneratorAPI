@@ -45,10 +45,8 @@ namespace GeneratorAPI
             {
                 var qq = db.Answers.Where(c => c.Id == i).First();
                 t.Seed += $"{qq.Id}-";
-                qq.IdSet.Answers = null;
-                qq.IdSet.IdGroup.IdSets = null;
-                qq.IdSet.Questions = null;
-                qq.IdSet.Images = null;
+                qq.IdSet =null;
+
                 t.Answers.Add(qq);
 
             }

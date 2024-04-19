@@ -8,6 +8,9 @@ using System.Net.WebSockets;
 using GeneratorAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using GeneratorAPI.Models.TempTable;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis.Host.Mef;
 //using Newtonsoft.Json.Linq;
 
 namespace GeneratorAPI
@@ -20,20 +23,57 @@ namespace GeneratorAPI
 
 
 
-        public static RezultatEntity GeneratorImage(QuestionEntity q, int[] IdSets,bool flag, int maxInd = 5, int minInd = 3)
+        public async static Task<RezultatEntity> GeneratorImage(RezultatEntity entity,int flag)
         {
-            if (flag) { GeneratorImage2(q, IdSets, maxInd, minInd); }
-            RezultatEntity entity = GenerateLinear(q.QuestionToAnswer.ToArray(), IdSets, maxInd, minInd);
-            entity.Question = q;
+            AppDbContext db = new AppDbContext();
             Random k = new Random();
-            entity.Images.Add(q.Images[k.Next(q.Images.Count)]);
-            entity.Question.Images = null;
-            foreach(var c in entity.Images)
+            int IND = 0;
+            int er = 0;
+            switch (flag)
             {
-                c.Questions = null;
-                c.IdSet.Images = null;
+                case 0:
+                    var c = await db.Questions.Where(c => c.Id == entity.Question.Id).AsNoTracking().Include(c=>c.Images).FirstAsync();
+                    if (c.Images.Count != 0) 
+                    { entity.Question.Images.Add(c.Images[k.Next(c.Images.Count)]);}
+                    return entity;
+                    break;
+                case 1:
+                    foreach(var l in entity.Answers)
+                    {
+                        var q = await db.Answers.Where(c => c.Id == l.Id).Include(c => c.Images).AsNoTracking().FirstAsync();
+
+                        if (q.Images.Count != 0)
+                        {
+                            entity.Answers[IND].Images.Add(q.Images[k.Next(q.Images.Count)]);
+                        }
+                        else
+                        {
+                            er = 1;
+                        }
+                    }
+
+                    if (er == 1)
+                    {
+                        foreach(var l in entity.Answers)
+                        {
+                            l.Images = null;
+                        }
+                    }
+                    return entity;
+
+                    break;
+
+                 case 2:
+                    GeneratorImage(entity, 0);
+                    GeneratorImage(entity, 1);
+                    return entity;
+                    break;
+
+
+                    
             }
-            return entity;
+
+            return null;
         }
 
 
@@ -43,40 +83,13 @@ namespace GeneratorAPI
             Random k= new Random();
             QuestionEntity q = im.Questions[k.Next(im.Questions.Count)];
             RezultatEntity rez = GenerateLinear(q.QuestionToAnswer.ToArray(), IdSets, maxInd, minInd);
-
+            im.Questions = null;
             rez.Images.Add(im);
-
+            rez.Question.Images = null;
             return rez;
         }
 
-        public static RezultatEntity GeneratorImage2(QuestionEntity q, int[] IdSets, int maxInd = 5, int minInd = 3)
-        {
-            RezultatEntity entity = GenerateLinear(q.QuestionToAnswer.ToArray(), IdSets, maxInd, minInd);
-            Random random = new Random();
-            List<int> ImageIDS = new List<int>();
-            int ql = 0;
-            entity.Question.Images = null;
-            foreach (var l in entity.Answers)
-            {
-                ql = 0;
-                var im = l.Images[random.Next(l.Images.Count)];
-                while (ImageIDS.Contains(im.Id)||ql<10)
-                {
-                    im = l.Images[random.Next(l.Images.Count)];
-                    ql++;
-                }
-                if (ql == 10) { return null; }
-                ImageIDS.Add(im.Id);
-                
-                entity.Images.Add(im);
-               
-            }
-            foreach (var c in entity.Images)
-            {
-                c.Questions = null;
-            }
-            return entity;
-        }
+       
 
 
 
