@@ -1,5 +1,7 @@
 ﻿
+using Elfie.Serialization;
 using GeneratorAPI.Configurations;
+using GeneratorAPI.Migrations;
 using GeneratorAPI.Models.Entities;
 using GeneratorAPI.Models.TempTable;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GeneratorAPI.Models
 {
@@ -36,15 +39,12 @@ namespace GeneratorAPI.Models
 
             //    string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
             //     string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Vitya;password=1234;TrustServerCertificate=True;";
-           // string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
-            //string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
-            string connection = "Server=adrive.bx;Database=adriveby_data;user id=adriveby_student;password=DdVRVAQ$;TrustServerCertificate=True;";
+            // string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
+             //string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
+            string connection = "Data Source = adrive.by; Initial Catalog = adriveby_data; User ID = adriveby_student; Password = DdVRVAQ$; Encrypt = False";
             optionsBuilder.UseSqlServer(connection);
         }
-
-
         public DbSet<QuestionEntity> Questions { get; set; }
-
         public DbSet<ImageEntity> Images { get; set; }
 
         public DbSet<AnswerEntity> Answers { get; set; }
