@@ -82,7 +82,9 @@ namespace GeneratorAPI
                     GeneratorImage(entity, 1);
                     return entity;
                     break;
-
+                case -1:
+                    return entity;
+                    break;
 
                     
             }
