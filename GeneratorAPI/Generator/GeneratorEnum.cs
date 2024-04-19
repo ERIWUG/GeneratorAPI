@@ -58,10 +58,20 @@ namespace GeneratorAPI
                     t.Answers.Add(qq);
 
                 }
-                t.Answers.Add(new AnswerEntity());
-                t.Answers.Add(new AnswerEntity());
-                /**      t.Seed += $"{c.Id}-";
-                      t.Seed += $"{c.Id}-";*/
+                var qq1 = db.Answers.Where(c => c.Id == 73).Include(c => c.IdSet).First();//все перечисленное
+                t.Seed += $"{qq1.Id}-";
+                qq1.IdSet.Answers = null;
+            //    qq1.IdSet.IdGroup.IdSets = null;
+                qq1.IdSet.Questions = null;
+                qq1.IdSet.Images = null;
+                t.Answers.Add(qq1);
+                 qq1 = db.Answers.Where(c => c.Id == 74).Include(c => c.IdSet).First();//ничего  перечисленное
+                t.Seed += $"{qq1.Id}-";
+                qq1.IdSet.Answers = null;
+             //   qq1.IdSet.IdGroup.IdSets = null;
+                qq1.IdSet.Questions = null;
+                qq1.IdSet.Images = null;
+                t.Answers.Add(qq1);
                 t.Seed += "0";
                 t.CorrectAnswer = 0;
             }
@@ -85,10 +95,18 @@ namespace GeneratorAPI
                     t.Answers.Add(qq);
 
                 }
-                t.Answers.Add(new AnswerEntity());
-                t.Answers.Add(new AnswerEntity());
-                /*    t.Seed += $"{c.Id}-";
-                    t.Seed += $"{c.Id}-";*/
+                var qq1 = db.Answers.Where(c => c.Id == 73).Include(c => c.IdSet).First();//все перечисленное
+                t.Seed += $"{qq1.Id}-";
+              //  qq1.IdSet.IdGroup.IdSets = null;
+                qq1.IdSet.Questions = null;
+                qq1.IdSet.Images = null;
+                t.Answers.Add(qq1);
+                qq1 = db.Answers.Where(c => c.Id == 74).Include(c => c.IdSet).First();//ничего  перечисленное
+                t.Seed += $"{qq1.Id}-";
+             //   qq1.IdSet.IdGroup.IdSets = null;
+                qq1.IdSet.Questions = null;
+                qq1.IdSet.Images = null;
+                t.Answers.Add(qq1);
                 t.Seed += ForSeed - 2;
                 t.CorrectAnswer = ForSeed - 2;
             }
@@ -105,7 +123,6 @@ namespace GeneratorAPI
                 {
                     var qq = db.Answers.Where(c => c.Id == i).First();
                     t.Seed += $"{qq.Id}-";
-                    qq.IdSet.Answers = null;
                     qq.IdSet.IdGroup.IdSets = null;
                     qq.IdSet.Questions = null;
                     qq.IdSet.Images = null;
@@ -113,10 +130,18 @@ namespace GeneratorAPI
 
                 }
 
-                t.Answers.Add(new AnswerEntity());
-                t.Answers.Add(new AnswerEntity());
-                /*      t.Seed += $"{c.Id}-";
-                      t.Seed += $"{c.Id}-";*/
+                var qq1 = db.Answers.Where(c => c.Id == 73).Include(c=>c.IdSet).First();//все перечисленное
+                t.Seed += $"{qq1.Id}-";
+             //   qq1.IdSet.IdGroup.IdSets = null;
+                qq1.IdSet.Questions = null;
+                qq1.IdSet.Images = null;
+                t.Answers.Add(qq1);
+                qq1 = db.Answers.Where(c => c.Id == 74).Include(c => c.IdSet).First();//ничего  перечисленное
+                t.Seed += $"{qq1.Id}-";
+             //   qq1.IdSet.IdGroup.IdSets = null;
+                qq1.IdSet.Questions = null;
+                qq1.IdSet.Images = null;
+                t.Answers.Add(qq1);
                 t.Seed += ForSeed - 1;
                 t.CorrectAnswer = ForSeed - 1;
             }

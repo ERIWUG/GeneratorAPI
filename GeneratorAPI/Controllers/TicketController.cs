@@ -129,6 +129,8 @@ namespace GeneratorAPI.Controllers
                 case "onpic":
                 case "2":
                     Random k = new Random();
+                  
+              
                     var c = await db.Questions
                                             .Include(c => c.IdSet)
                                             .Where(c => c.IdSet.Id == idSet)
