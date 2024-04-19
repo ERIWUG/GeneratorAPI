@@ -75,7 +75,7 @@ namespace GeneratorAPI.Controllers
                             .Include(c=>c.Answers)
                             .AsNoTracking()
                             .FirstAsync();
-            var rez = Generator.GeneratorImage(c.Result, [5], 5, 3);
+            var rez =await Generator.GeneratorImage(c.Result, [5], 5, 3);
             if (rez is null) return NoContent();
             else { return Ok(rez); }
         }

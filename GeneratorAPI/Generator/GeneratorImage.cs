@@ -114,7 +114,7 @@ namespace GeneratorAPI
             amount = k.Next(minInd, maxInd);
             int e=0;
             List<int> MyList = new List<int>();
-            rez.Question = q;
+            rez.Question = await db.Questions.Where(c=>c.Id == q.Id).AsNoTracking().FirstAsync();
 
             foreach(var c in q.Answers)
             {
@@ -132,21 +132,19 @@ namespace GeneratorAPI
 
             var im = await db.Answers.Where(c => c.Id == q.Answers[0].Id).Include(c => c.Images).AsNoTracking().FirstAsync();
 
-            q.Answers[0].Images.Add(im.Images[k.Next(im.Images.Count)]);
-            foreach(var j in q.Answers[0].Images)
-            {
-                j.Answers = null;
-                j.Questions = null;
-            }
+            
+            
             foreach (var l in rez.Answers)
             {
-                l.Questions = null;
-                l.Images = null;
+                l.Questions.Clear();
+                l.Images.Clear();
             }
             rez.Question.Answers = null;
             rez.Question.QuestionToAnswer = null;
             rez.CorrectAnswer = 0;
-            rez.BlockAnswers = null;
+            rez.Answers[0].Images.Add(im.Images[k.Next(im.Images.Count)]);
+            rez.Answers[0].Images[0].Answers = null;
+            rez.BlockAnswers = [];
             return rez;
         }
 
