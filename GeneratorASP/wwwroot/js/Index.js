@@ -24,6 +24,20 @@ function GetCheckBoxCorrectAnswer(b) {
 
 }
 
+
+function Get() {
+    
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("MYID").value = this.responseText;
+        }
+    };
+    xhr.open('GET', '/api/Ticket/GetNewParsing?str=combi,qwPicN,answPicN,1,1,5', true)
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+}
+
 function GetQuestionByTheme(a) {
     a.forEach((i)=>{
         document.getElementById("div-select-questions-"+ i).style.display = "none";
