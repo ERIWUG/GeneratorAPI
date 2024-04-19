@@ -21,20 +21,20 @@ namespace GeneratorAPI.Controllers
 
 
 
-        [HttpGet("/api/Question/get-Questions")]
-        public async Task<IActionResult> GetQuestions()
-        {
-            var mass = await _questionRepository.Get();
+        //[HttpGet("/api/Question/get-Questions")]
+        //public async Task<IActionResult> GetQuestions()
+        //{
+        //    var mass = await _questionRepository.Get();
 
-            return Ok(mass);
-        }
+        //    return Ok(mass);
+        //}
 
 
 
-        [HttpPost("/api/Question/AddQuestion")]
-        public async Task AddQuestion(string text)
-        {
-            await _questionRepository.Add(text);
-        } 
+        //[HttpPost("/api/Question/AddQuestion")]
+        //public async Task AddQuestion(string text)
+        //{
+        //    await _questionRepository.Add(text);
+        //} 
     }
 }

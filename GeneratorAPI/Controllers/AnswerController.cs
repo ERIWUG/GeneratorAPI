@@ -15,12 +15,12 @@ namespace GeneratorAPI.Controllers
         }
 
 
-        [HttpGet("/api/Answer/Get-All")]
-        public async Task<IActionResult> Get()
-        {
-            var answer =  _answerRepository.Get();
-            return Ok(answer);
-        }
+        //[HttpGet("/api/Answer/Get-All")]
+        //public async Task<IActionResult> Get()
+        //{
+        //    var answer =  _answerRepository.Get();
+        //    return Ok(answer);
+        //}
 
        
     }

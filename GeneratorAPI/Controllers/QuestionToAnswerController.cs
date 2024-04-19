@@ -14,32 +14,32 @@ namespace GeneratorAPI.Controllers
             _quesToAnsRepository = quesToAnsRepository;
         }
 
-        [HttpGet("/api/QuesToAnswer/getAnswerIdFromQuestionId")]
-        public async Task<IActionResult> GetAnswerIdFromQuestionId(int Id)
-        {
-            var c = _quesToAnsRepository.GetAnswerFromQuestionId(Id).Result;
-            if (c is null)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return Ok(c);
-            }
-        }
-        [HttpGet("/api/QuesToAnswer/ge-tQuestionAnswer-Id")]
-        public async Task<IActionResult> GetById(int Id)
-        {
-            var c = await _quesToAnsRepository.GetById(Id);
-            if (c is null)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return Ok(c);
-            }
-        }
+        //[HttpGet("/api/QuesToAnswer/getAnswerIdFromQuestionId")]
+        //public async Task<IActionResult> GetAnswerIdFromQuestionId(int Id)
+        //{
+        //    var c = _quesToAnsRepository.GetAnswerFromQuestionId(Id).Result;
+        //    if (c is null)
+        //    {
+        //        return NoContent();
+        //    }
+        //    else
+        //    {
+        //        return Ok(c);
+        //    }
+        //}
+        //[HttpGet("/api/QuesToAnswer/ge-tQuestionAnswer-Id")]
+        //public async Task<IActionResult> GetById(int Id)
+        //{
+        //    var c = await _quesToAnsRepository.GetById(Id);
+        //    if (c is null)
+        //    {
+        //        return NoContent();
+        //    }
+        //    else
+        //    {
+        //        return Ok(c);
+        //    }
+        //}
 
     }
 }
