@@ -1,7 +1,7 @@
 ﻿@using GeneratorAPI.Models
 @using GeneratorAPI.Models.Entities;
 @using Microsoft.EntityFrameworkCore
-@model ImageEntity
+@model AnswerEntity
 
 @{
 
@@ -9,32 +9,27 @@
 
 @{
     Layout = null;
-    AppDbContext db = ViewBag.Db;
     List<int> KL = new List<int>();
-    var IdGroups = db.IdGroup.AsNoTracking().Include(c => c.IdSets);
-    foreach (var sd in Model.Answers)
+    foreach (var sd in Model.Images)
     {
         KL.Add(sd.Id);
     }
+    AppDbContext db = ViewBag.Db;
+    var IdGroups = db.IdGroup.AsNoTracking().Include(c => c.IdSets);
 }
 <!DOCTYPE html>
 <head>
     <link rel="stylesheet" href="~/css/QTI.css" />
-    <link rel="stylesheet" href="~/css/QTA.css" />
     <script src="~/js/Index.js" asp-append-version="true"></script>
 </head>
 
 <body onload="Func()">
-    <form asp-action="AddAnswersToImage" asp-controller="Home" method="post">
-        <input type="hidden" name="IdImage" value="@Model.Id" />
+    <form asp-action="AddImageToAnwer" asp-controller="Home" method="post">
+        <input type="hidden" name="IdAnswer" value="@Model.Id" />
         <div>
-            <div id="OneImage" class="imageGroup">
-                
-                <img src="@Model.Href" id="image-1" width="400px" height="400px" style="" />
-                <input type="hidden" id="image-value-1" value="false" />
-
-            </div>
-            
+            <p>@ViewBag.IdGroup</p>
+            <p>@Model.IdSet.Id</p>
+            <p>@Model.Text</p>
         </div>
 
         <div class="select-nav">
@@ -54,7 +49,7 @@
                 @foreach (var c in IdGroups)
                 {
                     String n = i == 0 ? "display:flex" : "display:none"; i++;
-                    <select id="select-IdSet-@i" style=@n onchange="GetAnswers(@i)">
+                    <select id="select-IdSet-@i" style=@n onchange="GetImage(@i)">
                         @foreach (var q in c.IdSets)
                         {
                             <option value="@q.Id">@q.Id</option>
@@ -69,38 +64,57 @@
         </div>
 
 
+
         @{
             i = 0;
         }
-        @foreach (var c in db.IdGroup.AsNoTracking().Include(c => c.IdSets).ThenInclude(c => c.Answers))
-        {
-            foreach (var q in c.IdSets)
-            {
-                String n = i == 0 ? "display:flex" : "display:none"; i++;
-                <table border="1" id="table-@q.Id" style=@n>
+        <div id="imageGroup">
 
-                    @foreach (var l in q.Answers)
-                    {
-                        <tr>
-                            <td>
-                                <input type="checkbox" checked="@KL.Contains(l.Id)" name="Answers" value="@l.Id"></input>
-                            </td>
-                            <td>
-                                <p>@l.Text</p>
-                            </td>
-                        </tr>
-                    }
-                </table>
+            @foreach (var c in db.IdGroup.AsNoTracking().Include(c => c.IdSets).ThenInclude(c => c.Images))
+            {
+                foreach (var q in c.IdSets)
+                {
+
+                    String n = i == 0 ? "display:flex" : "display:none"; i++;
+                    <div id="imageGroup-@q.Id" class="imageGroup" style=@n>
+                        @{
+                            i = 0;
+                            bool fl;
+                        }
+                        @foreach (var l in q.Images)
+                        {
+                            <div class="ImageClass">
+                                @if (KL.Contains(l.Id))
+                                {
+                                    n = "filter:blur(20px)";
+                                    fl = true;
+                                }
+                                else
+                                {
+                                    n = "";
+                                    fl = false;
+                                }
+                                <img src="@l.Href" id="image-@l.Id" width="400px" height="400px" style="@n" value="@l.Id" />
+                                <label>
+                                    @l.Href.Split('/').Last();
+                                </label>
+                                <input type="checkbox" name="ImageValues" id="image-value-@l.Id" value="@l.Id" checked="@fl" style="display:none" />
+
+                            </div>
+                            i++;
+                        }
+                    </div>
+                }
             }
-        }
-        <input type="hidden" id="Answer-id-shown" value="1"></input>
+        </div>
+        <input type="hidden" id="Image-id-shown" value="1"></input>
+
+
 
         <input type="submit"></input>
 
 
     </form>
-
-
 </body>
 
 
