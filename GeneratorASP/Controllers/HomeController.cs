@@ -148,7 +148,7 @@ namespace GeneratorASP.Controllers
         public IActionResult ATIindex()
         {
             ViewBag.Db = new AppDbContext();
-            var q = db.Images.AsNoTracking().Where(c => c.Id == 2).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).FirstAsync();
+            var q = db.Images.AsNoTracking().Where(c => c.Id == 2).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Answers).FirstAsync();
             ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
             return View(q.Result);
         }

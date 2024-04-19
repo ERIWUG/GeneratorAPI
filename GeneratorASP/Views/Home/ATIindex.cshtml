@@ -10,7 +10,12 @@
 @{
     Layout = null;
     AppDbContext db = ViewBag.Db;
+    List<int> KL = new List<int>();
     var IdGroups = db.IdGroup.AsNoTracking().Include(c => c.IdSets);
+    foreach (var sd in Model.Answers)
+    {
+        KL.Add(sd.Id);
+    }
 }
 <!DOCTYPE html>
 <head>
@@ -78,7 +83,7 @@
                     {
                         <tr>
                             <td>
-                                <input type="checkbox" checked="@Model.Answers.Contains(l)" name="Answers" value="@l.Id"></input>
+                                <input type="checkbox" checked="@KL.Contains(l.Id)" name="Answers" value="@l.Id"></input>
                             </td>
                             <td>
                                 <p>@l.Text</p>
