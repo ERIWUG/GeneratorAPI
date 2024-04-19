@@ -14,12 +14,14 @@ namespace GeneratorAPI
     public static partial class Generator
     {
         /// <summary>
-        /// Method for generating TicketEntity with one correct and some incorrect answers
+        /// Генератор, использующийся для генерации простого вопроса с одним правильным и max-1 неправильных ответов
         /// </summary>
-        /// <param name="mas">Data for generating</param>
-        /// <param name="ogr">Max amount of answers in one TicketEntity</param>
-        /// <returns>One TicketEntity with one correct and some Incorrect Question</returns>
-        public static RezultatEntity GenerateLinear(QuesToAns[] mas,int[] IdSets, int maxInt = 5, int minInt = 3, bool flag = false)
+        /// <param name="mas"> Массив из данных, необходимый для генерации</param>
+        /// <param name="IdSets">IdSet из которых будут браться неправильные ответы</param>
+        /// <param name="maxInt">Максимальное число вариантов ответов</param>
+        /// <param name="minInt">Минимальное число вариантов ответов</param>
+        /// <returns></returns>
+        public static RezultatEntity GenerateLinear(QuesToAns[] mas,int[] IdSets, int maxInt = 5, int minInt = 3)
         {
             AppDbContext db = new AppDbContext();
             ParseData(mas, IdSets);
