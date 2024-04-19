@@ -14,6 +14,7 @@ namespace GeneratorAPI
     public static partial class Generator
     {
         /// <summary>
+        /// Генератор, использующийся для генерации вопросов с вариантами ответа "Все перечисленное"/"Ничего из перечисленного"
         /// Method for generating Ticket where one correct and some incorrect answers.
         /// The correct answer can be "all of the above" or "none of all the above"
         /// </summary>

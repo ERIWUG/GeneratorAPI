@@ -27,7 +27,13 @@ namespace GeneratorAPI.Repositories
              return await _dbContext.Questions.AsNoTracking().Include(q=>q.Images).ToListAsync();
          }
 
-        
+        public async Task Delete(int answerId)
+        {
+            if (_dbContext.Answers.Where(a => a.Id == answerId).ToList().Count != 0)
+                _dbContext.Remove(_dbContext.Questions.Where(a => a.Id == answerId).ToList()[0]);
+
+            _dbContext.SaveChanges();
+        }
 
 
 
@@ -37,7 +43,7 @@ namespace GeneratorAPI.Repositories
 
 
 
-         public async Task<List<QuestionEntity>> GetByPage(int page, int pageSize)
+        public async Task<List<QuestionEntity>> GetByPage(int page, int pageSize)
          {
              return await _dbContext.Questions.AsNoTracking().Skip((page-1)*pageSize).Take(pageSize).ToListAsync();
          }
@@ -50,6 +56,14 @@ namespace GeneratorAPI.Repositories
                Probability = par,
 
             };
+            await _dbContext.AddAsync(answerData);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task Edit(int answerId, string text)
+        {
+            AnswerEntity answerData = await GetById(answerId);
+            answerData.Text = text;
             await _dbContext.AddAsync(answerData);
             await _dbContext.SaveChangesAsync();
         }

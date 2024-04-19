@@ -81,9 +81,10 @@ namespace GeneratorAPI.Controllers
         }
 
         [HttpGet("/api/Ticket/getBezParsinga")]
-        public async Task<IActionResult> getBezParsinga(string generatorType, string qwP, string answP, int idSet, int idSetGroup, int max = 5, int min = 3, bool O = false, bool X2 = false, bool ALL = false, bool YN = false, int fixQwId = 0, int fixAnswid1 = 0, int fixAnswid2 = 0, int fixAnswid3 = 0, int fixAnswid4 = 0, int fixAnswid5 = 0)
+        public async Task<IActionResult> getBezParsinga(AppDbContext db, string generatorType, bool qwPic, bool answPic, int idSet, int idSetGroup, int V = 3, int Vd = 5, bool O = false, bool X2 = false, bool ALL = false, bool YN = false, int fixQwId = 0, int fixAnswid1 = 0, int fixAnswid2 = 0, int fixAnswid3 = 0, int fixAnswid4 = 0, int fixAnswid5 = 0)
         {
-            Pics qwPic, answPic;
+            string qwP, answP;
+            Pics qwPi=Pics.Random, answPi=Pics.Random;
             int[] fixAnswid = new int[5];
             fixAnswid[0] = fixAnswid1;
             fixAnswid[1] = fixAnswid2;
@@ -91,31 +92,29 @@ namespace GeneratorAPI.Controllers
             fixAnswid[3] = fixAnswid4;
             fixAnswid[4] = fixAnswid5;
 
-            switch (qwP[5])//QwPic
+            switch (qwPic)//QwPic
             {
-                case 'Y':
-                    qwPic = Pics.Yes;
+                case true:
+                    qwPi = Pics.Yes;
                     break;
-                case 'N':
-                    qwPic = Pics.No;
+                case false:
+                    qwPi = Pics.No;
                     break;
-                case 'R':
                 default:
-                    qwPic = Pics.Random;
+                    qwPi = Pics.Random;
                     break;
             }
 
-            switch (answP[7])//AnswPic
+            switch (answPic)//AnswPic
             {
-                case 'Y':
-                    answPic = Pics.Yes;
+                case true:
+                    answPi = Pics.Yes;
                     break;
-                case 'N':
-                    answPic = Pics.No;
+                case false:
+                    answPi = Pics.No;
                     break;
-                case 'R':
                 default:
-                    answPic = Pics.Random;
+                    answPi = Pics.Random;
                     break;
             }
 
@@ -124,11 +123,24 @@ namespace GeneratorAPI.Controllers
             {
                 case "combi":
                 case "1":
-                    t = await Generator.GeneratorCombi(fixQwId, idSet, idSetGroup, min, max, fixAnswid, O, YN, X2, ALL, qwPic, answPic);
+                    t = await Generator.GeneratorCombi(fixQwId, idSet, idSetGroup, V, Vd, fixAnswid, O, YN, X2, ALL, qwPi, answPi);
 
                     break;
                 case "onpic":
                 case "2":
+
+                    List<ImageEntity> images = await db.Images.AsNoTracking().Where(c => c.IdSet.Id == idSet).Include(c => c.Questions).
+                ThenInclude(c => c.QuestionToAnswer).ToListAsync() ;
+                    foreach (ImageEntity image in images)
+                        if (image.Questions.Count >= 1)
+                        {
+                            t = await Generator.GeneratorImage(image, [idSet], Vd, V);
+                            break;
+                            Console.WriteLine(t.Answers.ToString());
+                        }
+                    break;
+                case "hard":
+                case "3":
                     break;
             }
 
@@ -225,7 +237,7 @@ namespace GeneratorAPI.Controllers
 
         }
 
-        [HttpGet("/api/Ticket/GetHDMI")]
+     /*   [HttpGet("/api/Ticket/GetHDMI")]
         public async Task<IActionResult> GetRezultat(string str)
         {
             string[] words = str.Split(';');
@@ -355,23 +367,9 @@ namespace GeneratorAPI.Controllers
 
             }
             Console.WriteLine(generatorType + " " + questionId + " " + idSet + " " + idSetGroup + " " + min + " " + max  + " " + O + " " + YN + " " + X2 + " "+ALL+" "+Qid);           
-         //   QuesToAns[] mas;
-        //    if (Qid) mas = null; //questionId???????;//если задан вопрос, то только его взять
-         //   else if (answersIds.Length!=0) mas = null;//если задан список  вариантов ответа
-        //    else mas = null;//get по idSet
-
-         /*   switch (generatorType)
-            {
-                
-                case "Combi":
-                    if (X2) return Ok(Generator.GenerateX2(null, max));
-                    if (ALL) return Ok(Generator.GenerateEnum(null, min, max));
-                    return Ok(Generator.GenerateEnum(null, min, max));
-                    break;
-
-            }*/
+        
             return null;
-        }
+        }*/
 
     }
 }

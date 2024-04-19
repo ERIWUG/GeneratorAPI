@@ -83,7 +83,7 @@ namespace GeneratorAPI
         }
 
 
-        public static RezultatEntity GeneratorImage(ImageEntity im, int[] IdSets, int maxInd = 5, int minInd = 3)
+        public static async Task<RezultatEntity> GeneratorImage(ImageEntity im, int[] IdSets, int maxInd = 5, int minInd = 3)
         {
             QuestionEntity q;
             Random k= new Random();

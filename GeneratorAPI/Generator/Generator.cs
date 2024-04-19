@@ -41,7 +41,22 @@ namespace GeneratorAPI
         }
 
 
-
+        /// <summary>
+        /// Генератор "комби"
+        /// </summary>
+        /// <param name="fixQwId"></param>
+        /// <param name="idSet"></param>
+        /// <param name="idSetGroup"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="fixAnswid"></param>
+        /// <param name="O"></param>
+        /// <param name="YN"></param>
+        /// <param name="X2"></param>
+        /// <param name="ALL"></param>
+        /// <param name="qwPic"></param>
+        /// <param name="answPic"></param>
+        /// <returns></returns>
         public static async Task<RezultatEntity> GeneratorCombi(int fixQwId, int idSet, int idSetGroup, int min, int max, int[] fixAnswid, bool O, bool YN, bool X2, bool ALL, Pics qwPic, Pics answPic)
         {
             AppDbContext db = new AppDbContext();

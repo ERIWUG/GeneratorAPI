@@ -167,6 +167,12 @@ namespace GeneratorASP.Controllers
             //return Redirect("/Home/QuestionIndex");
         }
 
+        public IActionResult AnswerIndex()
+        {
+            ViewBag.Db = new AppDbContext();
+            return View(db);
+        }
+
         [HttpPost]
         public async Task<IActionResult> EditQuestion()
         {
@@ -199,6 +205,33 @@ namespace GeneratorASP.Controllers
             return Redirect("/Home/QuestionIndex");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditAnswer()
+        {
+            int questionId = Int32.Parse(Request.Form["answerID"]);
+            String text = Request.Form["answerText"];
+         //   List<string> flags = new List<string>();
+       //     flags = Request.Form["div-checkbox-values"].ToList();
+            await _answerRepository.Edit(questionId, text);
+            return Redirect("/Home/AnswerIndex");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddAnswer()
+        {
+            int themeId = Int32.Parse(Request.Form["themeId"]);
+            Console.WriteLine(themeId);
+            String text = Request.Form["answerText"];
+            await _answerRepository.Add(text, themeId, 1);
+            return Redirect("/Home/AnswerIndex");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteAnswer(int answerID)
+        {
+            await _answerRepository.Delete(answerID);
+            return Redirect("/Home/AnswerIndex");
+        }
 
         [HttpPost]
         public async Task<IActionResult> QTAindex(int questionID)
@@ -217,6 +250,7 @@ namespace GeneratorASP.Controllers
             ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
             return View(q.Result);
         }
+
 
 
         public IActionResult Privacy()
