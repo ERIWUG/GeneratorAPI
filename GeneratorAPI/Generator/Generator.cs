@@ -42,7 +42,7 @@ namespace GeneratorAPI
 
 
 
-        public static RezultatEntity GeneratorCombi(int fixQwId, int idSet, int idSetGroup, int min, int max, int[] fixAnswid, bool O, bool YN, bool X2, bool ALL, Pics qwPic, Pics answPic)
+        public static async Task<RezultatEntity> GeneratorCombi(int fixQwId, int idSet, int idSetGroup, int min, int max, int[] fixAnswid, bool O, bool YN, bool X2, bool ALL, Pics qwPic, Pics answPic)
         {
             AppDbContext db = new AppDbContext();
             int[] idSets;
@@ -113,16 +113,58 @@ namespace GeneratorAPI
                 }
             }
             RezultatEntity t = new RezultatEntity();
-
-
+            if (answPic==Pics.Random)
+            {
+                Random r = new Random();
+                int k = r.Next(2);
+                if (k == 1) answPic = Pics.Yes;
+                else answPic = Pics.Random;
+            }
+            if (qwPic == Pics.Random)
+            {
+                Random r = new Random();
+                int k = r.Next(2);
+                if (k == 1) qwPic = Pics.Yes;
+                else qwPic = Pics.Random;
+            }
+            int flag=-1;
+            //flag: 0--к вопросу, 1 -- к ответу, 2 -- и то, и то, -1 -- ничего
+            if (answPic == Pics.No && qwPic == Pics.No)
+                flag = -1;
+            else if (answPic == Pics.No && qwPic == Pics.Yes)
+                flag = 0;
+            else if (answPic == Pics.Yes && qwPic == Pics.No)
+                flag = 1;
+            else if (answPic == Pics.Yes && qwPic == Pics.Yes)
+                flag = 2;
             if (YN)
             {
                 AnswerEntity[] answers = null;//явл -- не явл
-                t = Generator.GenerateIsIt(questionsArray.ToArray(), idSets, answers);
+                if (flag == -1) t = Generator.GenerateIsIt(questionsArray.ToArray(), idSets, answers);
+                else
+                    t = await GeneratorImage(Generator.GenerateIsIt(questionsArray.ToArray(), idSets, answers), flag);
             }
-            else if (ALL) t = Generator.GenerateEnum(questionsArray.ToArray(), idSets, min, max);
-            else if (X2) t = Generator.GenerateX2(questionsArray.ToArray(), idSets, min, max);
-            else t = Generator.GenerateLinear(questionsArray.ToArray(), idSets, max, min);
+            else if (ALL)
+            {
+                if (flag == -1)
+                    t = Generator.GenerateEnum(questionsArray.ToArray(), idSets, min, max);
+                else
+                    t = await GeneratorImage(Generator.GenerateEnum(questionsArray.ToArray(), idSets, min, max), flag);
+            }
+            else if (X2)
+            {
+                if (flag == -1)
+                    t = Generator.GenerateX2(questionsArray.ToArray(), idSets, min, max);
+                else
+                    t = await GeneratorImage(Generator.GenerateX2(questionsArray.ToArray(), idSets, min, max), flag);
+            }
+            else
+            {
+                if (flag == -1)
+                    t = Generator.GenerateLinear(questionsArray.ToArray(), idSets, max, min);
+                else
+                    t = await GeneratorImage(Generator.GenerateLinear(questionsArray.ToArray(), idSets, max, min), flag);
+            }
 
 
             return t;

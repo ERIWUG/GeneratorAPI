@@ -25,7 +25,7 @@ namespace GeneratorAPI.Repositories
 
         public async Task<List<QuestionEntity>> GetWithTheme()
         {
-                   return await _dbContext.Questions.Include(u => u.IdSet).AsNoTracking().ToListAsync();
+            return await _dbContext.Questions.Include(u => u.IdSet).AsNoTracking().ToListAsync();
         }
 
         public async Task<List<QuestionEntity>> GetWithImages()
@@ -59,17 +59,19 @@ namespace GeneratorAPI.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Add(string text, int themeId)
+        public async Task Add(string text, int themeId, bool O, bool YN)
         {
             var questiondata = new QuestionEntity
             {
                 Text = text,
+                IsNegative = O,
+                IsItQuestion = YN
 
             };
-            IdSetEntity idSetEntity=await idSetRepository.GetById(themeId);
+            IdSetEntity idSetEntity = await idSetRepository.GetById(themeId);
             idSetEntity.Questions.Add(questiondata);
             await _dbContext.AddAsync(questiondata);
-                    _dbContext.Update(idSetEntity);
+            _dbContext.Update(idSetEntity);
             await _dbContext.SaveChangesAsync();
         }
 

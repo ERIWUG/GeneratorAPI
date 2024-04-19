@@ -1,4 +1,4 @@
-﻿﻿@using GeneratorAPI.Models;
+﻿﻿﻿@using GeneratorAPI.Models;
 @using GeneratorAPI.Models.Entities;
 @using Microsoft.EntityFrameworkCore
 @model AppDbContext;
@@ -82,31 +82,43 @@
             <input id="question-select-value" type="hidden" name="questionID" value="@p.Id" />
             <input type="submit" value="Сохранить изменения">
         </td>
-                    </form>
+                            </form>
         <td>
             <form method="post" action="/Home/DeleteQuestion">
                 <input id="question-select-value" type="hidden" name="questionID" value="@p.Id" />
                 <input type="submit" value="Удалить">
             </form>
-
         </td>
-                    </tr>
+        <td>
+            <form method="post" action="/Home/QTAIndex">
+                <input id="question-select-value" type="hidden" name="questionID" value="@p.Id" />
+                <input type="submit" value="Добавить связи с ответами">
+            </form>
+        </td>
+        <td>
+            <form method="post" action="/Home/QTIIndex">
+                <input id="question-select-value" type="hidden" name="questionID" value="@p.Id" />
+                <input type="submit" value="Добавить связи с картинками">
+            </form>
+        </td>
+                            </tr>
             }
 
 
 
-            </table>
-        </div>
+                </table>
+                </div>
 
     <form id="addQuestion-@i" method="post" action="/Home/AddQuestion" style=@n>
+        Добавление вопроса
         Текст вопроса:
-        <td>
-            <input id="question-select-value" name="questionText" value="" />
-        </td>
+
+        <input id="question-select-value" name="questionText" value="" />
         <input id="question-select-value" type="hidden" name="themeId" value="@i" />
+        Отрицательный вопрос <input type="checkbox" name="questionO" value="O" />
+
+        Вопрос Yes/No <input type="checkbox" name="questionYN" value="YN" />
         <input type="submit" value="Добавить">
     </form>
 }
-
-</div>
-
+    </div>

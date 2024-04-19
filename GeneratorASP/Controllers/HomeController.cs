@@ -184,7 +184,10 @@ namespace GeneratorASP.Controllers
             int themeId = Int32.Parse(Request.Form["themeId"]);
             Console.WriteLine(themeId);
             String text = Request.Form["questionText"];
-            await _questionRepository.Add(text, themeId);
+            bool O = Request.Form["questionO"].ToString().Length != 0;
+            bool YN = Request.Form["questionYN"].ToString().Length != 0;
+            //  Console.WriteLine(O + "    " + YN);
+            await _questionRepository.Add(text, themeId, O, YN);
             return Redirect("/Home/QuestionIndex");
         }
 
@@ -194,6 +197,25 @@ namespace GeneratorASP.Controllers
             Console.WriteLine("============" + questionID + "===============");
             await _questionRepository.Delete(questionID);
             return Redirect("/Home/QuestionIndex");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> QTAindex(int questionID)
+        {
+            ViewBag.Db = new AppDbContext();
+            var q = db.Questions.AsNoTracking().Where(c => c.Id == questionID).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Images).FirstAsync();
+            ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
+            return View(q.Result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> QTIindex(int questionID)
+        {
+            ViewBag.Db = new AppDbContext();
+            var q = db.Questions.AsNoTracking().Where(c => c.Id == questionID).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Images).FirstAsync();
+            ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
+            return View(q.Result);
         }
 
 

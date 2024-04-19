@@ -37,10 +37,14 @@ namespace GeneratorAPI.Controllers
         [HttpGet("/api/Ticket/GetEnum")]
         public async Task<IActionResult> GetEnum(int id, AppDbContext db)
         {
-            var c = db.QuestionsToAnswers.Where(c => c.QuestionID == id).ToArray();
+            var c = db.QuestionsToAnswers
+                           .Where(c => c.QuestionID == id)
+                           .Include(c => c.Question)
+                           .AsNoTracking()
+                           .ToArray();
 
 
-            return Ok(Generator.GenerateEnum(c,[1], 5, 5).ToJson());
+            return Ok(Generator.GenerateEnum(c, [1], 5, 5));
 
         }
 
@@ -120,7 +124,7 @@ namespace GeneratorAPI.Controllers
             {
                 case "combi":
                 case "1":
-                    t = Generator.GeneratorCombi(fixQwId, idSet, idSetGroup, min, max, fixAnswid, O, YN, X2, ALL, qwPic, answPic);
+                    t = await Generator.GeneratorCombi(fixQwId, idSet, idSetGroup, min, max, fixAnswid, O, YN, X2, ALL, qwPic, answPic);
 
                     break;
                 case "onpic":
@@ -209,7 +213,7 @@ namespace GeneratorAPI.Controllers
             {
                 case "combi":
                 case "1":
-                    t=Generator.GeneratorCombi(fixQwId, idSet, idSetGroup, min, max, fixAnswid, O, YN, X2, ALL, qwPic, answPic);
+                    t=await Generator.GeneratorCombi(fixQwId, idSet, idSetGroup, min, max, fixAnswid, O, YN, X2, ALL, qwPic, answPic);
 
                     break;
                 case "onpic":
