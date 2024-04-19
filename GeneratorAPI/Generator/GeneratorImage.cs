@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.Host.Mef;
 using System.Linq.Expressions;
+using System.Xml;
 //using Newtonsoft.Json.Linq;
 
 namespace GeneratorAPI
@@ -94,9 +95,40 @@ namespace GeneratorAPI
         {
             AppDbContext db = new AppDbContext();
             Random k= new Random();
-            RezultatEntity rez = Generator.GenerateLinear(q.QuestionToAnswer.ToArray(), IdSets, maxInd, minInd);
+            RezultatEntity rez = new RezultatEntity();
 
+            int amount = q.Answers.Count;
 
+            if (amount > maxInd)
+            {
+                maxInd = amount;
+            }
+
+            if (amount <=minInd)
+            {
+                maxInd = amount;
+                minInd = amount;
+            }
+
+            
+            amount = k.Next(minInd, maxInd);
+            int e=0;
+            List<int> MyList = new List<int>();
+            rez.Question = q;
+
+            foreach(var c in q.Answers)
+            {
+                MyList.Add(e);e++;
+            }
+
+            while (amount-- > 0)
+            {
+                e = k.Next(MyList.Count);
+                rez.Answers.Add(q.Answers[MyList[e]]);
+                MyList.RemoveAt(e);
+            }
+
+            
 
             var im = await db.Answers.Where(c => c.Id == q.Answers[0].Id).Include(c => c.Images).AsNoTracking().FirstAsync();
 
@@ -106,8 +138,15 @@ namespace GeneratorAPI
                 j.Answers = null;
                 j.Questions = null;
             }
-
-
+            foreach (var l in rez.Answers)
+            {
+                l.Questions = null;
+                l.Images = null;
+            }
+            rez.Question.Answers = null;
+            rez.Question.QuestionToAnswer = null;
+            rez.CorrectAnswer = 0;
+            rez.BlockAnswers = null;
             return rez;
         }
 

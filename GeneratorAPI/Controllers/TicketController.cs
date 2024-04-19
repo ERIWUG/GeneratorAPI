@@ -72,9 +72,10 @@ namespace GeneratorAPI.Controllers
             var c = db.Questions
                             .Where(c => c.Id == id)
                             .Include(c => c.QuestionToAnswer)
+                            .Include(c=>c.Answers)
                             .AsNoTracking()
                             .FirstAsync();
-            var rez = Generator.GeneratorImage(c.Result, [1], 5, 3);
+            var rez = Generator.GeneratorImage(c.Result, [5], 5, 3);
             if (rez is null) return NoContent();
             else { return Ok(rez); }
         }
@@ -133,7 +134,7 @@ namespace GeneratorAPI.Controllers
                     foreach (ImageEntity image in images)
                         if (image.Questions.Count >= 1)
                         {
-                            t = await Generator.GeneratorImage(, [idSet], Vd, V);
+                            
                             break;
                             Console.WriteLine(t.Answers.ToString());
                         }
