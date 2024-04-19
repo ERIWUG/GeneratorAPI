@@ -15,7 +15,7 @@
 
 
 <div>
-    <select>
+    <select id="select-idGroup" onchange="GetIdSet()">
         @foreach (var c in IdGroups.Select(c => c.Id))
         {
             <option value="@c">
@@ -30,8 +30,8 @@
         }
         @foreach (var c in IdGroups)
         {
-
-            <select id="selectIdSet-@j">
+            String n = j == 0 ? "display:flex" : "display:none"; j++;
+            <select id="selectIdSet-@j" style=@n onchange="GetAnswers(@j)">
                 @foreach (var q in c.IdSets)
                 {
                     <option value="@q.Id">@q.Id</option>
@@ -70,11 +70,11 @@
                         </td>
                     <div class="div-checkbox" id="div-checkbox-@p.Id">
                         <td>
-                            <input type="checkbox" id="div-checkbox-value-O-@p.Id" name="div-checkbox-values" value="O-@p.Id" />
+                        <input type="checkbox" id="div-checkbox-value-O-@p.Id" checked="@p.IsNegative" name="div-checkbox-values" value="O-@p.Id" />
 
                         </td>
                         <td>
-                            <input type="checkbox" id="div-checkbox-value-YN-@p.Id" name="div-checkbox-values" value="YN-@p.Id" />
+                        <input type="checkbox" id="div-checkbox-value-YN-@p.Id" checked="@p.IsItQuestion"  name="div-checkbox-values" value="YN-@p.Id" />
 
                         </td>
                          </div>

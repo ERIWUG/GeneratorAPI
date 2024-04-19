@@ -135,7 +135,6 @@ namespace GeneratorASP.Controllers
             String text = Request.Form["questionText"];
             List<string> flags = new List<string>();
             flags = Request.Form["div-checkbox-values"].ToList();
-            Console.WriteLine(flags[0]);
             await _questionRepository.Edit(questionId, text, flags);
             return Redirect("/Home/QuestionIndex");
         }
