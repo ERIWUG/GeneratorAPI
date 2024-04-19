@@ -6,13 +6,13 @@
 
 @{
     Layout = null;
+    AppDbContext db = ViewBag.Db;
+    var IdGroups = db.IdGroup.AsNoTracking().Include(c => c.IdSets);
     List<int> KL = new List<int>();
-    foreach(var sd in Model.Answers)
+    foreach (var sd in Model.Answers)
     {
         KL.Add(sd.Id);
     }
-    AppDbContext db = ViewBag.Db;
-    var IdGroups = db.IdGroup.AsNoTracking().Include(c => c.IdSets);
 }
 
 <!DOCTYPE html>
