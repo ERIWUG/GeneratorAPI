@@ -131,40 +131,56 @@ namespace GeneratorAPI
                            .AsNoTracking()
                            .ToList();
             }
+            IdSetEntity IDSET=await db.IdSet.Where(c=>c.Id==idSet).Include(c=>c.Questions).AsNoTracking().FirstAsync();
+            List<QuestionEntity> questions = IDSET.Questions.ToList();
+            foreach (var q in IDSET.Questions.ToList())
+            {
+                if (q.IsNegative != O)
+                {
+                    questions.Remove(q);
+                }
+            }
+            Random k = new Random();
+            int idq = questions[k.Next(questions.Count)].Id;
+            var c = db.QuestionsToAnswers
+                            .Where(c => c.QuestionID == idq)
+                            .Include(c => c.Question)
+                            .AsNoTracking()
+                            .ToArray();
             if (idSet != 0)
-            {
-                idSets = new int[] { idSet };
-            }
-            else if (idSetGroup != 0)
-            {
-                idSets = db.IdSet.Where(c => c.IdGroup.Id == idSetGroup).AsNoTracking().Select(c => c.Id).ToArray();
-            }
-            else idSets = db.IdSet.AsNoTracking().Select(c => c.Id).ToArray();
-            /*  else if (idSet != 0)//если задано конкретный idset
-              {
-                  var q = db.Questions.Where(c => c.IdSet.Id == idSet).AsNoTracking().Select(c => c.Id).ToArray();
-                  questionsArray = db.QuestionsToAnswers
-                              .Where(c => q.Contains(c.QuestionID))
-                              .Include(c => c.Question)
-                              .AsNoTracking()
+             {
+                 idSets = new int[] { idSet };
+             }
+             else if (idSetGroup != 0)
+             {
+                 idSets = db.IdSet.Where(c => c.IdGroup.Id == idSetGroup).AsNoTracking().Select(c => c.Id).ToArray();
+             }
+             else idSets = db.IdSet.AsNoTracking().Select(c => c.Id).ToArray();
+             /*  else if (idSet != 0)//если задано конкретный idset
+               {
+                   var q = db.Questions.Where(c => c.IdSet.Id == idSet).AsNoTracking().Select(c => c.Id).ToArray();
+                   questionsArray = db.QuestionsToAnswers
+                               .Where(c => q.Contains(c.QuestionID))
+                               .Include(c => c.Question)
+                               .AsNoTracking()
+                                .ToList();
+               }
+               else if (idSetGroup != 0)//если задано только конкретный idset
+               {
+                   List<int> set = db.IdSet.Where(c => c.IdGroup.Id == idSetGroup).AsNoTracking().Select(c => c.Id).ToList();
+                   var q = db.Questions.Where(c => set.Contains(c.IdSet.Id)).AsNoTracking().Select(c => c.Id).ToArray();
+                   questionsArray = db.QuestionsToAnswers
+                               .Where(c => q.Contains(c.QuestionID))
+                               .Include(c => c.Question)
+                               .AsNoTracking()
                                .ToList();
-              }
-              else if (idSetGroup != 0)//если задано только конкретный idset
-              {
-                  List<int> set = db.IdSet.Where(c => c.IdGroup.Id == idSetGroup).AsNoTracking().Select(c => c.Id).ToList();
-                  var q = db.Questions.Where(c => set.Contains(c.IdSet.Id)).AsNoTracking().Select(c => c.Id).ToArray();
-                  questionsArray = db.QuestionsToAnswers
-                              .Where(c => q.Contains(c.QuestionID))
-                              .Include(c => c.Question)
-                              .AsNoTracking()
-                              .ToList();
-              }
-              else//если ничего не зодано -- все вопросы
-              {
-                  questionsArray = db.QuestionsToAnswers.Include(c => c.Question)
-                              .AsNoTracking()
-                              .ToList(); ;
-              }*/
+               }
+               else//если ничего не зодано -- все вопросы
+               {
+                   questionsArray = db.QuestionsToAnswers.Include(c => c.Question)
+                               .AsNoTracking()
+                               .ToList(); ;
+               }*/
             if (fixAnswid[0] != 0)//если заданы конкретные id вопросов, то фильтруем из массива, чтоб были только они
                                   //иначе -- оставляем весь массив для рандомной выборки внутри генератора
             {
@@ -179,24 +195,24 @@ namespace GeneratorAPI
                 Random r = new Random();
                 while (questionsArray.Count < max)//если при этом не хватило, добираем рандомными вопросами 
                 {
-                    int k = r.Next(questionsArray.Count);
-                    if (!questionsArray.Contains(copyQuestionArray[k]))
-                        questionsArray.Add(copyQuestionArray[k]);
+                    int kk = r.Next(questionsArray.Count);
+                    if (!questionsArray.Contains(copyQuestionArray[kk]))
+                        questionsArray.Add(copyQuestionArray[kk]);
                 }
             }
             RezultatEntity t = new RezultatEntity();
             if (answPic==Pics.Random)
             {
                 Random r = new Random();
-                int k = r.Next(2);
-                if (k == 1) answPic = Pics.Yes;
+                int kk = r.Next(2);
+                if (kk == 1) answPic = Pics.Yes;
                 else answPic = Pics.Random;
             }
             if (qwPic == Pics.Random)
             {
                 Random r = new Random();
-                int k = r.Next(2);
-                if (k == 1) qwPic = Pics.Yes;
+                int kk = r.Next(2);
+                if (kk == 1) qwPic = Pics.Yes;
                 else qwPic = Pics.Random;
             }
             int flag=-1;
@@ -211,31 +227,19 @@ namespace GeneratorAPI
                 flag = 2;
             if (YN)
             {
-                AnswerEntity[] answers = null;//явл -- не явл
-                if (flag == -1) t = Generator.GenerateIsIt(questionsArray.ToArray(), idSets, answers);
-                else
-                    t = await GeneratorImage(Generator.GenerateIsIt(questionsArray.ToArray(), idSets, answers), flag);
+                    t = await GeneratorImage(Generator.GenerateIsIt(c, idSets, null), flag);
             }
             else if (ALL)
             {
-                if (flag == -1)
-                    t = Generator.GenerateEnum(questionsArray.ToArray(), idSets, min, max);
-                else
-                    t = await GeneratorImage(Generator.GenerateEnum(questionsArray.ToArray(), idSets, min, max), flag);
+                    t = await GeneratorImage(Generator.GenerateEnum(c, idSets, min, max), flag);
             }
             else if (X2)
             {
-                if (flag == -1)
-                    t = Generator.GenerateX2(questionsArray.ToArray(), idSets, min, max);
-                else
-                    t = await GeneratorImage(Generator.GenerateX2(questionsArray.ToArray(), idSets, min, max), flag);
+                    t = await GeneratorImage(Generator.GenerateX2(c, idSets, min, max), flag);
             }
             else
             {
-                if (flag == -1)
-                    t = Generator.GenerateLinear(questionsArray.ToArray(), idSets, max, min);
-                else
-                    t = await GeneratorImage(Generator.GenerateLinear(questionsArray.ToArray(), idSets, max, min), flag);
+                    t = await GeneratorImage(Generator.GenerateLinear(c, idSets, max, min), flag);
             }
 
 
