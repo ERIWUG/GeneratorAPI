@@ -17,6 +17,7 @@ using GeneratorAPI.Models.TempTable;
 using Microsoft.EntityFrameworkCore;
 using GeneratorAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 //using Newtonsoft.Json.Linq;
 
 namespace GeneratorAPI
@@ -46,9 +47,9 @@ namespace GeneratorAPI
             AppDbContext db = new AppDbContext();
             int[] idSets;
             List<QuesToAns> questionsArray;
-            questionsArray = db.QuestionsToAnswers.Include(c => c.Question)
+            questionsArray = db.QuestionsToAnswers.Include(c => c.Question).Where(c=>c.Question.IsNegative==O)
                           .AsNoTracking()
-                          .ToList(); ;
+                          .ToList();
 
             if (fixQwId != 0)//если задано конкретное id вопроса
             {
@@ -121,7 +122,7 @@ namespace GeneratorAPI
                         }
                         else if (ALL) t = Generator.GenerateEnum(questionsArray.ToArray(), idSets, min, max);
                         else if (X2) t = Generator.GenerateGroup(questionsArray.ToArray(), idSets, min, max);
-                        else t = Generator.GenerateX2(questionsArray.ToArray(), idSets, max, min, O);
+                        else t = Generator.GenerateLinear(questionsArray.ToArray(), idSets, max, min);
 
      
             return t;
