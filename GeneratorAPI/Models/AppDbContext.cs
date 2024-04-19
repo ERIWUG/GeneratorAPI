@@ -42,6 +42,7 @@ namespace GeneratorAPI.Models
             // string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
              //string connection = "Server=DESKTOP-TQLBOGP;Database=applicationdb;user id=Egor;password=123123;Trusted_Connection=True;TrustServerCertificate=True;";
             string connection = "Data Source = adrive.by; Initial Catalog = adriveby_data; User ID = adriveby_student; Password = DdVRVAQ$; Encrypt = False";
+
             optionsBuilder.UseSqlServer(connection);
         }
         public DbSet<QuestionEntity> Questions { get; set; }
