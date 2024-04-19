@@ -33,8 +33,14 @@ namespace GeneratorAPI
             {
                 case 0:
                     var c = await db.Questions.Where(c => c.Id == entity.Question.Id).AsNoTracking().Include(c=>c.Images).FirstAsync();
-                    if (c.Images.Count != 0) 
-                    { entity.Question.Images.Add(c.Images[k.Next(c.Images.Count)]);}
+                    if (c.Images.Count != 0)
+                    {
+                        entity.Question.Images.Add(c.Images[k.Next(c.Images.Count)]);
+                        foreach(var h in entity.Question.Images)
+                        {
+                            h.Questions = null;
+                        }
+                    }
                     return entity;
                     break;
                 case 1:
@@ -79,9 +85,16 @@ namespace GeneratorAPI
 
         public static RezultatEntity GeneratorImage(ImageEntity im, int[] IdSets, int maxInd = 5, int minInd = 3)
         {
-            
+            QuestionEntity q;
             Random k= new Random();
-            QuestionEntity q = im.Questions[k.Next(im.Questions.Count)];
+            try
+            {
+                 q = im.Questions[k.Next(im.Questions.Count)];
+            }
+            catch (System.ArgumentOutOfRangeException)
+            {
+                return null;
+            }
             RezultatEntity rez = GenerateLinear(q.QuestionToAnswer.ToArray(), IdSets, maxInd, minInd);
             im.Questions = null;
             rez.Images.Add(im);
