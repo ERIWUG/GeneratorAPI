@@ -88,10 +88,15 @@ namespace GeneratorAPI.Repositories
         public async Task Edit(int questionId, string text, List<String> flags)
         {
             bool O = false, YN = false;
-            if (flags.Count != 0)
+            if (flags.Count == 2)
             {
                 O = flags[0].Contains("O") || flags[1].Contains("O");
-                YN = flags[0].Contains("YN")||flags[1].Contains("YN");
+                YN = flags[0].Contains("YN") || flags[1].Contains("YN");
+            }
+            else if (flags.Count == 1)
+            {
+                O = flags[0].Contains("O");
+                YN = flags[0].Contains("YN");
             }
             QuestionEntity question = await GetById(questionId);
             question.Text = text;

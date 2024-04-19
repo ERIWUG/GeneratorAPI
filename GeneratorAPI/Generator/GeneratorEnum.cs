@@ -20,7 +20,7 @@ namespace GeneratorAPI
         /// <param name="mas">Data for generating</param>
         /// <param name="ogr">Max amount of answers in one ticket</param>
         /// <returns>One Ticket with one correct and some Incorrect Question</returns>
-        public static RezultatEntity GenerateEnum(QuesToAns[] mas, int[] IdSets,int minInt, int maxInt)
+        public static RezultatEntity GenerateEnum(QuesToAns[] mas, int[] IdSets, int minInt, int maxInt)
         {
             AppDbContext db = new AppDbContext();
             ParseData(mas, IdSets);
@@ -29,11 +29,14 @@ namespace GeneratorAPI
             int allOrNo = k.Next(0, 3);
             int DeletingIndex = 0;
             if (minInt < 4) minInt = 4;
-            int NowAmountAnswers = k.Next(minInt-2, maxInt - 2);
+            int NowAmountAnswers = k.Next(minInt - 2, maxInt - 2);
             int ForSeed = NowAmountAnswers;
             var t = new RezultatEntity();
-            t.Question = mas[0].Question;
-        //    t.Seed = $"{t.Question.Id }-{t.Question.IdSet}-GL-QwPicNo-AnswPicNo-{ForSeed}-";
+            mas[0].Question.Answers = null;
+            mas[0].Question.QuestionToImage = null;
+            mas[0].Question.QuestionToAnswer = null;
+            t.Question = mas[0].Question; var c = db.Questions.Where(c => c.Id == mas[0].QuestionID).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).First();
+            //    t.Seed = $"{t.Question.Id }-{t.Question.IdSet}-GL-QwPicNo-AnswPicNo-{ForSeed}-";
             if (allOrNo == 0)
             {
                 Answers.Add(CorrectAnswerIndexes[k.Next(CorrectAnswerIndexes.Count)]);
@@ -45,15 +48,19 @@ namespace GeneratorAPI
                 }
                 foreach (int i in Answers)
                 {
-                    var c = db.Answers.Where(c => c.Id == i).First();
-                    t.Seed += $"{c.Id}-";
-                    t.Answers.Add(c);
+                    var qq = db.Answers.Where(c => c.Id == i).First();
+                    t.Seed += $"{qq.Id}-";
+                    qq.IdSet.Answers = null;
+                    qq.IdSet.IdGroup.IdSets = null;
+                    qq.IdSet.Questions = null;
+                    qq.IdSet.Images = null;
+                    t.Answers.Add(qq);
 
                 }
                 t.Answers.Add(new AnswerEntity());
                 t.Answers.Add(new AnswerEntity());
-          /**      t.Seed += $"{c.Id}-";
-                t.Seed += $"{c.Id}-";*/
+                /**      t.Seed += $"{c.Id}-";
+                      t.Seed += $"{c.Id}-";*/
                 t.Seed += "0";
                 t.CorrectAnswer = 0;
             }
@@ -68,17 +75,21 @@ namespace GeneratorAPI
                 }
                 foreach (int i in Answers)
                 {
-                    var c = db.Answers.Where(c => c.Id == i).First();
-                    t.Seed += $"{c.Id}-";
-                    t.Answers.Add(c);
+                    var qq = db.Answers.Where(c => c.Id == i).First();
+                    t.Seed += $"{qq.Id}-";
+                    qq.IdSet.Answers = null;
+                    qq.IdSet.IdGroup.IdSets = null;
+                    qq.IdSet.Questions = null;
+                    qq.IdSet.Images = null;
+                    t.Answers.Add(qq);
 
                 }
                 t.Answers.Add(new AnswerEntity());
                 t.Answers.Add(new AnswerEntity());
-            /*    t.Seed += $"{c.Id}-";
-                t.Seed += $"{c.Id}-";*/
-                t.Seed += ForSeed-2;
-                t.CorrectAnswer = ForSeed-2;
+                /*    t.Seed += $"{c.Id}-";
+                    t.Seed += $"{c.Id}-";*/
+                t.Seed += ForSeed - 2;
+                t.CorrectAnswer = ForSeed - 2;
             }
             else //if "none of the above"
             {
@@ -91,17 +102,21 @@ namespace GeneratorAPI
                 }
                 foreach (int i in Answers)
                 {
-                    var c = db.Answers.Where(c => c.Id == i).First();
-                    t.Seed += $"{c.Id}-";
-                    t.Answers.Add(c);
+                    var qq = db.Answers.Where(c => c.Id == i).First();
+                    t.Seed += $"{qq.Id}-";
+                    qq.IdSet.Answers = null;
+                    qq.IdSet.IdGroup.IdSets = null;
+                    qq.IdSet.Questions = null;
+                    qq.IdSet.Images = null;
+                    t.Answers.Add(qq);
 
                 }
-                
+
                 t.Answers.Add(new AnswerEntity());
                 t.Answers.Add(new AnswerEntity());
-          /*      t.Seed += $"{c.Id}-";
-                t.Seed += $"{c.Id}-";*/
-                t.Seed += ForSeed-1;
+                /*      t.Seed += $"{c.Id}-";
+                      t.Seed += $"{c.Id}-";*/
+                t.Seed += ForSeed - 1;
                 t.CorrectAnswer = ForSeed - 1;
             }
             return t;
