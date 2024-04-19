@@ -128,16 +128,16 @@ namespace GeneratorAPI.Controllers
                     break;
                 case "onpic":
                 case "2":
+                    Random k = new Random();
+                    var c = await db.Questions
+                                            .Include(c => c.IdSet)
+                                            .Where(c => c.IdSet.Id == idSet)
+                                            .Include(c => c.QuestionToAnswer)
+                                            .Include(c => c.Answers)
+                                            .ToListAsync();
+                    
+                    t = GeneratorImage(c[k.Next(c.Count)], [idSet],Vd,V).Result;
 
-                    List<ImageEntity> images = await db.Images.AsNoTracking().Where(c => c.IdSet.Id == idSet).Include(c => c.Questions).
-                ThenInclude(c => c.QuestionToAnswer).ToListAsync() ;
-                    foreach (ImageEntity image in images)
-                        if (image.Questions.Count >= 1)
-                        {
-                            
-                            break;
-                            Console.WriteLine(t.Answers.ToString());
-                        }
                     break;
                 case "hard":
                 case "3":

@@ -138,6 +138,8 @@ namespace GeneratorAPI
             {
                 l.Questions.Clear();
                 l.Images.Clear();
+                l.QuestionToAnswer = null;
+                l.IdSet = null;
             }
             rez.Question.Answers = null;
             rez.Question.QuestionToAnswer = null;
