@@ -60,6 +60,7 @@ namespace GeneratorAPI
                         else
                         {
                             er = 1;
+                            break;
                         }
                     }
 
