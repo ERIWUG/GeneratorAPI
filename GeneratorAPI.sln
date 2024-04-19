@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorAPI", "GeneratorAPI\GeneratorAPI.csproj", "{E6D46797-E222-43F0-A443-B89C71FFA3C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorASP", "GeneratorASP\GeneratorASP.csproj", "{2F244AB6-306F-4CDE-ABCE-5D0BE9CEF20D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorASP", "GeneratorASP\GeneratorASP.csproj", "{2F244AB6-306F-4CDE-ABCE-5D0BE9CEF20D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
