@@ -73,6 +73,14 @@ namespace GeneratorAPI
                             l.Images = null;
                         }
                     }
+
+                    foreach(var l in entity.Answers)
+                    {
+                        foreach(var q in l.Images)
+                        {
+                            q.Answers = null;
+                        }
+                    }
                     return entity;
 
                     break;
