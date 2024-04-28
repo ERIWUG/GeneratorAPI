@@ -71,6 +71,7 @@ function GetIdSet() {
     document.getElementById("select-IdSet-" + n).style.display = "none";
     document.getElementById("select-IdSet-" + x).style.display = "flex";
     document.getElementById("display-id").value = x;
+    GetAnswers(x);
 
     
 }

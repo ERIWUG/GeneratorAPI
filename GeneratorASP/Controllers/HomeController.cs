@@ -166,24 +166,7 @@ namespace GeneratorASP.Controllers
 
             return Redirect("/Home/Index");
         }
-
-
-        public IActionResult QTAindex()
-        {
-            ViewBag.Db = new AppDbContext();
-            var q = db.Questions.AsNoTracking().Where(c => c.Id == 13).Include(c=>c.Answers).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).FirstAsync();
-            ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
-            return View(q.Result);
-        }
-
-        public IActionResult QTIindex()
-        {
-            ViewBag.Db = new AppDbContext();
-            var q = db.Questions.AsNoTracking().Where(c => c.Id == 1).Include(c=>c.IdSet).ThenInclude(c=>c.IdGroup).Include(c=>c.Images).FirstAsync();
-            ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
-            return View(q.Result);
-        }
-
+        [HttpPost]
         public IActionResult ITAindex()
         {
             ViewBag.Db = new AppDbContext();
@@ -191,7 +174,7 @@ namespace GeneratorASP.Controllers
             ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
             return View(q.Result);
         }
-
+        [HttpPost]
         public IActionResult ATIindex()
         {
             ViewBag.Db = new AppDbContext();
@@ -284,7 +267,7 @@ namespace GeneratorASP.Controllers
         public async Task<IActionResult> QTAindex(int questionID)
         {
             ViewBag.Db = new AppDbContext();
-            var q = db.Questions.AsNoTracking().Where(c => c.Id == questionID).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Images).FirstAsync();
+            var q = db.Questions.AsNoTracking().Where(c => c.Id == questionID).Include(c => c.Answers).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Images).FirstAsync();
             ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
             return View(q.Result);
         }
@@ -293,7 +276,7 @@ namespace GeneratorASP.Controllers
         public async Task<IActionResult> QTIindex(int questionID)
         {
             ViewBag.Db = new AppDbContext();
-            var q = db.Questions.AsNoTracking().Where(c => c.Id == questionID).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Images).FirstAsync();
+            var q = db.Questions.AsNoTracking().Where(c => c.Id == questionID).Include(c => c.Answers).Include(c => c.IdSet).ThenInclude(c => c.IdGroup).Include(c => c.Images).FirstAsync();
             ViewBag.IdGroup = q.Result.IdSet.IdGroup.Id;
             return View(q.Result);
         }
