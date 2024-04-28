@@ -57,7 +57,7 @@ namespace GeneratorAPI
 
                         if (q.Images.Count != 0)
                         {
-                            entity.Answers[IND].Images.Add(q.Images[k.Next(q.Images.Count)]);
+                            l.Images.Add(q.Images[k.Next(q.Images.Count)]);
                         }
                         else
                         {
